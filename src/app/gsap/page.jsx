@@ -1,7 +1,7 @@
 "use client";
 
 export default function Gsap() {
- 
+
   console.log("fuck youu this is client");
 
   return (
