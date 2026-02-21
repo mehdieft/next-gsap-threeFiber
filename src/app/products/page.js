@@ -8,7 +8,7 @@ export default async function Products() {
 
   
     const users =  await fetch('https://jsonplaceholder.typicode.com/users')
-      const userss = await users.json()
+    const userss = await users.json()
      
     
 
