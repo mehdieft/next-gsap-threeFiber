@@ -1,14 +1,13 @@
 
 
 import Link from "next/link"
-
+import getProducts from '../../../database/products'
 
 export default async function Products() {
 
 
+  const userss=getProducts()
   
-    const users =  await fetch('https://jsonplaceholder.typicode.com/users')
-    const userss = await users.json()
      
     
 
