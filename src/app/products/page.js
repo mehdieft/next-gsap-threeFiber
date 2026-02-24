@@ -18,15 +18,15 @@ export default async function Products() {
     <>
       <h1>this is products page.</h1>
 
-      <div className="flex justify-center gap-8">
+      <div className="flex justify-center gap-8 ">
         <Link href="/products/apple">apple</Link>
         <Link href="/products/orange">orange</Link>
         <Link href="/products/banana">banana</Link>
       </div>
 
       {userss.map((user) => (
-        <div key={user.id}>
-        <h1 >{user.name}</h1>
+        <div className="mx-12" key={user.id}>
+       <Link href={"products/"+user.name}>{user.name}</Link>
         </div>
       ))}
     </>
