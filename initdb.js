@@ -9,6 +9,15 @@ db.prepare(`
     )
 
     `).run()
+
+    db.prepare(`
+        CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        family TEXT,
+        password TEXT
+        )
+        `).run()
 // db.prepare(`
 //         INSERT INTO products(name,price,image) VALUES('apple',30,'image')
 //         `).run()
@@ -20,4 +29,4 @@ db.prepare(`
 //         `).run()
 
 const result=db.prepare(`SELECT * FROM products`).all()
-console.log('result database',result)
+console.log('result database',result) 
