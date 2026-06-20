@@ -10,6 +10,7 @@ export default async function Products() {
 
 
   const products = getProducts()
+  console.log("this is products",products)
 
 
 
@@ -23,7 +24,7 @@ export default async function Products() {
 
         {products.map((prod) => {
           return (
-            <ProductCard product={prod} key={prod.id} />
+            <ProductCard key={prod.id} product={prod}  />
           )
         })}
       </div>
