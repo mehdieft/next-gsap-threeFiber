@@ -3,13 +3,13 @@
 import Link from "next/link"
 import getProducts from '../../../database/products'
 import ProductCard from "../components/ProductCard"
-
+import sqlite from 'better-sqlite3'
+const db=sqlite('products.sqlite')
 
 export default async function Products() {
 
 
   const products = getProducts()
- 
 
 
 
