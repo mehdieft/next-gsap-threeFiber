@@ -1,5 +1,8 @@
 
 import sqlite from 'better-sqlite3' 
+import { redirect } from 'next/navigation' // 👈 این رو اضافه کن!
+
+
 const db=sqlite('products.sqlite')
 export default function AddProduct() {
     const handleSubmit=async(formData)=>{
@@ -14,6 +17,7 @@ export default function AddProduct() {
         db.prepare(
             `INSERT INTO products(name,price,image) VALUES(?,?,?)`
         ).run(newProduct.name,newProduct.price,newProduct.image.name)
+        redirect('/products')
     }
     return (
         <>
