@@ -1,7 +1,11 @@
+
 const Genesis=()=>{
     return(
-      <section className="hero genesis flex justify-center items-center w-full h-svh bg-green-400">
-        <h1>Genesis</h1>
+      <section
+        className="hero genesis flex h-svh w-full items-center justify-center bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/gsap/exampleOne/genesis.jpg')" }}
+      >
+        <h1 className="text-white text-4xl font-semibold">Genesis</h1>
       </section>
     )
 }

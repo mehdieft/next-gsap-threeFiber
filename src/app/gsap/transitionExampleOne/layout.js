@@ -1,9 +1,14 @@
 import Navbar from "./components/navbar"
-export default function Layout({children}){
-    return(
+import TransitionProvider from "./providers/TransitionProvider"
+export default function Layout({ children }) {
+    return (
         <>
-      <Navbar/>
-        {children}
+            <TransitionProvider>
+
+                <Navbar />
+                {children}
+            </TransitionProvider>
+
         </>
     )
 }
