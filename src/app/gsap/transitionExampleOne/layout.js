@@ -1,5 +1,5 @@
 import Navbar from "./components/navbar"
-import TransitionProvider from "./providers/TransitionProvider"
+import TransitionProvider from "../providers/TransitionProvider"
 export default function Layout({ children }) {
     return (
         <>

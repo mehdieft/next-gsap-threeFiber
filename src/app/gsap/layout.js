@@ -8,3 +8,4 @@ export default function GsapLayout({children}){
     )
 }
 //first project link is href="/gsap/transitionExampleOne"
+//second link is href="/gsap/textAnimationExamle"
