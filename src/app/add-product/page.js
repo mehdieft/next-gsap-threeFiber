@@ -1,12 +1,24 @@
 
 import sqlite from 'better-sqlite3' 
 import { redirect } from 'next/navigation' // 👈 این رو اضافه کن!
-import { handleSubmit } from '../actions/productActions'
 
 
 const db=sqlite('products.sqlite')
 export default function AddProduct() {
-    
+    const handleSubmit=async(formData)=>{
+        "use server";
+        console.log("im submit",formData)
+        const newProduct={
+            name:formData.get('name'),
+            price:formData.get('price'),
+            image:formData.get('image')
+        }
+        console.log("this is result",newProduct)
+        db.prepare(
+            `INSERT INTO products(name,price,image) VALUES(?,?,?)`
+        ).run(newProduct.name,newProduct.price,newProduct.image.name)
+        redirect('/products')
+    }
     return (
         <>
             <div className="flex justify-center py-10 text-black">
