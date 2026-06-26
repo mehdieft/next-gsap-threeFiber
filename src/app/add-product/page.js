@@ -1,29 +1,30 @@
 
 import sqlite from 'better-sqlite3' 
 import { redirect } from 'next/navigation' // 👈 این رو اضافه کن!
+import {insertHandler} from '../actions/productActions'
 
 
 const db=sqlite('products.sqlite')
 export default function AddProduct() {
-    const handleSubmit=async(formData)=>{
-        "use server";
-        console.log("im submit",formData)
-        const newProduct={
-            name:formData.get('name'),
-            price:formData.get('price'),
-            image:formData.get('image')
-        }
-        console.log("this is result",newProduct)
-        db.prepare(
-            `INSERT INTO products(name,price,image) VALUES(?,?,?)`
-        ).run(newProduct.name,newProduct.price,newProduct.image.name)
-        redirect('/products')
-    }
+    // const handleSubmit=async(formData)=>{
+    //     "use server";
+    //     console.log("im submit",formData)
+    //     const newProduct={
+    //         name:formData.get('name'),
+    //         price:formData.get('price'),
+    //         image:formData.get('image')
+    //     }
+    //     console.log("this is result",newProduct)
+    //     db.prepare(
+    //         `INSERT INTO products(name,price,image) VALUES(?,?,?)`
+    //     ).run(newProduct.name,newProduct.price,newProduct.image.name)
+    //     redirect('/products')
+    // }
     return (
         <>
             <div className="flex justify-center py-10 text-black">
                 <div className="w-4/9 bg-white shadow-2xl p-8 gap-8 flex flex-col">
-                <form action={handleSubmit}>
+                <form action={insertHandler}>
 
                     <h1 className="text-2xl text-black font-bold ">Add Produt </h1>
                     <div className="h-px bg-black" />
