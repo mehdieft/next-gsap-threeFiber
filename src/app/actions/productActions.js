@@ -2,6 +2,8 @@
 import { prisma } from '../lib/prisma'
 import sqlite from 'better-sqlite3'
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation'
+
 const db = sqlite('products.sqlite')
 export async function deleteProduct(productId) {
     console.log("this is id", productId)
@@ -23,5 +25,6 @@ export async function insertHandler(formData) {
 
     })
     revalidatePath('/products', 'page')
+        redirect('/products')
 
 }
