@@ -75,37 +75,56 @@ const icons = {
       <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
     </svg>
   ),
+  menu: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  ),
+  close: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  ),
 };
 
 export default function AdminNavbar() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Build breadcrumb segments from pathname
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <header>
+    <header className="relative max-w-full ">
       {/* Main navbar */}
-      <nav className="flex items-center gap-4 px-6 h-14 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
+      <nav className="flex items-center gap-2 sm:gap-4 px-3 sm:px-6 h-14 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
+        {/* Mobile menu toggle */}
+        <button 
+          className="lg:hidden w-8 h-8 rounded-md flex items-center justify-center text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMobileMenuOpen ? icons.close : icons.menu}
+        </button>
 
         {/* Brand */}
-        <div className="flex items-center gap-2 min-w-[180px]">
-          <div className="w-7 h-7 rounded-[7px] bg-blue-600 flex items-center justify-center text-white">
+        <div className="flex items-center gap-2 min-w-[120px] sm:min-w-[180px] flex-shrink-0">
+          <div className="w-7 h-7 rounded-[7px] bg-blue-600 flex items-center justify-center text-white flex-shrink-0">
             {icons.bolt}
           </div>
-          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
+          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 tracking-tight hidden sm:inline">
             ShopOS
           </span>
-          <span className="text-[10px] font-medium bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800 rounded px-1.5 py-0.5 uppercase tracking-wider">
+          <span className="text-[10px] font-medium bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800 rounded px-1.5 py-0.5 uppercase tracking-wider hidden sm:inline">
             Admin
           </span>
         </div>
 
-        {/* Divider */}
-        <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1" />
+        {/* Divider - hide on mobile */}
+        <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1 hidden sm:block" />
 
-        {/* Nav links */}
-        <div className="flex items-center gap-0.5 flex-1">
+        {/* Nav links - desktop */}
+        <div className="hidden lg:flex items-center gap-0.5 flex-1 overflow-x-auto">
           {navLinks.map((link) => {
             const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
             return (
@@ -121,7 +140,7 @@ export default function AdminNavbar() {
                 {icons[link.icon]}
                 {link.label}
                 {link.dot && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 ml-0.5" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 ml-0.5 flex-shrink-0" />
                 )}
               </Link>
             );
@@ -129,48 +148,77 @@ export default function AdminNavbar() {
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-1.5">
-          {/* Search */}
-          <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 text-xs hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors whitespace-nowrap">
+        <div className="flex items-center gap-1 sm:gap-1.5 ml-auto flex-shrink-0">
+          {/* Search - hide text on small screens */}
+          <button className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 text-xs hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors whitespace-nowrap">
             {icons.search}
-            Search...
-            <span className="flex items-center gap-0.5 ml-1.5">
+            <span className="hidden sm:inline">Search...</span>
+            <span className="hidden sm:flex items-center gap-0.5 ml-0 sm:ml-1.5">
               <kbd className="text-[10px] bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded px-1 py-px font-mono text-zinc-400">⌘</kbd>
               <kbd className="text-[10px] bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded px-1 py-px font-mono text-zinc-400">K</kbd>
             </span>
           </button>
 
           {/* Notifications */}
-          <button className="relative w-8 h-8 rounded-md flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" aria-label="Notifications">
+          <button className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-md flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" aria-label="Notifications">
             {icons.bell}
             <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-red-500 border-2 border-white dark:border-zinc-900" />
           </button>
 
           {/* Settings */}
-          <button className="w-8 h-8 rounded-md flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" aria-label="Settings">
+          <button className="hidden sm:flex w-8 h-8 rounded-md items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" aria-label="Settings">
             {icons.settings}
           </button>
 
-          {/* Divider */}
-          <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1" />
+          {/* Divider - hide on mobile */}
+          <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-0 sm:mx-1 hidden sm:block" />
 
           {/* Avatar */}
-          <button className="w-7 h-7 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[11px] font-medium flex items-center justify-center border border-blue-200 dark:border-blue-800 hover:opacity-80 transition-opacity" aria-label="User menu">
+          <button className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] sm:text-[11px] font-medium flex items-center justify-center border border-blue-200 dark:border-blue-800 hover:opacity-80 transition-opacity flex-shrink-0" aria-label="User menu">
             AK
           </button>
         </div>
       </nav>
 
+      {/* Mobile menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden absolute top-14  left-0 right-0 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 shadow-lg z-50 py-2 px-3">
+          <div className="flex flex-col gap-0.5">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
+                    isActive
+                      ? "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400"
+                      : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  }`}
+                >
+                  <span className="w-5 h-5 flex items-center justify-center">{icons[link.icon]}</span>
+                  {link.label}
+                  {link.dot && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 ml-auto flex-shrink-0" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Breadcrumb */}
-      <div className="flex items-center gap-1.5 px-6 h-9 bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800">
-        <span className="text-zinc-400 dark:text-zinc-600">{icons.home}</span>
+      <div className="flex items-center gap-1.5 px-3 sm:px-6 h-8 sm:h-9 bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto">
+        <span className="text-zinc-400 dark:text-zinc-600 flex-shrink-0">{icons.home}</span>
         {segments.map((seg, i) => {
           const isLast = i === segments.length - 1;
           const label = seg.charAt(0).toUpperCase() + seg.slice(1);
           return (
-            <span key={i} className="flex items-center gap-1.5">
+            <span key={i} className="flex items-center gap-1.5 flex-shrink-0">
               <span className="text-zinc-300 dark:text-zinc-700 text-xs">›</span>
-              <span className={`text-xs ${isLast ? "text-zinc-900 dark:text-zinc-100 font-medium" : "text-zinc-400 dark:text-zinc-500"}`}>
+              <span className={`text-xs whitespace-nowrap ${isLast ? "text-zinc-900 dark:text-zinc-100 font-medium" : "text-zinc-400 dark:text-zinc-500"}`}>
                 {label}
               </span>
             </span>

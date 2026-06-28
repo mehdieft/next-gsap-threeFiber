@@ -16,4 +16,70 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+
+}
+/* applying differenet styles for my ecommerce  */
+@layer base {
+  .ecommerce {
+    --color-primary:       #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-primary-light: #eff6ff;
+    --color-primary-muted: #bfdbfe;
+    --color-primary-text:  #1d4ed8;
+  }
+}
+
+@layer components {
+
+  /* base — shared structure */
+  .btn {
+    @apply inline-flex items-center gap-1.5 px-4 h-9 rounded-md text-[13px]
+           font-medium cursor-pointer border transition-all duration-150 active:scale-[.98]
+           disabled:opacity-45 disabled:cursor-not-allowed disabled:active:scale-100
+           whitespace-nowrap select-none;
+  }
+
+  /* sizes */
+  .btn-sm { @apply h-7 px-2.5 text-xs rounded-md; }
+  .btn-lg { @apply h-11 px-6 text-sm; }
+
+  /* primary — solid blue */
+  .btn-primary {
+    @apply text-white;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+
+  /* secondary — light blue tint */
+  .btn-secondary {
+    border-color: var(--color-primary-muted);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-text);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    @apply bg-blue-100 border-blue-300;
+  }
+
+  /* outline — transparent, neutral border */
+  .btn-outline {
+    @apply bg-transparent text-zinc-800 dark:text-zinc-200
+           border-zinc-300 dark:border-zinc-600
+           hover:bg-zinc-100 dark:hover:bg-zinc-800;
+  }
+
+  /* danger */
+  .btn-danger {
+    @apply bg-red-600 text-white border-red-600
+           hover:bg-red-700 hover:border-red-700;
+  }
+
+  /* ghost */
+  .btn-ghost {
+    @apply bg-transparent text-zinc-500 border-transparent
+           hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100;
+  }
 }
