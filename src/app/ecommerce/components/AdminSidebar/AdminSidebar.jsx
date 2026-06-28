@@ -81,7 +81,7 @@ const NAV_SECTIONS = [
       },
       {
         label: "Customers",
-        href: "/ecommerce/admin/customers",
+        href: "/ecommerce/user",
         icon: <SVGIcon path={icons.customers} />,
       },
     ],
@@ -189,11 +189,11 @@ function NavLink({ item }) {
 
 export default function AdminSidebar() {
   return (
-    <aside className="w-[220px] min-w-[220px] [display:none] md:[display:flex] flex-col h-[92vh] bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800">
+    <aside className="w-55 min-w-55 hidden md:flex flex-col h-[92vh] bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800">
       {/* Top: brand + store picker */}
       <div className="px-3 pt-3.5 pb-2.5 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-[26px] h-[26px] rounded-[6px] bg-blue-600 flex items-center justify-center text-white shrink-0">
+          <div className="w-6.5 h-6.5 rounded-md bg-blue-600 flex items-center justify-center text-white shrink-0">
             <SVGIcon path={icons.bolt} size={13} />
           </div>
           <span className="text-[13px] font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
@@ -206,7 +206,7 @@ export default function AdminSidebar() {
 
         {/* Store picker */}
         <button className="flex items-center gap-1.5 w-full px-2 py-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors">
-          <div className="w-[18px] h-[18px] rounded bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-700 dark:text-green-300 text-[9px] font-medium shrink-0">
+          <div className="w-4.5 h-4.5 rounded bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-700 dark:text-green-300 text-[9px] font-medium shrink-0">
             M
           </div>
           <span className="text-[11px] text-zinc-500 dark:text-zinc-400 flex-1 text-left">
@@ -238,7 +238,7 @@ export default function AdminSidebar() {
       {/* Bottom: user row */}
       <div className="px-2 py-2 border-t border-zinc-200 dark:border-zinc-800">
         <button className="flex items-center gap-2 w-full px-2 py-1.5 rounded-md hover:bg-white dark:hover:bg-zinc-800 transition-colors">
-          <div className="w-[26px] h-[26px] rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] font-medium flex items-center justify-center border border-blue-200 dark:border-blue-800 shrink-0">
+          <div className="w-6.5 h-6.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] font-medium flex items-center justify-center border border-blue-200 dark:border-blue-800 shrink-0">
             AK
           </div>
           <div className="flex-1 text-left min-w-0">
