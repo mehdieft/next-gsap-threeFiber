@@ -1,7 +1,13 @@
+import AdminNavbar from "../components/navbar";
+import AdminSidebar from "../components/AdminSidebar/AdminSidebar";
 export default function EcommerceLayout({children}){
     return(
-        <div className="m-4">
-        <h1>fuck this</h1>
-        </div>
+      <>
+      <AdminNavbar />
+      <AdminSidebar />
+      <main>
+        {children}
+      </main>
+      </>
     )
 }
