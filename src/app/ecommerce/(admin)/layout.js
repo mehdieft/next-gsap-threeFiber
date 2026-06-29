@@ -7,7 +7,7 @@ export default function EcommerceLayout({children}){
       <div className="flex">
 
       <AdminSidebar />
-      <main className="ecommerce p-4">
+      <main className="ecommerce p-4 w-full">
         {children}
       </main>
       </div>

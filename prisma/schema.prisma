@@ -18,3 +18,9 @@ model Products{
   price Float
   image String
 }
+model AdminUser{
+  id Int @id @default(autoincrement())
+  userType String
+  userName String @unique
+  password String
+}
