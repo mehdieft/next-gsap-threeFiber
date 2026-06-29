@@ -2,15 +2,19 @@
 'use server';  // ← Move this to the VERY TOP of the file
 
 import { revalidatePath } from 'next/cache';
+ import bcrypt from 'bcrypt'
 import { prisma } from '../../lib/prisma';
 import { redirect } from 'next/navigation';  // ← FIXED: Correct import path
 
 export const createUser = async (formData) => {
     "use server"
+    const salt=bcrypt.genSaltSync(5)
+    const hashedPassword=bcrypt.hashSync(formData.get('password'),salt)
+   
     const data = {
         userName: formData.get('username'),  // ← Also fix: 'userName' → 'username'
         userType: formData.get('userType'),
-        password: formData.get('password')
+        password: hashedPassword
     };
     
     await prisma.adminUser.create({
