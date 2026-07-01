@@ -82,4 +82,14 @@ body {
     @apply bg-transparent text-zinc-500 border-transparent
            hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100;
   }
+
+  .text-animation-word {
+    @apply inline-block will-change-transform
+  }
+  .text-animation-line {
+    @apply block will-change-transform
+  }
+  .text-animation-char {
+    @apply inline-block will-change-transform
+  }
 }
