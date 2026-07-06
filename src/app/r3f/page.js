@@ -1,20 +1,21 @@
 "use client"
 import { Canvas } from "@react-three/fiber"
+import Scene from "./components/Scene"
+import { CameraControls,OrbitControls,Environment } from '@react-three/drei'
+import Model from "./components/model"
+import Floor from "./components/floor"
 export default function R3f(){
     return(
         <>
-        <div className="bg-red-400 w-full h-screen flex justify-center items-center overflow-hidden ">
-        <Canvas className="fixed ">
-            {/* <camera /> */}
-            <mesh scale={1.2} rotation-y={Math.PI*0.25} >
-                <ambientLight intensity={1.4} />
-                <boxGeometry  args={[2,4,2]} />
-                <meshNormalMaterial/>
-            </mesh>
-            <mesh position={[-4,0,0]}  >
-                <torusKnotGeometry args={[1,0.4,100,10]}  />
-                <meshBasicMaterial  color={'purple'}  wireframe />
-            </mesh>
+        <div className="bg-white w-full h-screen flex justify-center items-center overflow-hidden ">
+        <Canvas camera={{position:[-10,-10,-10]}}>
+           <OrbitControls/>
+          <hemisphereLight args={[ 0xffffbb, 0x080820, 1]} />
+           <ambientLight intensity={0.1} />
+
+            {/* <CameraControls/> */}
+          <Scene/>
+        <Floor/>
 
         </Canvas>
         </div>
