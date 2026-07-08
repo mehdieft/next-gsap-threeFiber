@@ -30,7 +30,7 @@ export default function R3f() {
             name:Controls.left,
             keys:['ArrowLeft','KeyA']
         }
-    ])
+    ],[])
     return (
         <>
             <div className="bg-gray-500 w-full h-screen flex justify-center items-center overflow-hidden ">
