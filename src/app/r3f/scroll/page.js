@@ -8,7 +8,7 @@ import TextContent from "../components/scrollComponents/textContent";
 export default function ScrollPage() {
     return (
         <>
-            <div className="w-full h-screen bg-gray-400 sticky">
+            <div className="w-full h-screen bg-gray-400 fixed">
                 <Canvas camera={{}}>
                     <ambientLight />
                     <ScrollControls pages={5}>
@@ -19,6 +19,7 @@ export default function ScrollPage() {
                     </ScrollControls>
                 </Canvas>
             </div>
+            <div className="z-1 h-screen"></div>
             
            
 
