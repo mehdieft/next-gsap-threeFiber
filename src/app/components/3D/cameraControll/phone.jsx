@@ -38,57 +38,57 @@ export default function Phone({ section }) {
     ],
   };
 
-  useControls("dolly", {
-    // eslint-disable-next-line react-hooks/refs
-    in: button(() => controlls.current?.dolly(1, true)),
-    // eslint-disable-next-line react-hooks/refs
-    out: button(() => controlls.current?.dolly(-1, true)),
-  });
-  useControls("truck", {
-    // eslint-disable-next-line react-hooks/refs
-    up: button(() => {
-      controlls.current?.truck(0, -0.5, true);
-    }),
-    // eslint-disable-next-line react-hooks/refs
-    down: button(() => {
-      controlls.current.truck(0, 0.5, true);
-    }),
-    // eslint-disable-next-line react-hooks/refs
-    left: button(() => {
-      controlls.current?.truck(-0.5, 0, true);
-    }),
-    // eslint-disable-next-line react-hooks/refs
-    right: button(() => {
-      controlls.current?.truck(0.5, 1, true);
-    }),
-  });
-  useControls("rotate", {
-    // eslint-disable-next-line react-hooks/refs
-    up: button(() => {
-      controlls.current?.rotate(0, -0.5, true);
-    }),
-    // eslint-disable-next-line react-hooks/refs
-    down: button(() => {
-      controlls.current.rotate(0, 0.5, true);
-    }),
-    // eslint-disable-next-line react-hooks/refs
-    left: button(() => {
-      controlls.current?.rotate(-0.5, 0, true);
-    }),
-    // eslint-disable-next-line react-hooks/refs
-    right: button(() => {
-      controlls.current?.rotate(0.5, 1, true);
-    }),
-  });
-  useControls("settings", {
-    smoothTime: {
-      value: 0.35,
-      min: 0.1,
-      max: 2,
-      step: 0.1,
-      onChange: (value) => (controlls.current.smoothTime = value),
-    },
-  });
+  // useControls("dolly", {
+  //   // eslint-disable-next-line react-hooks/refs
+  //   in: button(() => controlls.current?.dolly(1, true)),
+  //   // eslint-disable-next-line react-hooks/refs
+  //   out: button(() => controlls.current?.dolly(-1, true)),
+  // });
+  // useControls("truck", {
+  //   // eslint-disable-next-line react-hooks/refs
+  //   up: button(() => {
+  //     controlls.current?.truck(0, -0.5, true);
+  //   }),
+  //   // eslint-disable-next-line react-hooks/refs
+  //   down: button(() => {
+  //     controlls.current.truck(0, 0.5, true);
+  //   }),
+  //   // eslint-disable-next-line react-hooks/refs
+  //   left: button(() => {
+  //     controlls.current?.truck(-0.5, 0, true);
+  //   }),
+  //   // eslint-disable-next-line react-hooks/refs
+  //   right: button(() => {
+  //     controlls.current?.truck(0.5, 1, true);
+  //   }),
+  // });
+  // useControls("rotate", {
+  //   // eslint-disable-next-line react-hooks/refs
+  //   up: button(() => {
+  //     controlls.current?.rotate(0, -0.5, true);
+  //   }),
+  //   // eslint-disable-next-line react-hooks/refs
+  //   down: button(() => {
+  //     controlls.current.rotate(0, 0.5, true);
+  //   }),
+  //   // eslint-disable-next-line react-hooks/refs
+  //   left: button(() => {
+  //     controlls.current?.rotate(-0.5, 0, true);
+  //   }),
+  //   // eslint-disable-next-line react-hooks/refs
+  //   right: button(() => {
+  //     controlls.current?.rotate(0.5, 1, true);
+  //   }),
+  // });
+  // useControls("settings", {
+  //   smoothTime: {
+  //     value: 0.35,
+  //     min: 0.1,
+  //     max: 2,
+  //     step: 0.1,
+  //     onChange: (value) => (controlls.current.smoothTime = value),
+  //   },
+  // });
   useControls("fit", {
     // eslint-disable-next-line react-hooks/refs
     fitToBox: button(() => {
