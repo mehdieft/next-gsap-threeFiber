@@ -18,8 +18,8 @@ export default function Car() {
   const { scene } = useGLTF("/model/tesla_model_3.glb");
   return (
     <>
-      <color attach="background" args={["#d3bbbf"]} />
-      <fog attach="fog" args={["#d3bbbf", 20, 25]} />
+      <color attach="background" args={["#000000"]} />
+      <fog attach="fog" args={["#000000", 20, 25]} />
 
       <OrbitControls
         enableZoom={false}
