@@ -2,19 +2,39 @@
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Lenis from "lenis";
 import { useRef } from "react"
+
 gsap.registerPlugin(ScrollTrigger)
 
 export default function ScrollTriggerOne() {
     const containerRef = useRef()
 
     useGSAP(() => {
+        const lenis = new Lenis({
+            duration: 1.2,
+            smoothWheel: true,
+        });
+
+        // Keep ScrollTrigger in sync with Lenis
+        lenis.on("scroll", ScrollTrigger.update);
+
+        // GSAP drives Lenis
+        const update = (time) => {
+            lenis.raf(time * 1000); // GSAP time is seconds, Lenis expects milliseconds
+        };
+
+        gsap.ticker.add(update);
+
+        // Disable GSAP lag smoothing
+        gsap.ticker.lagSmoothing(0);
         if (!containerRef.current) return
         const sections = gsap.utils.toArray('.section')
         sections.forEach((section, index) => {
             const wrapper = section.querySelector('.wrapper')
             gsap.to(wrapper, {
                 rotate: 0,
+                scale: 1,
                 scrollTrigger: { trigger: section, scrub: true, start: 'top bottom', end: 'top 1%' },
                 ease: 'none'
             })
@@ -27,15 +47,19 @@ export default function ScrollTriggerOne() {
                 pinSpacing: false
             })
         })
+        return () => {
+            gsap.ticker.remove(update);
+            lenis.destroy();
+            ScrollTrigger.getAll().forEach((st) => st.kill());
+        };
     }, { scope: containerRef })
 
     return (
         <>
-            <main ref={containerRef} className="w-full overflow-hidden flex flex-col gap-60">
-                <div className="h-svh"></div>
+            <main ref={containerRef} className="w-full overflow-hidden flex flex-col gap-30">
 
                 <section className="section">
-                    <div className="will-change-transform wrapper rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
+                    <div className="will-change-transform wrapper rotate-30 scale-5 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
                         <div className="bg-gradient-to-br from-green-400 to-green-500 flex-1 flex flex-col items-center justify-center gap-6 p-10 text-center">
                             <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl shadow-lg">
                                 🚀
@@ -68,7 +92,7 @@ export default function ScrollTriggerOne() {
                 </section>
 
                 <section className="section">
-                    <div className="will-change-transform wrapper rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
+                    <div className="will-change-transform wrapper scale-5 rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
                         <div className="bg-gradient-to-br from-amber-300 to-amber-400 flex-1 flex flex-col items-center justify-center gap-6 p-10 text-center">
                             <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl shadow-lg">
                                 🎨
@@ -101,7 +125,7 @@ export default function ScrollTriggerOne() {
                 </section>
 
                 <section className="section">
-                    <div className="will-change-transform wrapper rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
+                    <div className="will-change-transform wrapper origin-bottom-left scale-5 rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
                         <div className="bg-gradient-to-br from-red-400 to-red-500 flex-1 flex flex-col items-center justify-center gap-6 p-10 text-center">
                             <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl shadow-lg">
                                 🔒
@@ -134,7 +158,7 @@ export default function ScrollTriggerOne() {
                 </section>
 
                 <section className="section">
-                    <div className="will-change-transform wrapper rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
+                    <div className="will-change-transform wrapper origin-bottom-right scale-5 rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
                         <div className="bg-gradient-to-br from-green-400 to-green-500 flex-1 flex flex-col items-center justify-center gap-6 p-10 text-center">
                             <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl shadow-lg">
                                 🌍
@@ -167,7 +191,7 @@ export default function ScrollTriggerOne() {
                 </section>
 
                 <section className="section">
-                    <div className="will-change-transform wrapper rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
+                    <div className="will-change-transform wrapper origin-bottom-left scale-5 rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
                         <div className="bg-gradient-to-br from-amber-300 to-amber-400 flex-1 flex flex-col items-center justify-center gap-6 p-10 text-center">
                             <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl shadow-lg">
                                 💡
@@ -200,7 +224,7 @@ export default function ScrollTriggerOne() {
                 </section>
 
                 <section className="section">
-                    <div className="will-change-transform wrapper rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
+                    <div className="will-change-transform wrapper origin-bottom-right scale-5 rotate-30 bg-gradient-to-br from-red-400 to-red-500 flex w-svw h-svh">
                         <div className="bg-gradient-to-br from-red-400 to-red-500 flex-1 flex flex-col items-center justify-center gap-6 p-10 text-center">
                             <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl shadow-lg">
                                 ✨
@@ -231,6 +255,7 @@ export default function ScrollTriggerOne() {
                         </div>
                     </div>
                 </section>
+                <div className="h-svh bg-green-950 z-20"></div>
 
             </main>
         </>
