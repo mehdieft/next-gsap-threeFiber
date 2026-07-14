@@ -1,5 +1,6 @@
 "use client"
 import StarSvg from "../components/vividmotion/starSvg"
+import InfiniteLoop from "../components/vividmotion/infiniteLoop"
 export default function VividMotion() {
     return (
         <>
@@ -56,7 +57,9 @@ export default function VividMotion() {
             <div className="w-screen h-[75vh] bg-black relative">
                 <div id="3dscene" className="absolute inset-0 "></div>
                 <h1 className="absolute left-10 top-1/3 text-7xl max-w-4/9 text-white">hello to my world feel my control </h1>
-                <div className="absolute bottom-0 w-full bg-gray-400 p-10"></div>
+                <div className="absolute bottom-0 w-full  p-10">
+                    <InfiniteLoop/>
+                </div>
 
             </div>
         </>
