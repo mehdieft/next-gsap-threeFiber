@@ -6,11 +6,7 @@ export default function Test() {
     return (
         <>
             <div className="bg-green-400 w-svw h-svh">
-                <Canvas gl={async (props) => {
-                    const renderer = new THREE.WebGPURenderer(props);
-                    await renderer.init();
-                    return renderer;
-                }}>
+                <Canvas>
                     <Sphere />
                 </Canvas>
             </div>
