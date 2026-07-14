@@ -1,9 +1,11 @@
 "use client"
 import StarSvg from "../components/vividmotion/starSvg"
 import InfiniteLoop from "../components/vividmotion/infiniteLoop"
+import VideoSection from "../components/vividmotion/videoSection"
+
 export default function VividMotion() {
     return (
-        <>
+        <div className="bg-white overflow-hidden ">
             <header className="fixed top-0 left-0 z-50 w-full ">
                 <div className="mx-auto flex h-20  max-w-7xl text-white  items-center justify-between px-0">
                     {/* Logo */}
@@ -54,31 +56,15 @@ export default function VividMotion() {
                     </nav>
                 </div>
             </header>
-            <div className="w-screen h-[75vh] bg-black relative">
+            <div className="w-screen h-[75vh] bg-black relative ">
                 <div id="3dscene" className="absolute inset-0 "></div>
                 <h1 className="absolute left-10 top-1/3 text-7xl max-w-4/9 text-white">hello to my world feel my control </h1>
-                <div className="absolute bottom-0 w-full  p-10">
-                    <InfiniteLoop/>
+                <div className="absolute bottom-0 w-full  p-10 mb-20">
+                    <InfiniteLoop />
                 </div>
             </div>
-               {/* <section className="relative h-screen w-full overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none w-full " >
-        <iframe
-          src="https://player.vimeo.com/video/1203834352?h=60e4e9c456&background=1&badge=0&autopause=0&player_id=0&app_id=58479&dnt=1"
-          title="Vivid Motion Showreel"
-          className="absolute inset-0 h-full w-full overflow-hidden"
-          allow="autoplay; picture-in-picture"
-          sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"
-          loading="lazy"
-        />
-      </div>
-
-      <div className="relative z-10 flex h-full items-center justify-center">
-        <h1 className="text-6xl font-bold text-white">
-          Vivid Motion
-        </h1>
-      </div>
-    </section> */}
-        </>
+            <VideoSection/>
+      
+        </div>
     )
 }
