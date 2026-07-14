@@ -7,10 +7,17 @@ export default function InfiniteLoop() {
   useGSAP(
     () => {
       if (!imageContainer.current) return;
-      const width = imageContainer.current.offsetWidth;
-      
-      console.log("width----", width);
-   gsap.fromTo(imageContainer.current,{x:0},{x:-width,duration:10,repeat:-1,ease:'none'})
+      const width = imageContainer.current.scrollWidth;
+      const marqueWidth =
+        imageContainer.current.querySelector(".marque").scrollWidth;
+
+      console.log("width----", width,marqueWidth);
+      gsap.to('.marque', {
+        x: -width / 2,
+        duration: 10,
+        repeat: -1,
+        ease: "back.inOut",
+      });
     },
     { scope: imageContainer },
   );
@@ -32,42 +39,39 @@ export default function InfiniteLoop() {
     "/images/vividmotion/tripple.svg",
     "/images/vividmotion/vesync.svg",
     "/images/vividmotion/board.svg",
-   
   ];
-  
+
   return (
     <>
-      <div className="overflow-hidden">
-        <div
-          ref={imageContainer}
-          className=" flex justify-center items-center gap-20  will-change-transform"
-        >
-          {Images.map((item, index) => {
-            return (
-              <Image
-                src={item}
-                className="w-40"
-                alt="key"
-                key={index}
-                width={250}
-                height={50}
-              />
-            );
-          })}
-             {Images.map((item, index) => {
-            return (
-              <Image
-                src={item}
-                className="w-40"
-                alt="key"
-                key={index*0.01}
-                width={250}
-                height={50}
-              />
-            );
-          })}
-        </div>
-      </div>
+    <div className="w-full overflow-hidden">
+  <div ref={imageContainer} className="flex">
+    <div className="flex gap-20 marque ">
+      {Images.map((item, index) => (
+        <Image
+          key={index}
+          src={item}
+          width={100}
+          height={50}
+          className="w-20 shrink-0"
+          alt=""
+        />
+      ))}
+    </div>
+
+    <div className="flex gap-20 marque">
+      {Images.map((item, index) => (
+        <Image
+          key={`copy-${index}`}
+          src={item}
+          width={100}
+          height={50}
+          className="w-20 shrink-0"
+          alt=""
+        />
+      ))}
+    </div>
+  </div>
+</div>
     </>
   );
 }

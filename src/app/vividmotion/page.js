@@ -60,8 +60,25 @@ export default function VividMotion() {
                 <div className="absolute bottom-0 w-full  p-10">
                     <InfiniteLoop/>
                 </div>
-
             </div>
+               {/* <section className="relative h-screen w-full overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none w-full " >
+        <iframe
+          src="https://player.vimeo.com/video/1203834352?h=60e4e9c456&background=1&badge=0&autopause=0&player_id=0&app_id=58479&dnt=1"
+          title="Vivid Motion Showreel"
+          className="absolute inset-0 h-full w-full overflow-hidden"
+          allow="autoplay; picture-in-picture"
+          sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"
+          loading="lazy"
+        />
+      </div>
+
+      <div className="relative z-10 flex h-full items-center justify-center">
+        <h1 className="text-6xl font-bold text-white">
+          Vivid Motion
+        </h1>
+      </div>
+    </section> */}
         </>
     )
 }
