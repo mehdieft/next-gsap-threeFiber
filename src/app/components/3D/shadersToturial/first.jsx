@@ -2,8 +2,8 @@ import { OrbitControls, shaderMaterial } from "@react-three/drei";
 import { extend, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { Color } from "three";
-import vertecShader from './shaders/vertex.glsl'
-import fragmentShader from './shaders/fragment.glsl'
+import vertecShader from './shaders/vertex.js'
+import fragmentShader from './shaders/fragment.js'
 
 
 

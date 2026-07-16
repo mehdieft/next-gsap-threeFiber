@@ -1,3 +1,4 @@
+const vertex=`
 varying vec2 Vuv;
 uniform float uTime;
 void main() {
@@ -9,3 +10,5 @@ void main() {
 
     gl_Position = projectedPosition;
 }
+    `
+    export default vertex
