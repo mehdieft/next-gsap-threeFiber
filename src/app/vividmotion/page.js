@@ -5,7 +5,7 @@ import VideoSection from "../components/vividmotion/videoSection";
 import PinSection from "../components/vividmotion/pinSection";
 import { Canvas } from "@react-three/fiber";
 import { useRef } from "react";
-import { View } from "@react-three/drei";
+import { CameraControls, View } from "@react-three/drei";
 import Sphere from "../components/3D/test/Sphere";
 export default function VividMotion() {
     const containerRef=useRef()
@@ -13,7 +13,9 @@ export default function VividMotion() {
     return (
         <>
             <div ref={containerRef} className="bg-black overflow-hidden ">
-                <Canvas className="canvas" eventSource={containerRef.current}  camera={{ position: [0, 2, 18.5], fov: 30 }}>
+                <Canvas className="canvas" eventSource={containerRef}  camera={{ position: [0, 2, 18.5], fov: 30 }}>
+                
+                    <View.Port/>
                     <View track={firstScene}>
                         <Sphere/>
                     </View>
@@ -78,12 +80,12 @@ export default function VividMotion() {
                         </nav>
                     </div>
                 </header>
-                <div className="w-screen h-[75vh] bg-black relative ">
+                <div className="w-screen h-[95vh] bg-black relative ">
                     <div ref={firstScene} id="3dscene" className="absolute inset-0 "></div>
-                    <h1 className="absolute left-10 top-1/3 text-7xl max-w-4/9 text-white">
+                    <h1 className="absolute left-10 z-2  top-1/3 text-7xl max-w-4/9 text-white">
                         hello to my world feel my control{" "}
                     </h1>
-                    <div className="absolute bottom-0 w-full  p-10 mb-20">
+                    <div className="absolute z-2 bottom-0 w-full  p-10 mb-20">
                         <InfiniteLoop />
                     </div>
                 </div>
