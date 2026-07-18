@@ -6,7 +6,10 @@ import PinSection from "../components/vividmotion/pinSection";
 import { Canvas } from "@react-three/fiber";
 import { useRef } from "react";
 import { CameraControls, View } from "@react-three/drei";
+
 import Sphere from "../components/3D/test/Sphere";
+import MultiRoom from "../components/vividmotion/multiRoom";
+
 export default function VividMotion() {
     const containerRef=useRef()
     const firstScene=useRef()
@@ -14,10 +17,12 @@ export default function VividMotion() {
         <>
             <div ref={containerRef} className="bg-black overflow-hidden ">
                 <Canvas className="canvas" eventSource={containerRef}  camera={{ position: [0, 2, 18.5], fov: 30 }}>
-                
+                  
                     <View.Port/>
                     <View track={firstScene}>
-                        <Sphere/>
+                          <color attach="background" args={["#000000"]} />
+                    <fog attach="fog" args={["#000000", 20, 50]} />
+                    <MultiRoom/>
                     </View>
                 </Canvas>
                 <header className="fixed top-0 left-0 z-50 w-full ">
@@ -82,7 +87,7 @@ export default function VividMotion() {
                 </header>
                 <div className="w-screen h-[95vh] bg-black relative ">
                     <div ref={firstScene} id="3dscene" className="absolute inset-0 "></div>
-                    <h1 className="absolute left-10 z-2  top-1/3 text-7xl max-w-4/9 text-white">
+                    <h1 className="absolute left-10 z-2 select-none top-1/3 text-7xl max-w-4/9 text-white">
                         hello to my world feel my control{" "}
                     </h1>
                     <div className="absolute z-2 bottom-0 w-full  p-10 mb-20">

@@ -43,9 +43,10 @@ export default function InfiniteLoop() {
 
   return (
     <>
+    
     <div className="w-full overflow-hidden">
   <div ref={imageContainer} className="flex">
-    <div className="flex gap-20 marque ">
+    <div className="flex select-none gap-20 marque ">
       {Images.map((item, index) => (
         <Image
           key={index}
@@ -58,14 +59,14 @@ export default function InfiniteLoop() {
       ))}
     </div>
 
-    <div className="flex gap-20 marque">
+    <div className="flex select-none gap-20 marque">
       {Images.map((item, index) => (
         <Image
           key={`copy-${index}`}
           src={item}
           width={100}
           height={50}
-          className="w-20 shrink-0"
+          className="w-20 select-none shrink-0"
           alt=""
         />
       ))}
