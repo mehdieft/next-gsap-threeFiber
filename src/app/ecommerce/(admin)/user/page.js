@@ -1,119 +1,111 @@
-import { createUser } from '../../actions/userActions';
-import Label from '../../components/Label/Label';
-import { FaUser, FaLock, FaUserTag } from 'react-icons/fa';
+import Link from "next/link";
+import { prisma } from "@/app/lib/prisma";
 
-export default function  User() {
+export default async function User({ searchParams }) {
+    const params = await searchParams
+    const page = parseInt(params.page) || 1;
+    const pageSize = 15;
+    
+    const users = await prisma.adminUser.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { createdAt: 'desc' },
+    })
+    
+    const total = await prisma.adminUser.count();
+    const totalPages = Math.ceil(total / pageSize);
+    
     return (
-        <>
-            <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-                <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl shadow-gray-200/50 p-8 md:p-12 transition-all duration-300 hover:shadow-gray-300/50">
-                    {/* Header */}
-                    <div className="text-center mb-10">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-r from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg shadow-blue-500/30">
-                            <FaUser className="text-3xl text-white" />
-                        </div>
-                        <h1 className="text-3xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                            Register User
-                        </h1>
-                        <p className="text-gray-500 mt-2 text-sm">Create a new user account</p>
-                    </div>
+        <div className="p-8">
+            <div className="mb-6">
+                <h1 className="text-3xl font-bold text-gray-800">Users Management</h1>
+                <p className="text-gray-600 mt-2">Total Users: <span className="font-semibold text-blue-600">{total}</span></p>
+            </div>
 
-                    <form action={createUser} className="space-y-8">
-                        {/* Row 1: Username & User Type */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label required={true} className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                    <FaUser className="text-blue-500 text-xs" />
-                                    Username
-                                </Label>
-                                <div className="relative">
-                                    <input 
-                                        type="text" 
-                                        id="username" 
-                                        name="username"
-                                        className="w-full px-4 py-3.5 pl-11 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none hover:border-gray-300"
-                                        placeholder="Enter username" 
-                                        required 
-                                    />
-                                    <FaUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-                                </div>
-                            </div>
+            {/* Table Container */}
+            <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+                <table className="w-full">
+                    <thead className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                        <tr>
+                            <th className="px-6 py-4 text-left text-sm font-semibold">ID</th>
+                            <th className="px-6 py-4 text-left text-sm font-semibold">Username</th>
+                            <th className="px-6 py-4 text-left text-sm font-semibold">User Type</th>
+                            <th className="px-6 py-4 text-left text-sm font-semibold">Created At</th>
+                            <th className="px-6 py-4 text-left text-sm font-semibold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                        {users.length > 0 ? (
+                            users.map((user, index) => (
+                                <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                                    <td className="px-6 py-4 text-sm text-gray-900 font-medium">{user.id}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-700">{user.userName}</td>
+                                    <td className="px-6 py-4 text-sm">
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                            user.userType === 'admin' 
+                                                ? 'bg-red-100 text-red-800' 
+                                                : 'bg-green-100 text-green-800'
+                                        }`}>
+                                            {user.userType}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 text-sm text-gray-600">
+                                        {new Date(user.createdAt).toLocaleDateString()} {new Date(user.createdAt).toLocaleTimeString()}
+                                    </td>
+                                    <td className="px-6 py-4 text-sm">
+                                        <button className="text-blue-600 hover:text-blue-900 font-semibold mr-4">Edit</button>
+                                        <button className="text-red-600 hover:text-red-900 font-semibold">Delete</button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">No users found</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                    <FaUserTag className="text-purple-500 text-xs" />
-                                    User Type
-                                </Label>
-                                <div className="relative">
-                                    <select name="userType" className="w-full px-4 py-3.5 pl-11 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 outline-none appearance-none cursor-pointer hover:border-gray-300">
-                                        <option value="superAdmin">Super Admin</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="user">User</option>
-                                    </select>
-                                    <FaUserTag className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-                                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Row 2: Password & Confirm Password */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label required={true} className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                    <FaLock className="text-green-500 text-xs" />
-                                    Password
-                                </Label>
-                                <div className="relative">
-                                    <input 
-                                        type="password" 
-                                        className="w-full px-4 py-3.5 pl-11 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 outline-none hover:border-gray-300" 
-                                        placeholder="Enter password" 
-                                        name="password" 
-                                        required
-                                    />
-                                    <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label required={true} className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                    <FaLock className="text-orange-500 text-xs" />
-                                    Confirm Password
-                                </Label>
-                                <div className="relative">
-                                    <input 
-                                        type="password" 
-                                        className="w-full px-4 py-3.5 pl-11 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 outline-none hover:border-gray-300" 
-                                        placeholder="Confirm password" 
-                                        name="confirmPassword" 
-                                        required
-                                    />
-                                    <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Submit Button */}
-                        <div className="pt-4">
-                            <button 
-                                type="submit" 
-                                className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 transform hover:scale-[1.01] active:scale-95"
-                            >
-                                Create Account
-                            </button>
-                        </div>
-
-                        {/* Additional Info */}
-                        <div className="text-center text-xs text-gray-400 mt-2">
-                            Password must be at least 8 characters long
-                        </div>
-                    </form>
+            {/* Pagination */}
+            <div className="mt-6 flex items-center justify-between">
+                <div className="text-sm text-gray-600">
+                    Page <span className="font-semibold">{page}</span> of <span className="font-semibold">{totalPages}</span>
+                </div>
+                <div className="flex gap-2">
+                    {page > 1 ? (
+                        <Link 
+                            href={`?page=${page - 1}`}
+                            className="px-4 py-2 rounded-lg font-semibold transition-colors bg-blue-600 text-white hover:bg-blue-700"
+                        >
+                            Previous
+                        </Link>
+                    ) : (
+                        <button
+                            disabled
+                            className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-400 cursor-not-allowed"
+                        >
+                            Previous
+                        </button>
+                    )}
+                    
+                    {page < totalPages ? (
+                        <Link 
+                            href={`?page=${page + 1}`}
+                            className="px-4 py-2 rounded-lg font-semibold transition-colors bg-blue-600 text-white hover:bg-blue-700"
+                        >
+                            Next
+                        </Link>
+                    ) : (
+                        <button
+                            disabled
+                            className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-400 cursor-not-allowed"
+                        >
+                            Next
+                        </button>
+                    )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }

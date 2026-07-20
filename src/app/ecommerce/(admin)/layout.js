@@ -1,5 +1,5 @@
-import AdminNavbar from "../components/navbar";
-import AdminSidebar from "../components/AdminSidebar/AdminSidebar";
+import AdminNavbar from "../../components/eccomerce/navbar";
+import AdminSidebar from "../../components/eccomerce/AdminSidebar/AdminSidebar";
 export default function EcommerceLayout({children}){
     return(
       <>
