@@ -53,7 +53,7 @@ export default async function User({ searchParams }) {
                                         {new Date(user.createdAt).toLocaleDateString()} {new Date(user.createdAt).toLocaleTimeString()}
                                     </td>
                                     <td className="px-6 py-4 text-sm">
-                                        <button className="text-blue-600 hover:text-blue-900 font-semibold mr-4">Edit</button>
+                                        <Link className="text-blue-600 hover:text-blue-900 font-semibold px-3" href={`/ecommerce/user/edit/${user.id}`} >ویرایش</Link>
                                         <button className="text-red-600 hover:text-red-900 font-semibold">Delete</button>
                                     </td>
                                 </tr>

@@ -24,3 +24,8 @@ export const createUser = async (formData) => {
     revalidatePath('/ecommerce/user');
     redirect('/ecommerce/user');
 };
+
+export const updateUserAction=async(id,formData)=>{
+    console.log('______________________>',id);
+
+}
