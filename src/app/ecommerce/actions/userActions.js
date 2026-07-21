@@ -41,15 +41,15 @@ export const updateUserAction = async (id, formData) => {
     const confirmedPass = formData.get('confirmPassword')
 
     //check the username exists?
+    const data={userName,userType}
     const duplicatedUserName = await prisma.adminUser.findFirst({
         where: {
             userName,
             id: { not: id }
         }
     })
-    const data={userName,userType}
-    if (duplicatedUserName) redirect(`/ecommerce/user/edit/${id}/?error= نام کاربری تکراری است`)
-    if (password !== '') {
+    if (duplicatedUserName) redirect(`/ecommerce/user/edit/${id}/?error= ${encodeURIComponent('نام کاربری قبلا استفاده شده')}`)
+    if (password.trim() !== '') {
         if (password.length < 8) redirect(`/ecommerce/user/edit/${id}/?error= ${encodeURIComponent("password must at least 8 charactors")}`)
         if (password !== confirmedPass) {
             redirect(`/ecommerce/user/edit/${id}/?error= password and confirm password not same`)
@@ -64,6 +64,12 @@ export const updateUserAction = async (id, formData) => {
      revalidatePath('/ecommerce/user');
     redirect('/ecommerce/user')
 
-
+}
+export const deleteUser=async(id)=>{
+    await prisma.adminUser.delete({
+        where:{id}
+    })
+    revalidatePath('/ecommerce/user')
+    redirect(`/ecommerce/user?success=${encodeURIComponent('کاربر با موفقیت حذف شد')}`)
 
 }
