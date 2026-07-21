@@ -34,6 +34,7 @@ export const updateUserAction = async (id, formData) => {
     const user = await prisma.adminUser.findUnique({
         where: { id }
     })
+    if(!user)redirect(`/ecommerce/user/edit/${id}/?error=${encodeURIComponent('کاربر پیدا نشد')}`)
     const userName = formData.get('username')
     const userType = formData.get('userType')
     const password = formData.get('password')
