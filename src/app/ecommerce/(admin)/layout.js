@@ -4,10 +4,10 @@ export default function EcommerceLayout({children}){
     return(
       <>
       <AdminNavbar />
-      <div className="flex">
+      <div className="flex pt-23">
 
       <AdminSidebar />
-      <main className="ecommerce p-4 w-full">
+      <main className="ecommerce p-4 w-full md:ml-55">
         {children}
       </main>
       </div>

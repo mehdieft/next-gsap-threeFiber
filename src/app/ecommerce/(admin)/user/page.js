@@ -6,7 +6,7 @@ import Toast from "@/app/components/eccomerce/toast";
 export default async function User({ searchParams }) {
     const params = await searchParams
     const page = parseInt(params.page) || 1;
-    const pageSize = 15;
+    const pageSize = 10;
     const success=params.success
 
     const users = await prisma.adminUser.findMany({
@@ -34,7 +34,7 @@ export default async function User({ searchParams }) {
                 <table className="w-full">
                     <thead className="bg-linear-to-r from-blue-600 to-blue-700 text-white">
                         <tr>
-                            <th className="px-6 py-4 text-left text-sm font-semibold">ID</th>
+                            <th className="px-6 py-4 text-left text-sm font-semibold">#</th>
                             <th className="px-6 py-4 text-left text-sm font-semibold">Username</th>
                             <th className="px-6 py-4 text-left text-sm font-semibold">User Type</th>
                             <th className="px-6 py-4 text-left text-sm font-semibold">Created At</th>
@@ -45,7 +45,7 @@ export default async function User({ searchParams }) {
                         {users.length > 0 ? (
                             users.map((user, index) => (
                                 <tr key={user.id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-6 py-4 text-sm text-gray-900 font-medium">{user.id}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-900 font-medium">{index+1}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{user.userName}</td>
                                     <td className="px-6 py-4 text-sm">
                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.userType === 'admin'
