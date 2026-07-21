@@ -105,13 +105,7 @@ const NAV_SECTIONS = [
         href: "/ecommerce/admin/payments",
         icon: <SVGIcon path={icons.payments} />,
       },
-      {
-        label: "Reviews",
-        href: "/ecommerce/admin/reviews",
-        icon: <SVGIcon path={icons.reviews} />,
-        badge: 3,
-        badgeVariant: "gray",
-      },
+     
     ],
   },
   {
@@ -154,9 +148,9 @@ function NavLink({ item }) {
   return (
     <Link
       href={item.href}
-      className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-[12px] transition-colors w-full ${
+      className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-[12px] font-medium transition-all w-full ${
         isActive
-          ? "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400"
+          ? "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 shadow-sm ring-1 ring-blue-100 dark:ring-blue-900"
           : "text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
       }`}
     >
@@ -189,11 +183,11 @@ function NavLink({ item }) {
 
 export default function AdminSidebar() {
   return (
-    <aside className="w-55 min-w-55 hidden md:flex flex-col h-[92vh] bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800">
+    <aside className="w-55 min-w-55 hidden md:flex flex-col fixed left-0 top-23 h-[calc(100vh-92px)] bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 shadow-sm z-30">
       {/* Top: brand + store picker */}
       <div className="px-3 pt-3.5 pb-2.5 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-6.5 h-6.5 rounded-md bg-blue-600 flex items-center justify-center text-white shrink-0">
+          <div className="w-6.5 h-6.5 rounded-md bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white shrink-0 shadow-md shadow-blue-500/30">
             <SVGIcon path={icons.bolt} size={13} />
           </div>
           <span className="text-[13px] font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">

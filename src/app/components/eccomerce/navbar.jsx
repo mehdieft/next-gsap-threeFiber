@@ -95,9 +95,9 @@ export default function AdminNavbar() {
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <header className="relative max-w-full ">
+    <header className="fixed top-0 inset-x-0 z-40 max-w-full shadow-sm">
       {/* Main navbar */}
-      <nav className="flex items-center gap-2 sm:gap-4 px-3 sm:px-6 h-14 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
+      <nav className="flex items-center gap-2 sm:gap-4 px-3 sm:px-6 h-14 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
         {/* Mobile menu toggle */}
         <button 
           className="lg:hidden w-8 h-8 rounded-md flex items-center justify-center text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
@@ -109,7 +109,7 @@ export default function AdminNavbar() {
 
         {/* Brand */}
         <div className="flex items-center gap-2 min-w-[120px] sm:min-w-[180px] flex-shrink-0">
-          <div className="w-7 h-7 rounded-[7px] bg-blue-600 flex items-center justify-center text-white flex-shrink-0">
+          <div className="w-7 h-7 rounded-[7px] bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white flex-shrink-0 shadow-md shadow-blue-500/30">
             {icons.bolt}
           </div>
           <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 tracking-tight hidden sm:inline">
@@ -131,9 +131,9 @@ export default function AdminNavbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[13px] transition-colors whitespace-nowrap ${
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[13px] font-medium transition-all whitespace-nowrap ${
                   isActive
-                    ? "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400"
+                    ? "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 shadow-sm ring-1 ring-blue-100 dark:ring-blue-900"
                     : "text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
                 }`}
               >
@@ -174,7 +174,7 @@ export default function AdminNavbar() {
           <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-0 sm:mx-1 hidden sm:block" />
 
           {/* Avatar */}
-          <button className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] sm:text-[11px] font-medium flex items-center justify-center border border-blue-200 dark:border-blue-800 hover:opacity-80 transition-opacity flex-shrink-0" aria-label="User menu">
+          <button className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] sm:text-[11px] font-medium flex items-center justify-center border border-blue-200 dark:border-blue-800 hover:opacity-80 hover:shadow-md transition-all flex-shrink-0" aria-label="User menu">
             AK
           </button>
         </div>
@@ -210,7 +210,7 @@ export default function AdminNavbar() {
       )}
 
       {/* Breadcrumb */}
-      <div className="flex items-center gap-1.5 px-3 sm:px-6 h-8 sm:h-9 bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto">
+      <div className="flex items-center gap-1.5 px-3 sm:px-6 h-9 bg-zinc-50/95 dark:bg-zinc-950/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto">
         <span className="text-zinc-400 dark:text-zinc-600 flex-shrink-0">{icons.home}</span>
         {segments.map((seg, i) => {
           const isLast = i === segments.length - 1;
