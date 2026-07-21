@@ -5,6 +5,7 @@ import Toast from '@/app/components/eccomerce/toast';
 
 export default async function CreateUser({searchParams }){
     const error=(await searchParams).error
+    
     return(
         <>
         
