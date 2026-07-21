@@ -108,8 +108,8 @@ export default function AdminNavbar() {
         </button>
 
         {/* Brand */}
-        <div className="flex items-center gap-2 min-w-[120px] sm:min-w-[180px] flex-shrink-0">
-          <div className="w-7 h-7 rounded-[7px] bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white flex-shrink-0 shadow-md shadow-blue-500/30">
+        <div className="flex items-center gap-2 min-w-30 sm:min-w-45 shrink-0">
+          <div className="w-7 h-7 rounded-[7px] bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white shrink-0 shadow-md shadow-blue-500/30">
             {icons.bolt}
           </div>
           <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 tracking-tight hidden sm:inline">
@@ -140,7 +140,7 @@ export default function AdminNavbar() {
                 {icons[link.icon]}
                 {link.label}
                 {link.dot && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 ml-0.5 flex-shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 ml-0.5 shrink-0" />
                 )}
               </Link>
             );
@@ -148,7 +148,7 @@ export default function AdminNavbar() {
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-1 sm:gap-1.5 ml-auto flex-shrink-0">
+        <div className="flex items-center gap-1 sm:gap-1.5 ml-auto shrink-0">
           {/* Search - hide text on small screens */}
           <button className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 text-xs hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors whitespace-nowrap">
             {icons.search}
@@ -174,7 +174,7 @@ export default function AdminNavbar() {
           <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-0 sm:mx-1 hidden sm:block" />
 
           {/* Avatar */}
-          <button className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] sm:text-[11px] font-medium flex items-center justify-center border border-blue-200 dark:border-blue-800 hover:opacity-80 hover:shadow-md transition-all flex-shrink-0" aria-label="User menu">
+          <button className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] sm:text-[11px] font-medium flex items-center justify-center border border-blue-200 dark:border-blue-800 hover:opacity-80 hover:shadow-md transition-all shrink-0" aria-label="User menu">
             AK
           </button>
         </div>
@@ -200,7 +200,7 @@ export default function AdminNavbar() {
                   <span className="w-5 h-5 flex items-center justify-center">{icons[link.icon]}</span>
                   {link.label}
                   {link.dot && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 ml-auto flex-shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 ml-auto shrink-0" />
                   )}
                 </Link>
               );
@@ -211,12 +211,12 @@ export default function AdminNavbar() {
 
       {/* Breadcrumb */}
       <div className="flex items-center gap-1.5 px-3 sm:px-6 h-9 bg-zinc-50/95 dark:bg-zinc-950/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto">
-        <span className="text-zinc-400 dark:text-zinc-600 flex-shrink-0">{icons.home}</span>
+        <span className="text-zinc-400 dark:text-zinc-600 shrink-0">{icons.home}</span>
         {segments.map((seg, i) => {
           const isLast = i === segments.length - 1;
           const label = seg.charAt(0).toUpperCase() + seg.slice(1);
           return (
-            <span key={i} className="flex items-center gap-1.5 flex-shrink-0">
+            <span key={i} className="flex items-center gap-1.5 shrink-0">
               <span className="text-zinc-300 dark:text-zinc-700 text-xs">›</span>
               <span className={`text-xs whitespace-nowrap ${isLast ? "text-zinc-900 dark:text-zinc-100 font-medium" : "text-zinc-400 dark:text-zinc-500"}`}>
                 {label}
