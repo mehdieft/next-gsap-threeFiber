@@ -16,6 +16,10 @@ export const createUser = async (formData) => {
         userType: formData.get('userType'),
         password: hashedPassword
     };
+    const findIfUsernameUsed=await prisma.adminUser.findUnique({
+        where:{userName:data.userName}
+    })
+    if(findIfUsernameUsed)redirect('/ecommerce/user/create?error=username-exists')
     
     await prisma.adminUser.create({
         data
