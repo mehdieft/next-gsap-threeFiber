@@ -32,7 +32,7 @@ export default async function User({ searchParams }) {
             {/* Table Container */}
             <div className="overflow-x-auto bg-white rounded-lg shadow-md">
                 <table className="w-full">
-                    <thead className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                    <thead className="bg-linear-to-r from-blue-600 to-blue-700 text-white">
                         <tr>
                             <th className="px-6 py-4 text-left text-sm font-semibold">ID</th>
                             <th className="px-6 py-4 text-left text-sm font-semibold">Username</th>
