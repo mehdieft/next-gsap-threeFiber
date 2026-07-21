@@ -9,6 +9,8 @@ import { CameraControls, View } from "@react-three/drei";
 
 import Sphere from "../components/3D/test/Sphere";
 import MultiRoom from "../components/vividmotion/multiRoom";
+import Link from "next/link";
+import WhatIdo from "../components/vividmotion/whatIdo";
 
 export default function VividMotion() {
     const containerRef=useRef()
@@ -22,15 +24,15 @@ export default function VividMotion() {
                     <View track={firstScene}>
                           <color attach="background" args={["#000000"]} />
                     <fog attach="fog" args={["#000000", 20, 50]} />
-                    <MultiRoom/>
+                    <Sphere/>
                     </View>
                 </Canvas>
                 <header className="fixed top-0 left-0 z-50 w-full ">
                     <div className="mx-auto flex h-20  max-w-7xl text-white  items-center justify-between px-0">
                         {/* Logo */}
-                        <a href="/" className="text-xl font-bold">
+                        <Link href="/vividmotion" className="text-xl font-bold">
                             LOGO
-                        </a>
+                        </Link>
 
                         {/* Navigation */}
                         <nav>
@@ -98,6 +100,7 @@ export default function VividMotion() {
                <div className="p-20"></div>
             </div>
             <PinSection />
+            <WhatIdo/>
             <div className="h-svh bg-red-950"></div>
         </>
     );

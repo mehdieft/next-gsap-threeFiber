@@ -161,7 +161,7 @@ export default function PinSection() {
       {/* LEFT */}
       <div
         ref={leftRef}
-        className="relative w-1/2 h-screen overflow-hidden bg-zinc-500 text-white"
+        className="relative w-1/2 h-screen overflow-hidden bg-black text-white"
       >
         {data.map((item, index) => (
           <div
