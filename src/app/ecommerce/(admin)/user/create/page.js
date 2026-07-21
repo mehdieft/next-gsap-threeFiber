@@ -1,6 +1,7 @@
 import { createUser } from '@/app/ecommerce/actions/userActions';
 import Label from '../../../../components/eccomerce/Label/Label';
 import { FaUser, FaLock, FaUserTag } from 'react-icons/fa';
+import Toast from '@/app/components/eccomerce/toast';
 
 export default async function CreateUser({searchParams }){
     const error=(await searchParams).error
@@ -10,7 +11,7 @@ export default async function CreateUser({searchParams }){
            <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
                 <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl shadow-gray-200/50 p-8 md:p-12 transition-all duration-300 hover:shadow-gray-300/50">
                 {error && (
-                    <h1>fuck you</h1>
+                    <Toast message={error} type='error' />
                 )}
                     {/* Header */}
                     <div className="text-center mb-10">
