@@ -29,8 +29,8 @@ export default function FirstShaders() {
     <>
     <OrbitControls/>
     <mesh>
-      <planeGeometry args={[1,1,30,30]} />
-      <myShaderMaterial ref={materialRef} />
+      <planeGeometry args={[4,4,30,30]} />
+      <myShaderMaterial ref={materialRef} side={2} />
     </mesh>
     </>
   );

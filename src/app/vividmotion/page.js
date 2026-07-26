@@ -96,7 +96,7 @@ export default function VividMotion() {
                         <InfiniteLoop />
                     </div>
                 </div>
-                <VideoSection />
+                {/* <VideoSection /> */}
                <div className="p-20"></div>
             </div>
             <PinSection />
