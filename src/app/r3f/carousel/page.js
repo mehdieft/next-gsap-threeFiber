@@ -3,7 +3,9 @@
 import { Canvas } from "@react-three/fiber";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
+import ImageSlider from "@/app/components/3D/carousel/imageSlider";
 import gsap from "gsap";
+import Image from "next/image";
 
 export default function Home() {
   const container = useRef();
@@ -36,8 +38,11 @@ export default function Home() {
   return (
     <main ref={container} className="bg-black">
       <section className="w-full h-screen relative">
-        <img
+        <Image
           ref={logo}
+          alt="kir"
+          width={25}
+          height={25}
           src="/images/logo.png"
           className="absolute top-4 left-4 w-20 h-10 z-10 brightness-0 invert object-contain"
         />
@@ -58,13 +63,11 @@ export default function Home() {
             />
           </svg>
         </div>
+      
 
         <Canvas camera={{ position: [0, 0, 5], fov: 30 }}>
           <color attach="background" args={["#201d24"]} />
-          <mesh>
-            <boxGeometry args={[1, 1, 1]} />
-            <meshBasicMaterial color="white" />
-          </mesh>
+         <ImageSlider/>
         </Canvas>
       </section>
 
