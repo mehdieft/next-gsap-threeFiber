@@ -7,6 +7,7 @@ export default function Slider() {
     const [disableButton,setDisableButton]=useState(false)
   const shortRef = useRef([]);
   const container = useRef();
+ 
 
   const descRef = useRef([]);
   const titleRef = useRef([]);
@@ -63,12 +64,12 @@ export default function Slider() {
           autoAlpha: 1,
           yPercent: 0,
           duration: 0.8,
-          ease: "power2.out",
+          ease: "power4.in",
         },
         0,
       );
       const tl2=gsap.timeline()
-       tl2.to(prevDes,{xPercent:-100,duration:0.4,ease:'bounce.in'})
+       tl2.to(prevDes,{xPercent:-100,duration:0.4,ease:'power4.in'})
       tl2.to(prevDes,{autoAlpha:0})
       tl2.fromTo(curentDesc,{autoAlpha:1,xPercent:-100,skewX:20},{autoAlpha:1,xPercent:0,duration:0.8,skewX:0})
      
