@@ -147,6 +147,7 @@ export default function ImageSlider({
         uMousePosition={[0,0]}
         uPushForce={0}
         
+        
       />
     </mesh>
   );

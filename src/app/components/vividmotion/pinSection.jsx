@@ -4,8 +4,9 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import Image from "next/image";
 import { SplitText } from "gsap/SplitText";
+import Image from "next/image";
+import ShaderImage from "./ShaderImage";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -20,18 +21,21 @@ export default function PinSection() {
       title: "Featured Work",
       desc: "A collection of immersive experiences.",
       image: "/images/vividmotion/imageOne.png",
+      shaderImage:'/images/vividmotion/shaders/shaderImage.avif',
       bg: "#111111",
     },
     {
       title: "Creative Development",
       desc: "Modern web experiences.",
       image: "/images/vividmotion/imageTwo.png",
+      shaderImage:'/images/vividmotion/shaders/shaderImageTwo.avif',
       bg: "#1f2937",
     },
     {
       title: "Motion Design",
       desc: "Every interaction tells a story.",
       image: "/images/vividmotion/imageThree.png",
+       shaderImage:'/images/vividmotion/shaders/shaderImageThree.avif',
       bg: "#f5f5f5",
     },
   ];
@@ -64,7 +68,7 @@ export default function PinSection() {
       endTrigger: rightRef.current,
       end: "bottom bottom",
       pin: leftRef.current,
-      markers: true,
+      markers: false,
     });
 
     // function to switch content
@@ -157,7 +161,7 @@ export default function PinSection() {
   });
 
   return (
-    <section ref={containerRef} className="flex">
+    <section ref={containerRef} className="flex w-full overflow-x-clip">
       {/* LEFT */}
       <div
         ref={leftRef}
@@ -175,13 +179,13 @@ export default function PinSection() {
 
               <p className="text-xl panel-desc text-zinc-300">{item.desc}</p>
             </div>
-            <div className="absolute bottom-5 left-5 panel-imgae">
+            <div className="absolute bottom-5 left-5 panel-image">
               <Image
-                width={20}
-                height={20}
+                width={96}
+                height={96}
                 alt={item.title}
                 src={item.image}
-                className="w-20 bottom-9  rounded-2xl shadow-2xl"
+                className="w-15 rounded-2xl shadow-2xl"
               />
             </div>
           </div>
@@ -189,13 +193,19 @@ export default function PinSection() {
       </div>
 
       {/* RIGHT */}
-      <div ref={rightRef} className="w-1/2">
+      <div ref={rightRef} className="w-1/2 overflow-x-clip">
         {data.map((item, index) => (
           <section
             key={index}
-            className="right-panel h-screen flex items-center justify-center text-6xl font-bold border-b"
+            className="right-panel relative h-screen flex items-center justify-center text-6xl font-bold border-b overflow-hidden"
           >
-            Section {index + 1}
+            <ShaderImage
+              src={item.shaderImage}
+              className="absolute inset-0 w-full h-full"
+            />
+            {/* <div className="relative z-10 px-6 py-4 rounded-xl bg-black/30 text-white backdrop-blur-sm">
+              Section {index + 1}
+            </div> */}
           </section>
         ))}
       </div>
