@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import ImageSlider from "@/app/components/3D/carousel/imageSlider";
 import gsap from "gsap";
 import Image from "next/image";
+import Slider from "./slider";
 
 export default function Home() {
   const container = useRef();
@@ -64,8 +65,9 @@ export default function Home() {
           </svg>
         </div>
       
+      <Slider/>
 
-        <Canvas camera={{ position: [0, 0, 5], fov: 30 }}>
+        <Canvas style={{width:'100%',height:'100%',position:'absolute'}} className="top-0 left-0" camera={{ position: [0, 0, 5], fov: 30 }}>
           <color attach="background" args={["#201d24"]} />
          <ImageSlider/>
         </Canvas>
