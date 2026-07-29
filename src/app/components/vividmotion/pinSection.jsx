@@ -158,6 +158,7 @@ export default function PinSection() {
         onEnterBack: () => showPanel(index, -1),
       });
     });
+    
   });
 
   return (
@@ -197,7 +198,7 @@ export default function PinSection() {
         {data.map((item, index) => (
           <section
             key={index}
-            className="right-panel  relative h-screen flex items-center justify-center text-6xl font-bold border-b overflow-hidden"
+            className="right-panel will-change-opacity opacity-80  relative h-screen flex items-center justify-center text-6xl font-bold border-b overflow-hidden"
           >
             <ShaderImage
               src={item.shaderImage}

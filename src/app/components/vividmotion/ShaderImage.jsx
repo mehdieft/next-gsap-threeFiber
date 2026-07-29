@@ -17,7 +17,7 @@ const VividImageMaterial = shaderMaterial(
     varying vec2 vUv;
     uniform vec2 uMOUSE;
     uniform float uPUSHFORCE;
-    varying float influence;
+    varying float vinfluence;
     float random(vec2 st) {
     return fract(sin(dot(st, vec2(12.9898,78.233))) * 43758.5453123);
 }
@@ -46,7 +46,7 @@ float noise(vec2 st) {
       vec2 centeredUv = (vUv - 0.5) * 2.0;
       float dist = distance(centeredUv, uMOUSE);
       float influence = 1.0 - smoothstep(0.0, 0.35, dist);
-
+      vinfluence=influence;
       vec3 customPosition = position;
       customPosition.z += influence *noise(position.xy*5.0)* uPUSHFORCE ;
 
@@ -62,7 +62,7 @@ float noise(vec2 st) {
     uniform float uHover;
     uniform vec2 uMOUSE;
     uniform float uPUSHFORCE;
-    varying float influence;
+    varying float vinfluence;
 
     void main() {
       vec2 uv = vUv;
@@ -70,10 +70,14 @@ float noise(vec2 st) {
       vec2 mouseUv = uMOUSE * 0.5 + 0.5;
       vec2 toMouse = uv - mouseUv;
       float dist = length(toMouse);
-      float localMask = 1.0 - smoothstep(0.0, 0.35, dist);
+      float localMask =
+    pow(
+        1.0 - smoothstep(0.0, 0.45, dist),
+        2.0
+    );
 
       vec2 dir = normalize(toMouse);
-      float strength = localMask * (0.012 + uHover * 0.015) * uPUSHFORCE *influence;
+      float strength = localMask * (0.012 + uHover * 0.015) * uPUSHFORCE *vinfluence;
       vec2 warpedUv = clamp(uv + dir * strength, 0.001, 0.999);
 
       vec4 base = texture2D(uTexture, warpedUv);
@@ -82,6 +86,7 @@ float noise(vec2 st) {
       float r = texture2D(uTexture, warpedUv + vec2(offset, -0.06*uHover)).r;
       float g = base.g;
       float b = texture2D(uTexture, warpedUv - vec2(offset, +0.03*uHover)).b;
+      
      
 
       gl_FragColor = vec4(r,g,b,1.0);
