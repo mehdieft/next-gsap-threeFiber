@@ -6,6 +6,7 @@ import PinSection from "../components/vividmotion/pinSection";
 import { Canvas } from "@react-three/fiber";
 import { useRef } from "react";
 import { CameraControls, View } from "@react-three/drei";
+import GridText from "../components/vividmotion/gridText";
 
 import Sphere from "../components/3D/test/Sphere";
 import MultiRoom from "../components/vividmotion/multiRoom";
@@ -101,6 +102,7 @@ export default function VividMotion() {
             </div>
             <PinSection />
             <WhatIdo/>
+            <GridText/>
             <div className="h-svh bg-red-950"></div>
         </>
     );
