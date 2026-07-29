@@ -1,29 +1,37 @@
 import React from "react";
 import HoveredText from "./hoveredText";
 export default function GridText() {
-  const items = [
-    {
-      title: "strategy",
-      subtitles: [
-        "brand strategy",
-        "creative strategy",
-        "content strategy",
-        "user research",
-        "ai strategy",
-      ],
-    },
-    {
-         title: "Creative & Design",
-      subtitles: [
-        "brand strategy",
-        "creative strategy",
-        "content strategy",
-        "user research",
-        "ai strategy",
-      ],
-
-    }
-  ];
+const items = [
+  {
+    title: "توسعه فرانت‌اند",
+    subtitles: [
+      "ری‌اکت (React)",
+      "نکست‌جی‌اس (Next.js)",
+      "تیلویند CSS",
+      "طراحی واکنش‌گرا",
+    ],
+  },
+  {
+    title: "انیمیشن",
+    subtitles: [
+      "GSAP",
+      "اسکرول تریگر (ScrollTrigger)",
+      "اسپلیت تکست (SplitText)",
+      "انیمیشن تایم‌لاین",
+      "ترنزیشن صفحات",
+    ],
+  },
+  {
+    title: "گرافیک و سه‌بعدی",
+    subtitles: [
+      "Three.js",
+      "React Three Fiber",
+      "شیدرهای GLSL",
+      "متریال‌های سفارشی",
+      "افکت‌های WebGL",
+    ],
+  },
+];
   return (
     <>
       <div className="grid grid-cols-1 gap-px bg-gray-500">

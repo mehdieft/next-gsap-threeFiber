@@ -75,7 +75,7 @@ export default function HoveredText({ text }) {
         >
           {Array.from({ length: 12 }).map((_, i) => (
             <span key={i} className="mx-10 flex-shrink-0">
-              {text}
+              &{text}&
             </span>
           ))}
         </div>
