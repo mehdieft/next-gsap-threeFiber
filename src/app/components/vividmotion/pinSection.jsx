@@ -161,7 +161,7 @@ export default function PinSection() {
   });
 
   return (
-    <section ref={containerRef} className="flex w-full overflow-x-clip">
+    <section ref={containerRef} className="flex w-full px-4 bg-black overflow-x-clip">
       {/* LEFT */}
       <div
         ref={leftRef}
@@ -197,7 +197,7 @@ export default function PinSection() {
         {data.map((item, index) => (
           <section
             key={index}
-            className="right-panel relative h-screen flex items-center justify-center text-6xl font-bold border-b overflow-hidden"
+            className="right-panel  relative h-screen flex items-center justify-center text-6xl font-bold border-b overflow-hidden"
           >
             <ShaderImage
               src={item.shaderImage}
