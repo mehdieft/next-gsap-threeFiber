@@ -83,9 +83,9 @@ float noise(vec2 st) {
       vec4 base = texture2D(uTexture, warpedUv);
       float offset = (0.001 + uHover * 0.0025) * localMask;
 
-      float r = texture2D(uTexture, warpedUv + vec2(offset, -0.06*uHover)).r;
+      float r = texture2D(uTexture, warpedUv + vec2(offset, -0.02*uHover)).r;
       float g = base.g;
-      float b = texture2D(uTexture, warpedUv - vec2(offset, +0.03*uHover)).b;
+      float b = texture2D(uTexture, warpedUv - vec2(offset, +0.02*uHover)).b;
       
      
 

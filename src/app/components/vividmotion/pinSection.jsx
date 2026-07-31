@@ -17,35 +17,35 @@ export default function PinSection() {
   const rightRef = useRef(null);
 
   const data = [
-    {
-      title: "Featured Work",
-      desc: "A collection of immersive experiences.",
-      image: "/images/vividmotion/imageOne.png",
-      shaderImage:'/images/vividmotion/shaders/shaderImage.avif',
-      bg: "#111111",
-    },
-    {
-      title: "Creative Development",
-      desc: "Modern web experiences.",
-      image: "/images/vividmotion/imageTwo.png",
-      shaderImage:'/images/vividmotion/shaders/shaderImageTwo.avif',
-      bg: "#1f2937",
-    },
-    {
-      title: "Motion Design",
-      desc: "Every interaction tells a story.",
-      image: "/images/vividmotion/imageThree.png",
-       shaderImage:'/images/vividmotion/shaders/shaderImageThree.avif',
-      bg: "#f5f5f5",
-    },
-  ];
+  {
+    title: "نمونه‌کارهای منتخب",
+    desc: "مجموعه‌ای از تجربه‌های دیجیتال خلاقانه و جذاب.",
+    image: "/images/vividmotion/imageOne.png",
+    shaderImage: "/images/vividmotion/shaders/shaderImage.avif",
+    bg: "#111111",
+  },
+  {
+    title: "توسعه خلاقانه",
+    desc: "طراحی و توسعه تجربه‌های مدرن وب.",
+    image: "/images/vividmotion/imageTwo.png",
+    shaderImage: "/images/vividmotion/shaders/shaderImageTwo.avif",
+    bg: "#1f2937",
+  },
+  {
+    title: "طراحی موشن",
+    desc: "هر تعامل، داستانی برای روایت دارد.",
+    image: "/images/vividmotion/imageThree.png",
+    shaderImage: "/images/vividmotion/shaders/shaderImageThree.avif",
+    bg: "#f5f5f5",
+  },
+];
   useGSAP(() => {
     const leftPanels = gsap.utils.toArray(".left-panel");
 
     const rightPanels = gsap.utils.toArray(".right-panel");
     const splits = leftPanels.map((panel) =>
       SplitText.create(panel.querySelector(".panel-title"), {
-        type: "chars",
+        type: "words",
       }),
     );
     console.log("this is splits", splits);
@@ -90,12 +90,12 @@ export default function PinSection() {
   });
 
   // Stop previous tweens
-  gsap.killTweensOf(splits[index].chars);
+  gsap.killTweensOf(splits[index].words);
   gsap.killTweensOf(desc);
   gsap.killTweensOf(image);
 
   // Reset states
-  gsap.set(splits[index].chars, {
+  gsap.set(splits[index].words, {
     opacity: 0,
     yPercent: direction > 0 ? 120 : -120,
     rotate: direction > 0 ? 8 : -8,
@@ -119,12 +119,12 @@ export default function PinSection() {
     },
   });
 
-  tl.to(splits[index].chars, {
+  tl.to(splits[index].words, {
     opacity: 1,
     yPercent: 0,
     rotate: 0,
     duration: 0.8,
-    stagger: 0.03,
+    stagger: 0.83,
   })
     .to(
       desc,
@@ -174,7 +174,7 @@ export default function PinSection() {
             className="left-panel absolute inset-0 flex items-center justify-center gap-10 p-20 will-change-transform will-change-opacity"
           >
             <div className="">
-              <h2 className=" panel-title text-4xl font-bold mb-6">
+              <h2 dir="rtl" className=" panel-title text-4xl font-bold mb-6">
                 {item.title}
               </h2>
 

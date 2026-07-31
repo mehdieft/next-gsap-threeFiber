@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import React from "react";
 import HoveredText from "./hoveredText";
+import { useGSAP } from "@gsap/react";
 
 
 export default function GridText() {
@@ -57,67 +58,101 @@ export default function GridText() {
       ],
     },
   ];
+  useGSAP(()=>{
 
-  function spawnImage(x, y) {
-    const img = document.createElement("img");
+  },{scope:containerRef})
 
-    img.src = images[currentImage.current];
-    currentImage.current =
-      (currentImage.current + 1) % images.length;
+  function spawnImage(x, y, angle, speed) {
+  const img = document.createElement("img");
 
-    img.className =
-      "pointer-events-none absolute w-30 rounded-xl";
+  img.src = images[currentImage.current];
+  currentImage.current =
+    (currentImage.current + 1) % images.length;
 
-    img.style.left = `${x}px`;
-    img.style.top = `${y}px`;
-    img.style.transform = "translate(-50%,-50%) scale(.5)";
+  img.className =
+    "pointer-events-none absolute w-30 rounded-xl select-none";
 
-    trailRef.current.appendChild(img);
+  img.style.left = `${x}px`;
+  img.style.top = `${y}px`;
+  img.style.transform = `translate(-50%, -50%) rotate(${angle}deg) scale(.4)`;
 
-    gsap.fromTo(
-      img,
-      {
-        scale: 0.5,
-        opacity: 0,
-        
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        transformOrigin:'center center',
-        duration: 0.85,
-        ease: "power2.out",
-      }
-    );
+  trailRef.current.appendChild(img);
 
-    gsap.to(img, {
+  const randomRotation = gsap.utils.random(-12, 12);
+  const finalScale = gsap.utils.clamp(
+    0.85,
+    1.3,
+    0.8 + speed * 0.004
+  );
+
+  const tl = gsap.timeline({
+    onComplete: () => img.remove(),
+  });
+
+  tl.fromTo(
+    img,
+    {
       opacity: 0,
-      scale: 1.3,
-      duration: 0.8,
-      transformOrigin:'center center',
-      delay: 1.8,
-      ease: "power2.out",
-      onComplete: () => img.remove(),
-    });
+      scale: 0.4,
+      rotation: angle + randomRotation,
+      y: 15,
+    },
+    {
+      opacity: 1,
+      scale: finalScale,
+      rotation: angle,
+      y: 0,
+      duration: 0.45,
+      ease: "power3.out",
+    }
+  ).to(img, {
+    opacity: 0,
+    scale: finalScale * 1.15,
+    duration: 0.9,
+    ease: "power2.inOut",
+    delay: 0.45,
+  });
+}
+
+function handleMove(e) {
+  const rect = containerRef.current.getBoundingClientRect();
+
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const dx = x - lastPoint.current.x;
+  const dy = y - lastPoint.current.y;
+
+  const distance = Math.hypot(dx, dy);
+
+  // First movement
+  if (
+    lastPoint.current.x === 0 &&
+    lastPoint.current.y === 0
+  ) {
+    lastPoint.current = { x, y };
+    return;
   }
 
-  function handleMove(e) {
-    const rect = containerRef.current.getBoundingClientRect();
+  // Spawn every 35px
+  const step = 235;
 
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  if (distance >= step) {
+    const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+    const speed = distance;
 
-    const dx = x - lastPoint.current.x;
-    const dy = y - lastPoint.current.y;
+    for (let d = step; d <= distance; d += step) {
+      const t = d / distance;
 
-    const distance = Math.hypot(dx, dy);
+      const ix = lastPoint.current.x + dx * t;
+      const iy = lastPoint.current.y + dy * t;
 
-    if (distance < 120) return;
-
-    spawnImage(x, y);
+      spawnImage(ix, iy, angle, speed);
+    }
 
     lastPoint.current = { x, y };
   }
+}
 
   return (
     <div
@@ -133,12 +168,12 @@ export default function GridText() {
       <div className="grid grid-cols-1 gap-px bg-gray-500 relative z-10">
         {items.map((item, index) => (
           <React.Fragment key={index}>
-            <div className="flex px-4 py-6 bg-black text-white items-center">
+            <div className="flex px-4 py-6 bg-black text-white items-center grid-parent">
               <h1 className="w-1/3 text-6xl opacity-80">
                 0{index + 1}
               </h1>
 
-              <h1 className="text-8xl">
+              <h1 className="text-6xl  ">
                 {item.title}
               </h1>
             </div>

@@ -16,17 +16,10 @@ export default function HoveredText({ text }) {
 
   useGSAP(
     () => {
-      // Initial state
-      gsap.set(overlayRef.current, {
-        // yPercent: 100,
-        autoAlpha:0
-      });
-
       tl.current = gsap.timeline({ paused: true });
 
       tl.current.to(overlayRef.current, {
-        // yPercent: 0,
-        autoAlpha:1,
+        autoAlpha: 1,
         duration: 0.15,
         ease: "power3.out",
       });
@@ -38,8 +31,13 @@ export default function HoveredText({ text }) {
         repeat: -1,
         paused: true,
       });
+
+      return () => {
+        tl.current?.kill();
+        marqueeTween.current?.kill();
+      };
     },
-    { scope: rowRef }
+    { scope: rowRef },
   );
 
   const handleEnter = () => {
@@ -67,7 +65,7 @@ export default function HoveredText({ text }) {
       {/* Hover Layer */}
       <div
         ref={overlayRef}
-        className="absolute inset-0 flex items-center overflow-hidden bg-white text-black"
+        className="absolute inset-0 flex items-center overflow-hidden bg-white text-black opacity-0 invisible pointer-events-none will-change-opacity"
       >
         <div
           ref={marqueeRef}
