@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 const navLinks = [
   { label: "Overview", href: "/ecommerce/admin", icon: "grid" },
   { label: "Orders", href: "/ecommerce/admin/orders", icon: "shopping-bag", dot: true },
-  { label: "Products", href: "/ecommerce/admin/products", icon: "package" },
+  { label: "Products", href: "/ecommerce/product", icon: "package" },
   { label: "Customers", href: "/ecommerce/admin/customers", icon: "users" },
   { label: "Analytics", href: "/ecommerce/admin/analytics", icon: "bar-chart-2" },
   { label: "Discounts", href: "/ecommerce/admin/discounts", icon: "tag" },

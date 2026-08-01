@@ -76,7 +76,7 @@ const NAV_SECTIONS = [
       },
       {
         label: "Products",
-        href: "/ecommerce/admin/products",
+        href: "/ecommerce/product",
         icon: <SVGIcon path={icons.products} />,
       },
       {
