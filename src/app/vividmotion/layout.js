@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 const samim = localFont({
   src: [
     {
-      path: "../../fonts/vividmotion/samim.woff",
+      path: "../../fonts/vividmotion/Samim.woff",
       weight: "300",
       style: "normal",
     },
