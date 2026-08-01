@@ -1,75 +1,139 @@
 // app/actions/userActions.js
-'use server';  // ← Move this to the VERY TOP of the file
+'use server';
 
 import { revalidatePath } from 'next/cache';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
 import { prisma } from '../../lib/prisma';
-import { redirect } from 'next/navigation';  // ← FIXED: Correct import path
+import { redirect } from 'next/navigation';
+
+const MIN_PASSWORD_LENGTH = 8;
+const PASSWORD_POLICY_MESSAGE =
+    `Password must be at least ${MIN_PASSWORD_LENGTH} characters and include uppercase, lowercase, number, and special character.`;
+
+function validateStrongPassword(password) {
+    const checks = [
+        password.length >= MIN_PASSWORD_LENGTH,
+        /[a-z]/.test(password),
+        /[A-Z]/.test(password),
+        /\d/.test(password),
+        /[^A-Za-z0-9]/.test(password),
+        password.length <= 72,
+    ];
+
+    return checks.every(Boolean);
+}
+
+function hashPassword(plainPassword) {
+    const saltRounds = 10;
+    return bcrypt.hashSync(plainPassword, saltRounds);
+}
 
 export const createUser = async (formData) => {
-    "use server"
-    const salt = bcrypt.genSaltSync(5)
-    const hashedPassword = bcrypt.hashSync(formData.get('password'), salt)
+    const userName = String(formData.get('username') || '').trim();
+    const userType = String(formData.get('userType') || 'user').trim();
+    const password = String(formData.get('password') || '');
+    const confirmPassword = String(formData.get('confirmPassword') || '');
 
-    const data = {
-        userName: formData.get('username'),  // ← Also fix: 'userName' → 'username'
-        userType: formData.get('userType'),
-        password: hashedPassword
-    };
+    if (!userName || userName.length < 3) {
+        redirect(`/ecommerce/user/create?error=${encodeURIComponent('Username must be at least 3 characters.')}`);
+    }
+
+    if (!password || !confirmPassword) {
+        redirect(`/ecommerce/user/create?error=${encodeURIComponent('Password and repeat password are required.')}`);
+    }
+
+    if (password !== confirmPassword) {
+        redirect(`/ecommerce/user/create?error=${encodeURIComponent('Password and repeat password do not match.')}`);
+    }
+
+    if (!validateStrongPassword(password)) {
+        redirect(`/ecommerce/user/create?error=${encodeURIComponent(PASSWORD_POLICY_MESSAGE)}`);
+    }
+
     const findIfUsernameUsed = await prisma.adminUser.findUnique({
-        where: { userName: data.userName }
-    })
-    if (findIfUsernameUsed) redirect('/ecommerce/user/create?error=username-exists')
+        where: { userName },
+    });
+
+    if (findIfUsernameUsed) {
+        redirect(`/ecommerce/user/create?error=${encodeURIComponent('Username already exists.')}`);
+    }
 
     await prisma.adminUser.create({
-        data
+        data: {
+            userName,
+            userType,
+            password: hashPassword(password),
+        },
     });
 
     revalidatePath('/ecommerce/user');
-    redirect('/ecommerce/user');
+    redirect('/ecommerce/user?success=' + encodeURIComponent('User created successfully'));
 };
 
 export const updateUserAction = async (id, formData) => {
-    console.log('______>', formData);
+    const userId = Number(id);
     const user = await prisma.adminUser.findUnique({
-        where: { id }
-    })
-    if(!user)redirect(`/ecommerce/user/edit/${id}/?error=${encodeURIComponent('کاربر پیدا نشد')}`)
-    const userName = formData.get('username')
-    const userType = formData.get('userType')
-    const password = formData.get('password')
-    const confirmedPass = formData.get('confirmPassword')
+        where: { id: userId },
+    });
 
-    //check the username exists?
-    const data={userName,userType}
+    if (!user) {
+        redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('User not found.')}`);
+    }
+
+    const userName = String(formData.get('username') || '').trim();
+    const userType = String(formData.get('userType') || 'user').trim();
+    const password = String(formData.get('password') || '');
+    const confirmPassword = String(formData.get('confirmPassword') || '');
+    const wantsPasswordUpdate = password.trim() !== '' || confirmPassword.trim() !== '';
+
+    if (!userName || userName.length < 3) {
+        redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('Username must be at least 3 characters.')}`);
+    }
+
     const duplicatedUserName = await prisma.adminUser.findFirst({
         where: {
             userName,
-            id: { not: id }
-        }
-    })
-    if (duplicatedUserName) redirect(`/ecommerce/user/edit/${id}/?error= ${encodeURIComponent('نام کاربری قبلا استفاده شده')}`)
-    if (password.trim() !== '') {
-        if (password.length < 8) redirect(`/ecommerce/user/edit/${id}/?error= ${encodeURIComponent("password must at least 8 charactors")}`)
-        if (password !== confirmedPass) {
-            redirect(`/ecommerce/user/edit/${id}/?error= password and confirm password not same`)
-        }
-        const salt = bcrypt.genSaltSync(5)
-        data.password = bcrypt.hashSync(password, salt)
+            id: { not: userId },
+        },
+    });
+
+    if (duplicatedUserName) {
+        redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('Username already exists.')}`);
     }
+
+    const data = { userName, userType };
+
+    if (wantsPasswordUpdate) {
+        if (!password || !confirmPassword) {
+            redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('Enter both password fields to update password.')}`);
+        }
+
+        if (password !== confirmPassword) {
+            redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('Password and repeat password do not match.')}`);
+        }
+
+        if (!validateStrongPassword(password)) {
+            redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent(PASSWORD_POLICY_MESSAGE)}`);
+        }
+
+        data.password = hashPassword(password);
+    }
+
     await prisma.adminUser.update({
-        where:{id},
-        data
-    })
-     revalidatePath('/ecommerce/user');
-    redirect('/ecommerce/user')
+        where: { id: userId },
+        data,
+    });
 
-}
-export const deleteUser=async(id)=>{
+    revalidatePath('/ecommerce/user');
+    redirect('/ecommerce/user?success=' + encodeURIComponent('User updated successfully'));
+
+};
+
+export const deleteUser = async (id) => {
     await prisma.adminUser.delete({
-        where:{id}
-    })
-    revalidatePath('/ecommerce/user')
-    redirect(`/ecommerce/user?success=${encodeURIComponent('کاربر با موفقیت حذف شد')}`)
+        where: { id },
+    });
 
-}
+    revalidatePath('/ecommerce/user');
+    redirect(`/ecommerce/user?success=${encodeURIComponent('User deleted successfully')}`);
+};
