@@ -1,6 +1,6 @@
 require("dotenv").config({ path: ".env.local" });
 
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("../src/generated/prisma");
 const { PrismaBetterSqlite3 } = require("@prisma/adapter-better-sqlite3");
 const bcrypt = require("bcrypt");
 
