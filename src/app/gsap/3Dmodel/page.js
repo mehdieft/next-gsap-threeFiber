@@ -97,8 +97,8 @@ export default function ThreeDmodel() {
 
         })
         const scaleX = progress < 0.45 ? 0 : progress > 0.65 ? 100 : 100 * ((progress - 0.45) / 0.2);
-        gsap.to('.tooltip', {
-          scaleX: `%${scaleX}`, duration: 1, ease: 'power3.out', stagger: 0.025
+        gsap.set('.tooltip', {
+          scaleX: `${scaleX}%`, duration: 1, ease: 'power3.out', stagger: 0.025
 
         })
         tooltipSelector.forEach(({ trigger, element }) => {
