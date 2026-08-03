@@ -11,6 +11,7 @@ gsap.registerPlugin( ScrollTrigger, SplitText);
 
 export default function ThreeDmodel() {
   const containerRef = useRef()
+  const modelRef = useRef()
   useGSAP(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -33,59 +34,76 @@ export default function ThreeDmodel() {
   });
   useGSAP(() => {
     if (!containerRef.current) return;
-    const header1Splites = new SplitText(".header-1 h1", { type: "chars", charsClass: "char" });
-    const titleSplites = new SplitText(".tooltip .title h1", { type: "lines", linesClass: "line" });
-    const description = new SplitText(".tooltip .description p", { type: "lines", linesClass: "line" });
+    const header1Splites = new SplitText(".header-1 h1", { type: "chars", charsClass: "char",tag:'span' });
+    const titleSplites = new SplitText(".tooltip .title h1", { type: "lines", linesClass: "line",tag:'span' });
+    const description = new SplitText(".tooltip .description p", { type: "lines", linesClass: "line",tag:'span' });
+    console.log('headerOne',header1Splites)
 
 
-   const data= [...description.lines, ...titleSplites.lines].forEach((line) => {
-      line.innerHTML = `<span>${line.innerHTML}</span>`;
+ 
+    gsap.set(header1Splites.chars, { display: "inline-block", yPercent: 110, autoAlpha: 0 })
+    gsap.set([...titleSplites.lines, ...description.lines], { display: "block", yPercent: 100 })
 
-    })
-    console.log('data',data)
       ScrollTrigger.create({
         trigger: ".product-overwiew",
         start: "75% bottom",
         onEnter: () => {
-          gsap.to('.header-1 h1 .char >span', {
-            y: "0%", duration: 1, stagger: 0.025, ease: "power3.out"
+          gsap.to(header1Splites.chars, {
+            yPercent: 0, duration: 1, autoAlpha: 1, stagger: 0.025, ease: "power3.out"
           })
         },
         onLeaveBack: () => {
-          gsap.to('.header-1 h1 .char >span', {
-            y: "100%", duration: 1, stagger: 0.025, ease: "power3.out"
+          gsap.to(header1Splites.chars, {
+            yPercent: 110, duration: 0.5, autoAlpha: 0, stagger: 0.015, ease: "power3.in"
           })
         }
 
       })
-    const animationOptions = { duration: 1, ease: 'power3.out', stagger: 0.025 }
-    const tooltipSelector = [
+    const tooltipSelectors = [
       {
-        trigger: 0.065,
-        element: [".tooltip:nth-child(1) .icon",
-          ".tooltip:nth-child(1) .title .line > span",
-          ".tooltip:nth-child(1) .description .line > span"]
+        trigger: 0.65,
+        elements: [
+          ".tooltip:nth-child(1) .title .line",
+          ".tooltip:nth-child(1) .description .line"
+        ]
       },
       {
         trigger: 0.85,
-        elements: [".tooltip:nth-child(2) .icon",
-          ".tooltip:nth-child(2) .title .line > span",
-          ".tooltip:nth-child(2) .description .line > span"]
+        elements: [
+          ".tooltip:nth-child(2) .title .line",
+          ".tooltip:nth-child(2) .description .line"
+        ]
       }
     ]
     ScrollTrigger.create({
       trigger: ".product-overwiew",
       start: 'top top',
-      end: `+=${window.innerHeight * 10}px`,
+      end: `+=${window.innerHeight * 6}px`,
       pin: true,
       pinSpacing: true,
       scrub: 1,
       onUpdate: ({ progress }) => {
+        const rotationTurns = progress < 0.3
+          ? progress * 2
+          : progress < 0.7
+            ? 0.6 + (progress - 0.3) * 5
+            : 2.6 + (progress - 0.7) * 1.5;
+
+        const modelRotationProgress = progress < 0.45
+          ? 0
+          : progress > 0.65
+            ? 1
+            : (progress - 0.45) / 0.2;
+
+        if (modelRef.current) {
+          modelRef.current.rotation.y = -rotationTurns * Math.PI * 2;
+          modelRef.current.rotation.x = 0;
+        }
         const headerProgress = Math.max(0, Math.min(1, (progress - 0.05) / 0.3));
         gsap.to('.header-1', {
           xPercent: progress < 0.05 ? 0 : progress > 0.35 ? -100 : -100 * headerProgress,
         })
-        const maskSize = progress < 0.02 ? 0 : progress > 0.3 ? 100 : 100 * ((progress - 0.2) / 0.1);
+        const maskSize = progress < 0.02 ? 0 : progress > 0.25 ? 100 : 100 * ((progress - 0.2) / 0.1);
         gsap.to('.circular-mask', {
           clipPath: `circle(${maskSize}% at 50% 50%)`,
           duration: 0.1,
@@ -96,15 +114,15 @@ export default function ThreeDmodel() {
           xPercent: header2Percent,
 
         })
-        const scaleX = progress < 0.45 ? 0 : progress > 0.65 ? 100 : 100 * ((progress - 0.45) / 0.2);
-        gsap.set('.tooltip', {
-          scaleX: `${scaleX}%`, duration: 1, ease: 'power3.out', stagger: 0.025
+        gsap.set('.divider', {
+          scaleX: modelRotationProgress,
 
         })
-        tooltipSelector.forEach(({ trigger, element }) => {
-          gsap.to(element, {
-            y: progress < trigger ? '100%' : progress > trigger + 0.2 ? '0%' : `${100 - 500 * (progress - trigger)}%`,
-            duration: 1, stagger: 0.025, ease: 'power3.out'
+        tooltipSelectors.forEach(({ trigger, elements }) => {
+          const textProgress = Math.max(0, Math.min(1, (progress - trigger) / 0.15));
+
+          gsap.set(elements, {
+            yPercent: 100 * (1 - textProgress),
           })
         })
       }
@@ -118,23 +136,23 @@ export default function ThreeDmodel() {
         <section ref={containerRef} className="intro flex justify-center items-center relative w-[100vw] overflow-hidden bg-amber-50 text-black h-svh ">
           <h1>I WILL AND I CAN</h1>
         </section>
-        <section className="relative w-[100vw] h-svh bg-amber-50 text-black product-overwiew">
-          <div className="header-1 w-[200vw]  flex items-center justify-center h-svh translate-x-0">
-            <h1 className="bg-yellow-400">every thing is a bitch</h1>
+        <section className="relative w-[100vw] h-svh bg-white text-black product-overwiew">
+          <div className="header-1 w-[220vw]  flex items-center  h-svh translate-x-0">
+            <h1 className="overflow-hidden text-[10vw] font-extrabold leading-none">every thing is a bitch</h1>
           </div>
           <div className="header-2 z-2 flex items-center fixed top-0 text-5xl bg-purple-500 left-0 w-[150vw] h-svh translate-x-full">
             <h1 className="text-[25vw]">my eyes betray me</h1>
           </div>
           <div className="circular-mask absolute top-0 left-0 w-full h-full bg-black  " style={{ clipPath: 'circle(2% at 50% 50%)' }}></div>
-          <div className="tooltips absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] w-3/4 h-3/4 flex gap-[1rem] ">
-            <div className="tooltip scale-x-0 flex flex-col gap-4 bg-purple-400">
+          <div className="tooltips absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] w-full h-3/4 flex gap-[1rem] ">
+            <div className="tooltip origin-left  flex flex-col gap-6 px-8 py-10 text-white w-1/2">
               <div className="icons"></div>
-              <div className=" divider relative w-full h-px bg-red-900 m-[0.5rem 0] scale-x-0 origin-[100%_50%]"></div>
-              <div className="title">
-                <h1>build to last</h1>
+              <div className=" divider relative w-full h-px z-20 bg-red-100 m-[0.5rem 0]  origin-[100%_50%]"></div>
+              <div className="title overflow-hidden">
+                <h1 className="text-4xl font-bold leading-tight tracking-normal md:text-6xl">Build to last</h1>
               </div>
-              <div className="description">
-                <p>
+              <div className="description overflow-hidden">
+                <p className="max-w-md text-base leading-7 text-white md:text-lg">
                   Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                   Corrupti ea, iusto omnis fugit recusandae quasi assumenda,
                   doloribus architecto magni cupiditate deserunt aspernatur ipsam
@@ -142,14 +160,14 @@ export default function ThreeDmodel() {
                 </p>
               </div>
             </div>
-            <div className="tooltip scale-x-0 flex flex-col w-full justify-end items-end bg-green-400 ">
+            <div className="tooltip origin-right  flex w-full flex-col items-end justify-end gap-6  px-8 py-10 text-right text-white">
               <div className="icons"></div>
-              <div className="divider relative w-full h-[10px] bg-green-800 m-[0.5rem 0] scale-x-1 origin-[100%_50%] "></div>
-              <div className="title">
-                <h1>build to last</h1>
+              <div className="divider relative w-1/2 h-px bg-green-800 m-[0.5rem 0]  origin-[100%_50%] "></div>
+              <div className="title overflow-hidden">
+                <h1 className="text-4xl font-bold leading-tight tracking-normal md:text-6xl">Build to last</h1>
               </div>
-              <div className="description">
-                <p>
+              <div className="description overflow-hidden">
+                <p className="max-w-md text-base leading-7 text-white md:text-lg">
                   Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                   Corrupti ea, iusto omnis fugit recusandae quasi assumenda,
                   doloribus architecto magni cupiditate deserunt aspernatur ipsam
@@ -171,7 +189,7 @@ export default function ThreeDmodel() {
               zIndex: 100,
             }}
           >
-            <Experience />
+            <Experience ref={modelRef} />
           </Canvas>
         </section>
         <section className="outro relative flex justify-center items-center bg-amber-50 text-black w-[100vw] h-svh">

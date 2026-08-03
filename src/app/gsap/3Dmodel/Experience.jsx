@@ -2,13 +2,15 @@
 
 import { useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { useEffect, useMemo, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import { Box3, Vector3 } from "three";
 
-function ResponsiveIphone() {
+const ResponsiveIphone = forwardRef(function ResponsiveIphone(_, ref) {
 	const groupRef = useRef(null);
 	const { size } = useThree();
 	const { scene } = useGLTF("/model/apple_iphone_15_pro_max_black.glb");
+
+	useImperativeHandle(ref, () => groupRef.current, []);
 
 	const normalizedScene = useMemo(() => {
 		const clone = scene.clone(true);
@@ -30,27 +32,33 @@ function ResponsiveIphone() {
 	}, [scene]);
 
 	useEffect(() => {
-		const scale = size.width < 640 ? 0.75 : size.width < 1024 ? 0.95 : 1.15;
+		const scale = size.width < 640 ? 0.75 : size.width < 1024 ? 0.95 : 1.45;
 		if (groupRef.current) {
 			groupRef.current.scale.setScalar(scale);
 		}
 	}, [size]);
 
 	return (
-		<group  ref={groupRef}>
+		<group ref={groupRef}>
 			<primitive rotation={[0.4, 1.2, -0.5]} object={normalizedScene} />
 		</group>
 	);
-}
+});
 
-export default function Experience() {
+const Experience = forwardRef(function Experience(_, ref) {
 	return (
 		<>
 			<ambientLight intensity={3.7} />
-			<directionalLight position={[3, 3, 2]} intensity={1} />
-			<ResponsiveIphone />
+			<directionalLight position={[3, 3, 2]} color="red" intensity={10} />
+			<directionalLight position={[-2, 3, 2]} color="blue" intensity={10} />
+			<directionalLight position={[1, 0, 0]} color="purple" intensity={3} />
+
+
+			<ResponsiveIphone ref={ref} />
 		</>
 	);
-}
+});
+
+export default Experience;
 
 useGLTF.preload("/model/apple_iphone_15_pro_max_black.glb");
