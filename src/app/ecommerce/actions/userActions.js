@@ -6,21 +6,12 @@ import bcrypt from 'bcrypt';
 import { prisma } from '../../lib/prisma';
 import { redirect } from 'next/navigation';
 
-const MIN_PASSWORD_LENGTH = 8;
+const MIN_PASSWORD_LENGTH = 6;
 const PASSWORD_POLICY_MESSAGE =
-    `Password must be at least ${MIN_PASSWORD_LENGTH} characters and include uppercase, lowercase, number, and special character.`;
+    `Password must be between ${MIN_PASSWORD_LENGTH} and 72 characters.`;
 
 function validateStrongPassword(password) {
-    const checks = [
-        password.length >= MIN_PASSWORD_LENGTH,
-        /[a-z]/.test(password),
-        /[A-Z]/.test(password),
-        /\d/.test(password),
-        /[^A-Za-z0-9]/.test(password),
-        password.length <= 72,
-    ];
-
-    return checks.every(Boolean);
+    return password.length >= MIN_PASSWORD_LENGTH && password.length <= 72;
 }
 
 function hashPassword(plainPassword) {
