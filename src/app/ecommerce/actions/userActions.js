@@ -137,3 +137,7 @@ export const deleteUser = async (id) => {
     revalidatePath('/ecommerce/user');
     redirect(`/ecommerce/user?success=${encodeURIComponent('User deleted successfully')}`);
 };
+export const LoginUser = async (formData) => {
+    const userName = String(formData.get('username') || '').trim();
+    const password = String(formData.get('password') || '');
+}

@@ -40,6 +40,9 @@ export default function PinSection() {
   },
 ];
   useGSAP(() => {
+    const media = gsap.matchMedia();
+
+    media.add("(min-width: 768px)", () => {
     const leftPanels = gsap.utils.toArray(".left-panel");
 
     const rightPanels = gsap.utils.toArray(".right-panel");
@@ -158,15 +161,18 @@ export default function PinSection() {
         onEnterBack: () => showPanel(index, -1),
       });
     });
-    
+
+    });
+
+    return () => media.revert();
   });
 
   return (
-    <section ref={containerRef} className="flex w-full px-4 bg-black overflow-x-clip">
+    <section ref={containerRef} className="flex w-full  px-4 bg-black overflow-x-clip">
       {/* LEFT */}
       <div
         ref={leftRef}
-        className="relative w-1/2 h-screen overflow-hidden bg-black text-white"
+        className="relative hidden h-screen w-1/2 overflow-hidden bg-black text-white md:block"
       >
         {data.map((item, index) => (
           <div
@@ -194,16 +200,17 @@ export default function PinSection() {
       </div>
 
       {/* RIGHT */}
-      <div ref={rightRef} className="w-1/2 overflow-x-clip">
+      <div ref={rightRef} className="w-full overflow-x-clip md:w-1/2">
         {data.map((item, index) => (
           <section
             key={index}
-            className="right-panel will-change-opacity opacity-80  relative h-screen flex items-center justify-center text-6xl font-bold border-b overflow-hidden"
+            className="right-panel relative flex flex-col h-screen items-center justify-center overflow-hidden border-b text-4xl font-bold opacity-80 will-change-opacity sm:text-5xl md:text-6xl"
           >
             <ShaderImage
               src={item.shaderImage}
               className="absolute inset-0 w-full h-full"
             />
+            <h1>{item.title}</h1>
             {/* <div className="relative z-10 px-6 py-4 rounded-xl bg-black/30 text-white backdrop-blur-sm">
               Section {index + 1}
             </div> */}
