@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcrypt";
+import { createJWT } from "@/app/lib/utils";
+import { setCookie } from "@/app/lib/cookies";
 
 export async function loginUser(formData) {
     console.log("this is formData", formData);
@@ -15,6 +17,12 @@ export async function loginUser(formData) {
     });
     const isvalidPassword = await bcrypt.compare(data.password, user?.password);
 
-    if (!user || !isvalidPassword)
+    if (!user || !isvalidPassword){
+        
         redirect(`/ecommerce/Login?error=${encodeURIComponent('نام کاربری یا رمز عبور اشتباه است')}`);
+    }
+    const token= await createJWT(user);
+    await setCookie('jwt_token', token, { maxAge: 2 * 60 * 60 });
+
+
 }
