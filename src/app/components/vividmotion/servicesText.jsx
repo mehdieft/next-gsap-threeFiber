@@ -22,7 +22,7 @@ export const ServicesText = () => {
   return (
     <>
       <div ref={container} className="">
-        <h1 dir="rtl" id="text" className="text-center leading-tight tracking-wide text-white text-3xl md:text-7xl  max-w-screen md:max-w-[50vw]">نتیجه از تلاش های مستمر حاصل می شود</h1>
+        <h1 dir="rtl" id="text" className="text-center leading-tight tracking-wide text-gray-200 text-3xl md:text-7xl  max-w-screen md:max-w-[50vw]">نتیجه از تلاش های مستمر حاصل می شود</h1>
       </div>
     </>
   );

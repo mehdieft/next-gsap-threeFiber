@@ -29,11 +29,14 @@ export default function HoverText({ children, text, className = "", duration = 0
 
     gsap.to(textRef.current, {
       duration,
-      ease: "power3.in",
+      ease: "none",
       scrambleText: {
         text: originalText,
-        chars: "ی ی ا ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی",
-        speed: 0.35,
+        tweenLength:false,
+        rightToLeft:true,
+        chars: "نلتبشسیلهعغ غبیشسلیبسشیلا",
+        speed: 0.85,
+        revealDelay: 0.05,
       },
     });
   };

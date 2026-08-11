@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import React from "react";
-import HoveredText from "./hoveredText";
 import { useGSAP } from "@gsap/react";
 
 
@@ -179,10 +178,12 @@ function handleMove(e) {
             </div>
 
             {item.subtitles.map((subtitle) => (
-              <HoveredText
+              <div
                 key={subtitle}
-                text={subtitle}
-              />
+                className="flex h-16 items-center border-b border-zinc-800 bg-black px-4 text-white"
+              >
+                <h1 className="uppercase">{subtitle}</h1>
+              </div>
             ))}
           </React.Fragment>
         ))}

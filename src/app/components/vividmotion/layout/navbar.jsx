@@ -58,7 +58,7 @@ export const Navbar=()=>{
                                         href="#contact"
                                         className="transition-colors hover:text-gray-400"
                                     >
-                                        <HoverText text="Contact" className="text-white" />
+                                        <HoverText text="تماس با ما" className="text-gray-200" />
                                     </a>
                                 </li>
                             </ul>
