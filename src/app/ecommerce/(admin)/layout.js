@@ -9,7 +9,7 @@ export default async function EcommerceLayout({children}){
     const user = token ? await verifyJWT(token) : false;
 
     if (!user) {
-      redirect("/ecommerce");
+      redirect("/ecommerce/Login");
     }
 
     return(

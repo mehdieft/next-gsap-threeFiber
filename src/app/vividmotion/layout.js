@@ -1,21 +1,19 @@
 "use client";
-import ReactLenis from "lenis/react";
 import localFont from "next/font/local";
+import ReactLenis from "lenis/react";
+
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
+import {Navbar} from "../components/vividmotion/layout/navbar";
 
 const samim = localFont({
   src: [
     {
       path: "../../fonts/vividmotion/Samim.woff",
-      weight: "300",
+      weight: "400",
       style: "normal",
     },
-
     {
       path: "../../fonts/vividmotion/Samim-Bold.woff",
       weight: "700",
@@ -23,6 +21,11 @@ const samim = localFont({
     },
   ],
 });
+
+gsap.registerPlugin(ScrollTrigger);
+
+
+
 
 
 
@@ -55,6 +58,8 @@ export default function Layout({ children }) {
           duration: 1.2,
           smoothWheel: true,
         }}>
+          
+        <Navbar />
         {children}
       </ReactLenis>
     </div>
