@@ -172,7 +172,7 @@ function handleMove(e) {
                 0{index + 1}
               </h1>
 
-              <h1 className="text-6xl  ">
+              <h1 className="text-2xl md:text-6xl absolute left-1/2 -translate-x-1/2  ">
                 {item.title}
               </h1>
             </div>
@@ -182,7 +182,7 @@ function handleMove(e) {
                 key={subtitle}
                 className="flex h-16 items-center border-b border-zinc-800 bg-black px-4 text-white"
               >
-                <h1 className="uppercase">{subtitle}</h1>
+                <h1 className="uppercase text-center w-full">{subtitle}</h1>
               </div>
             ))}
           </React.Fragment>

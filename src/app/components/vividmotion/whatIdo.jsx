@@ -54,14 +54,14 @@ export default function WhatIdo() {
   return (
     <section
       ref={container}
-      className="px-4 py-42 flex justify-between text-left bg-black text-white"
+      className="px-4 py-42 flex flex-col-reverse gap-15 md:gap-0  md:flex justify-between text-left bg-black text-white"
       dir="auto"
     >
-      <h1 ref={content} className="text-5xl w-2/3 leading-[1.35] text-right">
+      <h1 ref={content} className="text-3xl md:text-5xl w-full  md:w-2/3 leading-[1.35] text-right">
         متخصص در ساخت وب‌سایت‌های مدرن با انیمیشن‌های حرفه‌ای، جلوه‌های سه‌بعدی
         و رابط‌های کاربری خلاقانه با استفاده از GSAP، Three.js و React.
       </h1>
-      <h1  className="animated text-3xl px-8 font-bold">کاری که میکنم</h1>
+      <h1  className="animated text-3xl text-center md:text-left px-8 font-bold">کاری که میکنم</h1>
     </section>
   );
 }
