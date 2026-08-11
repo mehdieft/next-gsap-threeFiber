@@ -45,6 +45,7 @@ export default function HoverText({ children, text, className = "", duration = 0
     <span
       ref={textRef}
       onMouseEnter={handleEnter}
+      onPointerEnter={handleEnter}
       className={`inline-block whitespace-nowrap ${className}`}
     >
       {originalText}
