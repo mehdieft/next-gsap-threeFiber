@@ -15,14 +15,18 @@ export async function loginUser(formData) {
     const user = await prisma.adminUser.findUnique({
         where: { userName: data.username },
     });
-    const isvalidPassword = await bcrypt.compare(data.password, user?.password);
+    if (!user){
+        redirect(`/ecommerce/Login?error=${encodeURIComponent('نام کاربری یا رمز عبور اشتباه است')}`);
+    }
 
-    if (!user || !isvalidPassword){
+    const isvalidPassword = await bcrypt.compare(data.password, user.password);
+
+    if (!isvalidPassword){
         
         redirect(`/ecommerce/Login?error=${encodeURIComponent('نام کاربری یا رمز عبور اشتباه است')}`);
     }
     const token= await createJWT(user);
     await setCookie('jwt_token', token, { maxAge: 2 * 60 * 60 });
-
+    redirect('/ecommerce/admin');
 
 }
