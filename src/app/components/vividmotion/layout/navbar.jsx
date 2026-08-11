@@ -1,5 +1,6 @@
 import Link from "next/link";
 import  StarSvg  from "../starSvg";
+import HoverText from "../hoverText";
 
 export const Navbar=()=>{
     return(
@@ -8,7 +9,7 @@ export const Navbar=()=>{
                     <div className="mx-auto flex h-20  max-w-7xl text-white  items-center justify-between px-0">
                         {/* Logo */}
                         <Link href="/vividmotion" className="text-xl font-bold">
-                            LOGO
+                            <HoverText className="text-white" text="LOGO" />
                         </Link>
 
                         {/* Navigation */}
@@ -57,7 +58,7 @@ export const Navbar=()=>{
                                         href="#contact"
                                         className="transition-colors hover:text-gray-400"
                                     >
-                                        Contact
+                                        <HoverText text="Contact" className="text-white" />
                                     </a>
                                 </li>
                             </ul>
