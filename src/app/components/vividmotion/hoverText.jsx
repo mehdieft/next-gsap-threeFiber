@@ -33,6 +33,7 @@ export default function HoverText({ children, text, className = "", duration = 0
       scrambleText: {
         text: originalText,
         tweenLength:false,
+        fontSize:'10px',
         rightToLeft:true,
         chars: "نلتبشسیلهعغ غبیشسلیبسشیلا",
         speed: 0.85,
