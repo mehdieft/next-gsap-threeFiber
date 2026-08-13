@@ -49,7 +49,7 @@ export default function ServicesGrid({
           <div className="transition-transform duration-700 ease-out group-hover:-translate-y-8">
             <ShaderImage 
               src={imageOne} 
-              className="w-full h-[50vh] rounded-2xl" 
+              className="w-full h-[70vh] rounded-2xl" 
             />
           </div>
         </div>
@@ -69,7 +69,7 @@ export default function ServicesGrid({
           <div className="transition-transform duration-700 ease-out group-hover:-translate-y-8">
             <ShaderImage 
               src={imageTwo} 
-              className="w-full h-[50vh] rounded-2xl" 
+              className="w-full h-[70vh] rounded-2xl" 
             />
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { ServicesText } from "@/app/components/vividmotion/servicesText";
 import ShaderImage from "@/app/components/vividmotion/ShaderImage";
 import ServicesGrid from "@/app/components/vividmotion/servicesGrid";
+import FooterBlob from '@/app/components/vividmotion/footerBlob'
 export default function ServicesPage() {
     return (
         <>
@@ -15,6 +16,7 @@ export default function ServicesPage() {
           <ServicesGrid imageOne="/images/vividmotion/gridShader/shaderSeven.avif" imageTwo="/images/vividmotion/gridShader/shaderEight.avif" />
                 
                 <div></div>
+                <FooterBlob/>
           
         </>
     );
