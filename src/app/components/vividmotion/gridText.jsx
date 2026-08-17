@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import React from "react";
 import { useGSAP } from "@gsap/react";
+import MarqueText from "./MarqueText";
 
 
 export default function GridText() {
@@ -178,12 +179,10 @@ function handleMove(e) {
             </div>
 
             {item.subtitles.map((subtitle) => (
-              <div
+               <MarqueText
                 key={subtitle}
-                className="flex h-16 items-center border-b border-zinc-800 bg-black px-4 text-white"
-              >
-                <h1 className="uppercase text-center w-full">{subtitle}</h1>
-              </div>
+                text={subtitle}
+              />
             ))}
           </React.Fragment>
         ))}
