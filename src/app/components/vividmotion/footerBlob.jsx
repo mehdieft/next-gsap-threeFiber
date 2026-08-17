@@ -259,7 +259,7 @@ function LiquidSimulation({
       uIdleStrength: { value: 1 },
       uBrushSize: { value: brushSize },
       // bigger fill, slower fade => reads as a fuller wave instead of a thin trail
-      uPaintStrength: { value: 0.85 },
+      uPaintStrength: { value: 0.25 },
       uDecay: { value: 0.982 },
       uDiffuse: { value: 0.55 },
       uAdvect: { value: 0.8 },
@@ -412,7 +412,7 @@ export default function FooterBlob({
 
   return (
     <div
-      className={`relative h-svh w-full bg-black overflow-hidden ${className}`}
+      className={`absolute -z-1 inset-0 h-svh w-full  bg-black overflow-hidden ${className}`}
       style={{ touchAction: "pan-y" }}
     >
       <Canvas
@@ -420,7 +420,7 @@ export default function FooterBlob({
         camera={{ position: [0, 0, 1], zoom: 1 }}
         dpr={[1, 1.75]}
         gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%", height: "100%" ,zIndex:0}}
         onCreated={({ gl }) => gl.setClearColor(0xffffff, 0)}
       >
         <LiquidSimulation
