@@ -47,7 +47,6 @@ export default function Layout({ children }) {
       gsap.ticker.remove(update);
     };
   }, []);
-
   return (
     <div className={samim.className}>
       <ReactLenis
@@ -60,15 +59,9 @@ export default function Layout({ children }) {
       >
         <Navbar />
         {children}
-        {/* 
-          FIX: 
-          - Use min-h-screen instead of h-screen to avoid clipping on mobile.
-          - Remove overflow-hidden so content can flow naturally.
-          - Use flex with mt-auto to push the bottom text to the end.
-        */}
         <div
           dir="rtl"
-          className="relative z-10 min-h-screen w-full p-5 sm:p-6 md:p-8 bg-transparent flex flex-col gap-5 text-white"
+          className="relative z-10 h-screen w-full p-5 sm:p-6 md:p-8 bg-transparent flex flex-col gap-5 overflow-hidden text-white"
         >
           {/* BACKGROUND */}
           <FooterBlob />
@@ -106,56 +99,23 @@ export default function Layout({ children }) {
           </section>
           <section className="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-10 md:gap-20 pt-6 md:pt-10 justify-between items-center">
             <div className="flex flex-wrap gap-4 md:gap-5">
-              <HoverText
-                className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="x"
-              />
-              <HoverText
-                className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="instagram"
-              />
-              <HoverText
-                className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="linkdin"
-              />
-              <HoverText
-                className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="behance"
-              />
-              <HoverText
-                className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="dribble"
-              />
+              <HoverText className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer" text="x" />
+              <HoverText className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer" text="instagram" />
+              <HoverText className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer" text="linkdin" />
+              <HoverText className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer" text="behance" />
+              <HoverText className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer" text="dribble" />
             </div>
             <div className="flex flex-wrap gap-4 md:gap-5">
-              <HoverText
-                className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="careers"
-              />
-              <HoverText
-                className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="privacy policy"
-              />
-              <HoverText
-                className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="terms of us"
-              />
+              <HoverText className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer" text="careers" />
+              <HoverText className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer" text="privacy policy" />
+              <HoverText className="text-xs sm:text-sm md:text-md will-change-[opacity] uppercase opacity-30 hover:opacity-100 transition-all duration-100 cursor-pointer" text="terms of us" />
             </div>
             <div className="flex-1 text-left">
-              <HoverText
-                className="text-lg sm:text-xl will-change-[opacity] uppercase opacity-60 hover:opacity-100 transition-all duration-100 cursor-pointer"
-                text="@2026"
-              />
+              <HoverText className="text-lg sm:text-xl will-change-[opacity] uppercase opacity-60 hover:opacity-100 transition-all duration-100 cursor-pointer" text="@2026" />
             </div>
           </section>
 
-          {/* 
-            FIX: 
-            - Removed absolute positioning.
-            - Added mt-auto to push this to the bottom of the flex container.
-            - Added pb-2 for a little extra spacing on mobile.
-          */}
-          <div className="mt-auto pt-6 pb-2 text-[14vw] sm:text-[12vw] md:text-[10vw] italic leading-none text-center whitespace-nowrap">
+          <div className="absolute bottom-10 inset-x-0 text-white text-[14vw] sm:text-[12vw] md:text-[10vw] italic leading-none text-center whitespace-nowrap">
             ویوید موشن
           </div>
         </div>
