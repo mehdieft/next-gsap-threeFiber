@@ -61,7 +61,7 @@ export default function Layout({ children }) {
         {children}
         <div
           dir="rtl"
-          className="relative z-10 h-screen w-screen p-8 bg-amber-300 flex flex-col gap-5 pt-[200px] overflow-hidden text-white"
+          className="relative z-10 h-screen w-screen p-8 bg-transparent flex flex-col gap-5  overflow-hidden text-white"
         >
           {/* BACKGROUND */}
           <FooterBlob />
@@ -70,7 +70,7 @@ export default function Layout({ children }) {
               <h1 className="text-6xl opacity-50">پروژه ای در ذهن دارید؟</h1>
               <h1 className="text-6xl">بیا ببینیم آخرش چه می شود</h1>
             </div>
-            <div className="bg-orange-500 h-fit hover:bg-orange-700 transition-all duration-300 cursor-pointer text-center py-6 px-14 rounded-full">
+            <div className="bg-orange-500 h-fit hover:bg-orange-700 transition-all duration-300 cursor-pointer text-center py-4 px-10 rounded-full">
               <HoverText className="text-2xl" text="شروع پروژه" />
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function Layout({ children }) {
 
           </section>
 
-          <div className="absolute bottom-10 inset-x-0 pointer-events-none text-white text-[15vw] italic leading-none text-center whitespace-nowrap">
+          <div className="absolute bottom-10 inset-x-0  text-white text-[10vw] italic leading-none text-center whitespace-nowrap">
             ویوید موشن
           </div>
         </div>

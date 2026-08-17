@@ -356,9 +356,25 @@ function LiquidSimulation({
     gl.render(displayScene, orthoCamera);
   }, 1);
 
-  /* pointer + touch handling */
+  /* pointer + touch handling
+   *
+   * IMPORTANT: listeners are attached to `window`, not `canvas.domElement`.
+   * The canvas is `-z-1`, i.e. stacked BEHIND the footer's headings,
+   * mailto links, and social links. Pointer events are always delivered to
+   * the topmost element under the cursor — never to something visually
+   * behind it — so a canvas-scoped listener simply never fires while the
+   * cursor is over any of that overlapping text. That was the "animation
+   * stops when hovering text" bug.
+   *
+   * Listening on `window` instead guarantees we see every pointer move
+   * regardless of what's stacked on top, and we derive the UV coordinates
+   * ourselves from the canvas's own bounding rect. We also bound-check
+   * against the container so the blob still idles/relaxes once the cursor
+   * truly leaves the footer area (not just leaves the canvas element).
+   */
   useEffect(() => {
     const canvas = gl.domElement;
+    const container = canvas.parentElement; // the footer wrapper div
 
     const toUv = (clientX, clientY) => {
       const rect = canvas.getBoundingClientRect();
@@ -368,7 +384,21 @@ function LiquidSimulation({
       };
     };
 
+    const isOverContainer = (clientX, clientY) => {
+      const rect = container.getBoundingClientRect();
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+    };
+
     const handleMove = (event) => {
+      if (!isOverContainer(event.clientX, event.clientY)) {
+        mouseActive.current = 0;
+        return;
+      }
       const { x, y } = toUv(event.clientX, event.clientY);
       mouseTarget.current.set(x, y);
       mouseActive.current = 1;
@@ -378,18 +408,16 @@ function LiquidSimulation({
       mouseActive.current = 0;
     };
 
-    canvas.addEventListener("pointermove", handleMove, { passive: true });
-    canvas.addEventListener("pointerdown", handleMove, { passive: true });
-    canvas.addEventListener("pointerenter", handleMove, { passive: true });
-    canvas.addEventListener("pointerleave", handleLeave, { passive: true });
-    canvas.addEventListener("pointercancel", handleLeave, { passive: true });
+    window.addEventListener("pointermove", handleMove, { passive: true });
+    window.addEventListener("pointerdown", handleMove, { passive: true });
+    window.addEventListener("pointercancel", handleLeave, { passive: true });
+    document.addEventListener("pointerleave", handleLeave, { passive: true });
 
     return () => {
-      canvas.removeEventListener("pointermove", handleMove);
-      canvas.removeEventListener("pointerdown", handleMove);
-      canvas.removeEventListener("pointerenter", handleMove);
-      canvas.removeEventListener("pointerleave", handleLeave);
-      canvas.removeEventListener("pointercancel", handleLeave);
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerdown", handleMove);
+      window.removeEventListener("pointercancel", handleLeave);
+      document.removeEventListener("pointerleave", handleLeave);
     };
   }, [gl]);
 
