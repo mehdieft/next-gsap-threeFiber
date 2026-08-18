@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
-import { deleteUser } from "../../actions/userActions";
+import { deleteUser } from "../../../actions/userActions";
 import Toast from "@/app/components/eccomerce/toast";
 
 export default async function User({ searchParams }) {

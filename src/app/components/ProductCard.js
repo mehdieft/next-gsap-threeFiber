@@ -4,14 +4,17 @@ import { deleteProduct } from "../actions/productActions"
 import Link from "next/link"
 export default function ProductCard({ product }) {
     console.log(product)
+    const primaryImage = product.images?.[0]?.url
 
     return (
         <div>
-            <Image className="rounded-t-lg"
-                width={400}
-                height={450}
-                alt={product.name}
-                src={'/' + product.image} />
+            {primaryImage && (
+                <Image className="rounded-t-lg"
+                    width={400}
+                    height={450}
+                    alt={product.name}
+                    src={'/' + primaryImage} />
+            )}
             <div className="p-5">
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-stone-800">{product.name}</h5>
                 <p className="mb-3 font-semibold text-xl text-stone-600">{product.id}</p>

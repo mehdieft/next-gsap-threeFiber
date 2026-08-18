@@ -9,14 +9,21 @@ function parseNumber(value) {
   return Number.isFinite(parsed) ? parsed : NaN;
 }
 
+function parseImagePaths(value) {
+  return String(value || '')
+    .split(/\r?\n/)
+    .map((path) => path.trim())
+    .filter(Boolean);
+}
+
 export const createProductAction = async (formData) => {
   const name = String(formData.get('name') || '').trim();
-  const image = String(formData.get('image') || '').trim();
+  const imagePaths = parseImagePaths(formData.get('images'));
   const price = parseNumber(formData.get('price'));
   const discount = parseNumber(formData.get('discount'));
 
-  if (!name || !image) {
-    redirect('/ecommerce/product/create?error=' + encodeURIComponent('Name and image are required'));
+  if (!name || imagePaths.length === 0) {
+    redirect('/ecommerce/product/create?error=' + encodeURIComponent('Name and at least one image are required'));
   }
 
   if (Number.isNaN(price) || price < 0) {
@@ -30,9 +37,11 @@ export const createProductAction = async (formData) => {
   await prisma.products.create({
     data: {
       name,
-      image,
       price,
       discount,
+      images: {
+        create: imagePaths.map((url, position) => ({ url, position })),
+      },
     },
   });
 
@@ -52,12 +61,12 @@ export const updateProductAction = async (id, formData) => {
   }
 
   const name = String(formData.get('name') || '').trim();
-  const image = String(formData.get('image') || '').trim();
+  const imagePaths = parseImagePaths(formData.get('images'));
   const price = parseNumber(formData.get('price'));
   const discount = parseNumber(formData.get('discount'));
 
-  if (!name || !image) {
-    redirect(`/ecommerce/product/edit/${productId}?error=` + encodeURIComponent('Name and image are required'));
+  if (!name || imagePaths.length === 0) {
+    redirect(`/ecommerce/product/edit/${productId}?error=` + encodeURIComponent('Name and at least one image are required'));
   }
 
   if (Number.isNaN(price) || price < 0) {
@@ -72,9 +81,12 @@ export const updateProductAction = async (id, formData) => {
     where: { id: productId },
     data: {
       name,
-      image,
       price,
       discount,
+      images: {
+        deleteMany: {},
+        create: imagePaths.map((url, position) => ({ url, position })),
+      },
     },
   });
 

@@ -29,12 +29,11 @@ export default function EditProduct({ product }) {
 
             <div className="space-y-2">
               <Label required={true} className="text-sm font-semibold text-gray-700">
-                Image Path
+                Image Paths
               </Label>
-              <input
-                type="text"
-                name="image"
-                defaultValue={product.image}
+              <textarea
+                name="images"
+                defaultValue={product.images.map((image) => image.url).join('\n')}
                 className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none hover:border-gray-300"
                 required
               />

@@ -1,5 +1,5 @@
 import { createUser } from '@/app/ecommerce/actions/userActions';
-import Label from '../../../../components/eccomerce/Label/Label';
+import Label from '../../../../../components/eccomerce/Label/Label';
 import { FaUser, FaLock, FaUserTag } from 'react-icons/fa';
 import Toast from '@/app/components/eccomerce/toast';
 

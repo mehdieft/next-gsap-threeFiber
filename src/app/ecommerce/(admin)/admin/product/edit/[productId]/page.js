@@ -10,6 +10,11 @@ export default async function EditProductPage({ params, searchParams }) {
 
   const product = await prisma.products.findUnique({
     where: { id: productId },
+    include: {
+      images: {
+        orderBy: { position: 'asc' },
+      },
+    },
   });
 
   if (!product) {

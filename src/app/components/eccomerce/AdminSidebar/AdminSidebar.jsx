@@ -76,12 +76,12 @@ const NAV_SECTIONS = [
       },
       {
         label: "Products",
-        href: "/ecommerce/product",
+        href: "/ecommerce/admin/product",
         icon: <SVGIcon path={icons.products} />,
       },
       {
         label: "Customers",
-        href: "/ecommerce/user",
+        href: "/ecommerce/admin/user",
         icon: <SVGIcon path={icons.customers} />,
       },
     ],

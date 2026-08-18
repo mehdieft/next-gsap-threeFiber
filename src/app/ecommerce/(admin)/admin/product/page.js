@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/app/lib/prisma';
 import Toast from '@/app/components/eccomerce/toast';
-import { deleteProductAction } from '../../actions/productActions';
+import { deleteProductAction } from '../../../actions/productActions';
 
 export default async function ProductPage({ searchParams }) {
   const params = await searchParams;
@@ -14,6 +14,11 @@ export default async function ProductPage({ searchParams }) {
     skip: (page - 1) * pageSize,
     take: pageSize,
     orderBy: { createdAt: 'desc' },
+    include: {
+      images: {
+        orderBy: { position: 'asc' },
+      },
+    },
   });
 
   const total = await prisma.products.count();
@@ -61,7 +66,7 @@ export default async function ProductPage({ searchParams }) {
                   <td className="px-6 py-4 text-sm text-gray-700">{product.name}</td>
                   <td className="px-6 py-4 text-sm text-gray-700">${product.price.toFixed(2)}</td>
                   <td className="px-6 py-4 text-sm text-gray-700">{product.discount}%</td>
-                  <td className="px-6 py-4 text-sm text-gray-700">{product.image}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700">{product.images.length} image{product.images.length === 1 ? '' : 's'}</td>
                   <td className="px-6 py-4 text-sm text-gray-600">{new Date(product.createdAt).toLocaleString()}</td>
                   <td className="px-6 py-4 text-sm">
                     <Link className="text-blue-600 hover:text-blue-900 font-semibold px-3" href={`/ecommerce/product/edit/${product.id}`}>
