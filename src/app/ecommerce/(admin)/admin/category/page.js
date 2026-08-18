@@ -4,27 +4,22 @@ import Toast from '@/app/components/eccomerce/toast';
 import { deleteProductAction } from '../../../actions/productActions';
 import Image from 'next/image';
 
-export default async function ProductPage({ searchParams }) {
+export default async function CategoryPage({ searchParams }) {
   const params = await searchParams;
   const page = parseInt(params.page, 10) || 1;
   const pageSize = 10;
   const success = params.success;
   const error = params.error;
 
-  const products = await prisma.products.findMany({
+  const categories = await prisma.category.findMany({
     skip: (page - 1) * pageSize,
     take: pageSize,
     orderBy: { createdAt: 'desc' },
-    include: {
-      images: {
-        orderBy: { position: 'asc' },
-      },
-    },
   });
 
-  const total = await prisma.products.count();
+  const total = await prisma.category.count();
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  console.log(products[0])
+  console.log(categories[0])
 
   return (
     <div className="p-8">
@@ -33,16 +28,16 @@ export default async function ProductPage({ searchParams }) {
 
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Products Management</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Categories Management</h1>
           <p className="text-gray-600 mt-2">
-            Total Products: <span className="font-semibold text-blue-600">{total}</span>
+            Total Categories: <span className="font-semibold text-blue-600">{total}</span>
           </p>
         </div>
         <Link
           className="px-4 py-2 rounded-md hover:bg-green-700 hover:text-white duration-300 bg-green-400"
-          href="/ecommerce/product/create"
+          href="/ecommerce/category/create"
         >
-          create product
+          create category
         </Link>
       </div>
 
@@ -52,29 +47,27 @@ export default async function ProductPage({ searchParams }) {
             <tr>
               <th className="px-6 py-4 text-left text-sm font-semibold">#</th>
               <th className="px-6 py-4 text-left text-sm font-semibold">Name</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold">Price</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold">Discount</th>
               <th className="px-6 py-4 text-left text-sm font-semibold">Image</th>
               <th className="px-6 py-4 text-left text-sm font-semibold">Created At</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold">Updated At</th>
               <th className="px-6 py-4 text-left text-sm font-semibold">Actions</th>
             </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {products.length > 0 ? (
-              products.map((product, index) => (
-                <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+            {categories.length > 0 ? (
+              categories.map((category, index) => (
+                <tr key={category.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 text-sm text-gray-900 font-medium">{(page - 1) * pageSize + index + 1}</td>
-                  <td className="px-6 py-4 text-sm text-gray-700">{product.name}</td>
-                  <td className="px-6 py-4 text-sm text-gray-700">${product.price.toFixed(2)}</td>
-                  <td className="px-6 py-4 text-sm text-gray-700">{product.discount}%</td>
-                  <td className="px-6 py-4 text-sm text-gray-700"><Image src={product.images[0].url} width="100" height="100" alt={product.name} /></td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{new Date(product.createdAt).toLocaleString()}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700">{category.name}</td>
+             
+                  <td className="px-6 py-4 text-sm text-gray-700"><Image src={category.image} width="100" height="100" alt={category.name} /></td>
+                  <td className="px-6 py-4 text-sm text-gray-600">{new Date(category.createdAt).toLocaleString()}</td>
                   <td className="px-6 py-4 text-sm">
-                    <Link className="text-blue-600 hover:text-blue-900 font-semibold px-3" href={`/ecommerce/product/edit/${product.id}`}>
+                    <Link className="text-blue-600 hover:text-blue-900 font-semibold px-3" href={`/ecommerce/admin/category/edit/${category.id}`}>
                       Edit
                     </Link>
-                    <form className="inline" action={deleteProductAction.bind(null, product.id)}>
+                    <form className="inline" action={deleteCategoryAction.bind(null, category.id)}>
                       <button type="submit" className="text-red-500 hover:cursor-pointer hover:text-red-900 font-semibold">
                         Delete
                       </button>
@@ -85,7 +78,7 @@ export default async function ProductPage({ searchParams }) {
             ) : (
               <tr>
                 <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
-                  No products found
+                  No category found
                 </td>
               </tr>
             )}

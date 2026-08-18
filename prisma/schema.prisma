@@ -21,6 +21,7 @@ model Products {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   images ProductImage[]
+  categories Category[]
 }
 
 model ProductImage {
@@ -44,4 +45,13 @@ model AdminUser {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+}
+model Category{
+  id Int @id @default(autoincrement())
+  name String @unique
+  image String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  products  Products[]
+
 }
