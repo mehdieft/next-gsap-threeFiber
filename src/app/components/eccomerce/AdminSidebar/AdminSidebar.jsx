@@ -80,6 +80,11 @@ const NAV_SECTIONS = [
         icon: <SVGIcon path={icons.products} />,
       },
       {
+        label: "Categories",
+        href: "/ecommerce/admin/category",
+        icon: <SVGIcon path={icons.products} />,
+      },
+      {
         label: "Customers",
         href: "/ecommerce/admin/user",
         icon: <SVGIcon path={icons.customers} />,
