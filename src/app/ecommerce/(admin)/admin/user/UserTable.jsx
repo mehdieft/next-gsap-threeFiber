@@ -40,7 +40,7 @@ export default function UserTable({ users, page, pageSize }) {
         </div>
       )}
 
-      <table className="w-full min-w-[720px] border-collapse text-left">
+      <table className="w-full min-w-180 border-collapse text-left">
         <thead>
           <tr className="border-b border-zinc-100 text-[10px] font-medium uppercase tracking-wider text-zinc-400">
             <th className="w-12 px-5 py-3">
