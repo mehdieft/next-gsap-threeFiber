@@ -38,7 +38,7 @@ model ProductImage {
 }
 
 model AdminUser {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   userType  String
   userName  String   @unique
   password  String

@@ -7,7 +7,7 @@ export default async function getUserForEdit({params,searchParams}){
     const error=(await searchParams).error
     const userId=p.userId
     const findedUser=await prisma.adminUser.findUnique({
-        where:{id:Number(userId)}
+        where:{id:userId}
     })
     // console.log("finded user",findedUser);
     return(

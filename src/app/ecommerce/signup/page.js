@@ -1,4 +1,5 @@
 import Toast from "@/app/components/eccomerce/toast.jsx";
+import {prisma } from '../../lib/prisma';
 import SignupPage from "./signup.jsx";
 
 export default async function Signup({ searchParams }) {

@@ -62,13 +62,13 @@ export const createUser = async (formData) => {
 };
 
 export const updateUserAction = async (id, formData) => {
-    const userId = Number(id);
+    const userId = id;
     const user = await prisma.adminUser.findUnique({
         where: { id: userId },
     });
 
     if (!user) {
-        redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('User not found.')}`);
+        redirect(`/ecommerce/admin/user/edit/${id}?error=${encodeURIComponent('User not found.')}`);
     }
 
     const userName = String(formData.get('username') || '').trim();
@@ -78,7 +78,7 @@ export const updateUserAction = async (id, formData) => {
     const wantsPasswordUpdate = password.trim() !== '' || confirmPassword.trim() !== '';
 
     if (!userName || userName.length < 3) {
-        redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('Username must be at least 3 characters.')}`);
+        redirect(`/ecommerce/admin/user/edit/${id}?error=${encodeURIComponent('Username must be at least 3 characters.')}`);
     }
 
     const duplicatedUserName = await prisma.adminUser.findFirst({
@@ -89,22 +89,22 @@ export const updateUserAction = async (id, formData) => {
     });
 
     if (duplicatedUserName) {
-        redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('Username already exists.')}`);
+        redirect(`/ecommerce/admin/user/edit/${id}?error=${encodeURIComponent('Username already exists.')}`);
     }
 
     const data = { userName, userType };
 
     if (wantsPasswordUpdate) {
         if (!password || !confirmPassword) {
-            redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('Enter both password fields to update password.')}`);
+            redirect(`/ecommerce/admin/user/edit/${id}?error=${encodeURIComponent('Enter both password fields to update password.')}`);
         }
 
         if (password !== confirmPassword) {
-            redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent('Password and repeat password do not match.')}`);
+            redirect(`/ecommerce/admin/user/edit/${id}?error=${encodeURIComponent('Password and repeat password do not match.')}`);
         }
 
         if (!validateStrongPassword(password)) {
-            redirect(`/ecommerce/user/edit/${id}?error=${encodeURIComponent(PASSWORD_POLICY_MESSAGE)}`);
+            redirect(`/ecommerce/admin/user/edit/${id}?error=${encodeURIComponent(PASSWORD_POLICY_MESSAGE)}`);
         }
 
         data.password = hashPassword(password);
@@ -115,8 +115,8 @@ export const updateUserAction = async (id, formData) => {
         data,
     });
 
-    revalidatePath('/ecommerce/user');
-    redirect('/ecommerce/user?success=' + encodeURIComponent('User updated successfully'));
+    revalidatePath('/ecommerce/admin/user');
+    redirect('/ecommerce/admin/user?success=' + encodeURIComponent('User updated successfully'));
 
 };
 
@@ -126,7 +126,7 @@ export const deleteUser = async (id) => {
     });
 
     revalidatePath('/ecommerce/user');
-    redirect(`/ecommerce/user?success=${encodeURIComponent('User deleted successfully')}`);
+    redirect(`/ecommerce/admin/user?success=${encodeURIComponent('User deleted successfully')}`);
 };
 export const LoginUser = async (formData) => {
     const userName = String(formData.get('username') || '').trim();
