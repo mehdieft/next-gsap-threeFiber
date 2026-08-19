@@ -180,7 +180,7 @@ export default function LoginPage() {
             <p className="mt-8 text-center text-sm text-[#667085]">
               تازه به نورث‌لاین آمده‌اید؟{" "}
               <a
-                href="#create-account"
+                href="/ecommerce/signup"
                 className="font-semibold text-[#356250] underline decoration-[#356250]/35 underline-offset-4 transition hover:text-[#1f4034]"
               >
                 ایجاد حساب کاربری

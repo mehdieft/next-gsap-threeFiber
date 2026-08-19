@@ -30,3 +30,39 @@ export async function loginUser(formData) {
     redirect('/ecommerce/admin');
 
 }
+
+export async function signupUser(formData) {
+    const userName = String(formData.get("username") || "").trim();
+    const password = String(formData.get("password") || "");
+    const confirmPassword = String(formData.get("confirmPassword") || "");
+
+    if (!userName || userName.length < 3) {
+        redirect(`/ecommerce/signup?error=${encodeURIComponent("نام کاربری باید حداقل ۳ کاراکتر باشد")}`);
+    }
+
+    if (password.length < 6 || password.length > 72) {
+        redirect(`/ecommerce/signup?error=${encodeURIComponent("رمز عبور باید بین ۶ تا ۷۲ کاراکتر باشد")}`);
+    }
+
+    if (password !== confirmPassword) {
+        redirect(`/ecommerce/signup?error=${encodeURIComponent("رمزهای عبور یکسان نیستند")}`);
+    }
+
+    const existingUser = await prisma.adminUser.findUnique({
+        where: { userName },
+    });
+
+    if (existingUser) {
+        redirect(`/ecommerce/signup?error=${encodeURIComponent("این نام کاربری قبلاً استفاده شده است")}`);
+    }
+
+    await prisma.adminUser.create({
+        data: {
+            userName,
+            password: await bcrypt.hash(password, 10),
+            userType: "user",
+        },
+    });
+
+    redirect(`/ecommerce/Login?success=${encodeURIComponent("حساب کاربری با موفقیت ایجاد شد")}`);
+}
