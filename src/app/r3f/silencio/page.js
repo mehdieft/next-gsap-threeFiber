@@ -34,7 +34,7 @@ export default function Selencio() {
                     gsap.to(modelRef.current.rotation, {
                         x: 0,
                         y: 0,
-                        z:0,
+                        z: 0,
                         duration: 0.5,
                         overwrite: true,
                     });
@@ -64,17 +64,28 @@ export default function Selencio() {
                         duration: 0.6,
                         overwrite: true,
                     });
-                       gsap.to(modelRef.current.scale, {
-                        x:0.006,
-                        y:0.006,
-                        z:0.006,
+                    gsap.to(modelRef.current.scale, {
+                        x: 0.006,
+                        y: 0.006,
+                        z: 0.006,
                         duration: 0.5,
                         overwrite: true,
                     });
                 },
             }
         })
-    }, {});
+        const tl2 = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".scanner",
+                start: "top top",
+                end: "+=2000px",
+                markers: true,
+                scrub: true,
+                pin: true,
+                pinSpacing: true,
+            },
+        });
+    }, {scope:mainRef});
     return (
         <>
             <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-gray-500">
@@ -93,8 +104,7 @@ export default function Selencio() {
                 </Canvas>
             </div>
             <main ref={mainRef} className="relative z-10">
-
-                <section className="hero w-svw h-svh flex flex-col items-center justify-center text-center">
+                <section className="hero w-svw h-svh py-10 flex flex-col items-center justify-between text-center">
                     <h1>
                         Digital <br /> Evolution
                     </h1>
