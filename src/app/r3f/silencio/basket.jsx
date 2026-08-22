@@ -3,10 +3,10 @@ import { useGLTF } from '@react-three/drei'
 import { forwardRef } from "react";
 
 
-export const Model = forwardRef(function Model(props, ref) {
+export const Basket = forwardRef(function Basket(props, ref) {
   const { nodes, materials } = useGLTF('/model/silencio/basket_c.glb')
   return (
-    <group ref={ref} {...props} dispose={null}>
+    <group ref={ref} scale={0.02} position={[0,-5,0]} rotation={[0,Math.PI,0]} {...props} dispose={null}>
       <mesh
         castShadow
         receiveShadow
