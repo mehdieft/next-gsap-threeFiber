@@ -11,6 +11,7 @@ import { Chocolatia } from "./chocolatia";
 import { Can } from './can';
 import { OrbitControls, Environment } from "@react-three/drei";
 import SecondSection from './secondSection';
+import ThirdSection from "./thirdSection";
 
 import gsap from "gsap";
 import scrollTrigger from "gsap/ScrollTrigger";
@@ -74,7 +75,7 @@ export default function Selencio() {
                 trigger: mainRef.current,
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 1,
+                scrub: 6,
                 markers: true,
                 onUpdate:(self)=>{
 
@@ -89,7 +90,7 @@ export default function Selencio() {
             x: `+=${Math.PI * 4}`,
             z: 0,
             ease: "power1.inOut",
-            duration: 4,
+            duration: 6,
         }, 0);
         // timeline.to(canObject.rotation,{x:0})
 
@@ -164,7 +165,7 @@ export default function Selencio() {
                     </div>
 
                     <div className="flex flex-col items-center">
-                        <h1 className="text-7xl md:text-9xl font-bold leading-[0.85] tracking-tight">
+                        <h1 className="text-7xl md:text-9xl font-bold leading-[0.85] text-gray-900 tracking-tight">
                             محصولات
                             <br />
                             دیجیتال
@@ -196,6 +197,7 @@ export default function Selencio() {
                     </p>
                 </section>
                 <SecondSection/>
+                <ThirdSection/>
               
                 <section className="scanner h-svh w-svw flex justify-center items-center">
                     <div className="scan-info">

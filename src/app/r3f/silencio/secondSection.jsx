@@ -48,7 +48,7 @@ export default function SecondSection() {
     <section
     ref={mainRef}
       dir="rtl"
-      className="info relative mx-auto flex h-svh w-3/4 flex-col gap-40 overflow-hidden items-center pt-20  px-6 text-[#111] md:px-20"
+      className="info relative mx-auto pb-40 flex  w-3/4 flex-col gap-40 overflow-hidden items-center pt-20  px-6 text-[#111] md:px-20"
     >
   
 
