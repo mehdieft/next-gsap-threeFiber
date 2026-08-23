@@ -33,6 +33,7 @@ function useLoadedObject() {
 }
 
 export default function Selencio() {
+    const [directionColor, setdirectionColor] = useState(false);
     const mainRef = useRef()
     const [basketObject, setBasketObject] = useLoadedObject();
     const [zumoObject, setZumoObject] = useLoadedObject();
@@ -77,14 +78,14 @@ export default function Selencio() {
                 end: "bottom bottom",
                 scrub: 6,
                 markers: true,
-                onUpdate:(self)=>{
+                onUpdate: (self) => {
 
                 },
-            
-                    
+
+
             },
         });
-        timeline.to('.animate-fade',{opacity:0})
+        timeline.to('.animate-fade', { opacity: 0 })
 
         timeline.to(canObject.rotation, {
             x: `+=${Math.PI * 4}`,
@@ -103,6 +104,45 @@ export default function Selencio() {
                     duration: 5,
                 }, 0);
             });
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.scanner',
+                start: 'top top',
+                end: "+=800",
+
+                pin: true,
+                pinspacing: true,
+                scrub: 1,
+                markers: true,
+            }, onStart: () => {
+                setdirectionColor(true)
+            },
+            onLeave: () => {
+                setdirectionColor(false)
+            },
+          
+        })
+
+        tl.from('.scan-reveal', {
+            y: 40,
+            opacity: 0,
+            stagger: 0.1,
+            ease: "power2.out",
+        });
+
+        if (canObject) {
+            tl.to(canObject.rotation, {
+                y: `+=${Math.PI * 4}`,
+                ease: "none",
+            }, 0);
+            //   tl.to(canObject.scale, {
+            //       x: 0,
+            //       y: 0,
+            //       z: 0,
+            //       ease: "power2.in",
+            //   }, 0);
+        }
     }, {
         scope: mainRef,
         dependencies: [
@@ -116,14 +156,16 @@ export default function Selencio() {
     return (
         <>
             <Leva collapsed={false} />
-            <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-gray-100">
+            <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-white">
                 <Canvas camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1, zoom: isMobile ? 0.5 : 1.4, }} >
                     {/* <Environment preset="sunset" /> */}
                     {/* <OrbitControls /> */}
                     <ambientLight intensity={2.5} />
                     <directionalLight position={[5, 5, 5]} intensity={8} />
                     <directionalLight position={[-5, 5, 5]} intensity={8} />
-                    <Environment preset="city" />
+                    <Environment intensity={100.05} preset="city" />
+                    {directionColor && <pointLight color="red" position={[0.5, -0.4, 1]} intensity={30.4} />}
+                    {/* <directionalLight  color="red" position={[0,-0.5,0]} /> */}
 
 
                     <Basket ref={setBasketObject} {...basketTransform} />
@@ -141,8 +183,8 @@ export default function Selencio() {
                     <Float enabled={false} speed={2} rotationIntensity={0.6} floatIntensity={1.5}>
                         <group>
 
-                        <Can ref={setCanObject} {...canTransform} />
-                            </group>
+                            <Can ref={setCanObject} {...canTransform} />
+                        </group>
                     </Float>
                 </Canvas>
             </div>
@@ -165,7 +207,7 @@ export default function Selencio() {
                     </div>
 
                     <div className="flex flex-col items-center">
-                        <h1 className="text-7xl md:text-9xl font-bold leading-[0.85] text-gray-900 tracking-tight">
+                        <h1 className="text-7xl md:text-9xl font-bold leading-[0.85]  tracking-tight">
                             محصولات
                             <br />
                             دیجیتال
@@ -196,25 +238,79 @@ export default function Selencio() {
                         برای تجربه خاص اسکرول کنید ↓
                     </p>
                 </section>
-                <SecondSection/>
-                <ThirdSection/>
-              
-                <section className="scanner h-svh w-svw flex justify-center items-center">
-                    <div className="scan-info">
-                        <div className="product-id">
-                            <h2>#32423423</h2>
+                <SecondSection />
+                <ThirdSection />
+
+                <section className="scanner h-svh w-svw p-10 flex justify-center items-center">
+                    <div
+                        dir="ltr"
+                        className="scan-info relative mx-auto flex h-[70vh] w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3"
+                    >
+                        {/* top row: number + vertical text */}
+                        <div className="scan-reveal flex items-start justify-between">
+                            <h2 className="text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
+                            <p className="text-[8px] tracking-[0.2em] [writing-mode:vertical-rl]">
+                                هویت کسب‌وکار خود را تازه کنید
+                            </p>
                         </div>
-                        <div className="product-description">
-                            <p>Product description goes here.</p>
+
+                        {/* left vertical tagline */}
+                        <p className="scan-reveal absolute left-2 top-1/2 -translate-y-1/2 rotate-180 text-[8px] tracking-[0.2em] [writing-mode:vertical-rl]">
+                            تفکر جسورانه به‌عنوان پایه
+                        </p>
+
+                        {/* middle space — the 3D can shows through */}
+                        <div className="flex-1" />
+
+                        {/* barcode + scan oval */}
+                        <div className="scan-reveal mb-2 flex items-end gap-2">
+                            <Image
+                                src="/images/selencio/barcode.svg"
+                                alt="barcode"
+                                width={160}
+                                height={40}
+                                className="h-8 w-36 object-fill"
+                            />
+                            <span className="h-5 w-9 rounded-[50%] border border-black/60" />
+                        </div>
+
+                        {/* bottom info columns */}
+                        <div className="scan-reveal flex items-start justify-between gap-3">
+                            <div className="w-[38%] text-[8px] leading-[1.3]">
+                                <p className="font-bold">برای</p>
+                                {[
+                                    ["اینوفرمیسم", "۸۵٪"],
+                                    ["نوآوری", "۹۱٪"],
+                                    ["سفارشی‌سازی", "۸۳٪"],
+                                    ["تفکر", "۹۲٪"],
+                                    ["تمایز", "۷۱٪"],
+                                    ["دقت", "۹۷٪"],
+                                    ["طراحی برای صفحه", "۹۶٪"],
+                                    ["پروژه‌های خسته‌کننده", "۰٪"],
+                                ].map(([label, value]) => (
+                                    <p key={label} className="flex justify-between font-medium">
+                                        <span>{label}</span>
+                                        <span>{value}</span>
+                                    </p>
+                                ))}
+                            </div>
+
+                            <p className="text-[9px] font-bold">۳۳۰ ملی‌لیتر</p>
+
+                            <div className="w-[34%] space-y-1 text-[8px] leading-[1.4]">
+                                <p>
+                                    <span className="font-bold">مواد تشکیل‌دهنده: </span>
+                                    مفهوم، نام‌گذاری، روایت داستان، هویت کلامی،
+                                    جایگاه‌سازی، هدف برند
+                                </p>
+                                <p>* مفاهیم تاریخ انقضا ندارند.</p>
+                                <p className="font-bold">
+                                    محصولات دیجیتال برای برندهای معاصر
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div className="scan-container"></div>
-                    <div className="barcode">
-                        <Image src="/barcode.png" alt="Barcode" width={200} height={50} />
-                    </div>
-                    <div className="purchased">
-                        <p>innovation approved</p>
-                    </div>
+                  
                 </section>
                 <section className="outro">
                     <h1>lorem ksfjdlk fsdkljsdiwe fwioeorfdskkjhsdbnf sjj</h1>
