@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 export const Can = forwardRef(function Can(props, ref) {
   const { nodes, materials } = useGLTF("/model/silencio/can_silencio_c.glb");
   return (
-    <group ref={ref} scale={0.01} {...props} dispose={null}>
+    <group ref={ref}  {...props} dispose={null}>
       <mesh
         geometry={nodes.Aluminum_Standard_Can_330ml_v_22.geometry}
         material={materials["Mat.002"]}

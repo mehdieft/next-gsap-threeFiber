@@ -10,6 +10,7 @@ import { Zumo } from "./zumo";
 import { Chocolatia } from "./chocolatia";
 import { Can } from './can';
 import { OrbitControls, Environment } from "@react-three/drei";
+import SecondSection from './secondSection';
 
 import gsap from "gsap";
 import scrollTrigger from "gsap/ScrollTrigger";
@@ -38,8 +39,8 @@ export default function Selencio() {
     const [bolsaObject, setBolsaObject] = useLoadedObject();
     const [canObject, setCanObject] = useLoadedObject();
     const isMobile =
-  typeof window !== "undefined" &&
-  window.matchMedia("(max-width: 768px)").matches;
+        typeof window !== "undefined" &&
+        window.matchMedia("(max-width: 768px)").matches;
     const basketTransform = useModelControls("Basket", {
         position: [0, -5, 0],
         rotation: [0, Math.PI, 0],
@@ -73,18 +74,26 @@ export default function Selencio() {
                 trigger: mainRef.current,
                 start: "top top",
                 end: "bottom bottom",
-                scrub: true,
+                scrub: 1,
                 markers: true,
+                onUpdate:(self)=>{
+
+                },
+            
+                    
             },
         });
+        timeline.to('.animate-fade',{opacity:0})
 
         timeline.to(canObject.rotation, {
-            x: `+=${Math.PI * 6}`,
-            ease: "none",
+            x: `+=${Math.PI * 4}`,
+            z: `+=${Math.PI * 4}`,
+            ease: "power1.inOut",
             duration: 4,
         }, 0);
+        // timeline.to(canObject.rotation,{x:0})
 
-        [ chocolatiaObject, bolsaObject, zumoObject]
+        [chocolatiaObject, bolsaObject, zumoObject]
             .filter(Boolean)
             .forEach((object) => {
                 timeline.to(object.position, {
@@ -107,7 +116,7 @@ export default function Selencio() {
         <>
             <Leva collapsed={false} />
             <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-gray-100">
-                <Canvas camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1,zoom: isMobile ? 0.5 : 1.4,}} >
+                <Canvas camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1, zoom: isMobile ? 0.5 : 1.4, }} >
                     {/* <Environment preset="sunset" /> */}
                     {/* <OrbitControls /> */}
                     <ambientLight intensity={2.5} />
@@ -115,9 +124,9 @@ export default function Selencio() {
                     <directionalLight position={[-5, 5, 5]} intensity={8} />
                     <Environment preset="city" />
 
-                  
-                        <Basket ref={setBasketObject} {...basketTransform} />
-                   
+
+                    <Basket ref={setBasketObject} {...basketTransform} />
+
 
                     <Float speed={2} rotationIntensity={1} floatIntensity={1}>
                         <Zumo ref={setZumoObject} {...zumoTransform} />
@@ -125,35 +134,69 @@ export default function Selencio() {
                     <Float speed={2} rotationIntensity={1} floatIntensity={1}>
                         <Chocolatia ref={setChocolatiaObject} {...chocolatiaTransform} />
                     </Float>
-                    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
+                    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
                         <Bolsa ref={setBolsaObject} {...bolsaTransform} />
                     </Float>
-                    <Float speed={2} rotationIntensity={0} floatIntensity={1}>
+                    <Float enabled={false} speed={2} rotationIntensity={0.6} floatIntensity={1.5}>
+                        <group>
+
                         <Can ref={setCanObject} {...canTransform} />
+                            </group>
                     </Float>
                 </Canvas>
             </div>
             <main ref={mainRef} className="relative z-10">
-                <section className=" relative hero w-svw h-svh gap-10 flex flex-col items-center justify-center text-center">
-                    <h1 className="absolute top-20">سلنسیو @دیجیتال</h1>
-                    <h1 className="text-7xl font-bold ">محصولات 
-                         <br /> 
-                         دیجیتال
-                    </h1>
-                    <div className="text-5xl p-1 gap-2 overflow-hidden flex justify-center items-center">
-                        <h1>برندسازی</h1>
-                        <Image src="/images/selencio/iso.svg" className="w-10" alt="Description" width={200} height={200} />
-                        <h1>و طراحی مدرن</h1>
+                <section className="relative hero w-svw h-svh flex flex-col items-center justify-center text-center px-6">
+
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2">
+                        <Image
+                            src="/images/selencio/barcode.svg"
+                            className="h-auto w-32 rotate-90"
+                            alt="barcode"
+                            width={400}
+                            height={150}
+                        />
                     </div>
-                    <p className="animate-fade opacity-1 absolute bottom-20">برای تجربه خاص اسکرول کنید</p>
+                    <div className="absolute top-10 left-0 w-full flex justify-center">
+                        <p className="text-sm uppercase tracking-wider">
+                            سلنسیو @ دیجیتال
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                        <h1 className="text-7xl md:text-9xl font-bold leading-[0.85] tracking-tight">
+                            محصولات
+                            <br />
+                            دیجیتال
+                        </h1>
+
+                        <div className="mt-8 flex items-center justify-center gap-3 text-3xl md:text-5xl font-medium">
+                            <span>برندسازی</span>
+
+                            <Image
+                                src="/images/selencio/iso.svg"
+                                className="w-8 md:w-10"
+                                alt=""
+                                width={200}
+                                height={200}
+                            />
+
+                            <span>و طراحی مدرن</span>
+                        </div>
+
+                        <p className="mt-10 max-w-sm text-base md:text-lg leading-relaxed">
+                            ما فقط محصول طراحی نمی‌کنیم،
+                            <br />
+                            ما تجربه خلق می‌کنیم.
+                        </p>
+                    </div>
+
+                    <p className="animate-fade absolute bottom-10 text-sm">
+                        برای تجربه خاص اسکرول کنید ↓
+                    </p>
                 </section>
-                <section className="info h-svh w-svw">
-                    <p>Lorem ipsum dolor sit amet</p>
-                    <p>Lorem ipsum dolor sit amet</p>
-                    <p>Lorem ipsum dolor sit amet</p>
-                    <p>Lorem ipsum dolor sit amet</p>
-                    <h2>loremsdkjhsd klsdhf;sfdfowiihf;dsfho;idhff ;seehfjsijeei</h2>
-                </section>
+                <SecondSection/>
+              
                 <section className="scanner h-svh w-svw flex justify-center items-center">
                     <div className="scan-info">
                         <div className="product-id">
