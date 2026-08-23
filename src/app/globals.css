@@ -105,3 +105,18 @@ html {
   width: 100vw !important;
   height: 100vh !important;
 }
+
+@theme {
+  --animate-fade: fade 2s ease-in-out infinite;
+}
+
+@keyframes fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
