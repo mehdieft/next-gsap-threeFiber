@@ -63,7 +63,7 @@ export default function Selencio() {
     });
     const canTransform = useModelControls("Can", {
         position: [0, 0, 0],
-        rotation: [0, 0, 0],
+        rotation: [0, 0, 1],
         scale: 0.01,
     });
     useGSAP(() => {
@@ -87,7 +87,7 @@ export default function Selencio() {
 
         timeline.to(canObject.rotation, {
             x: `+=${Math.PI * 4}`,
-            z: `+=${Math.PI * 4}`,
+            z: 0,
             ease: "power1.inOut",
             duration: 4,
         }, 0);

@@ -15,25 +15,48 @@ const categories = [
 
 export default function SecondSection() {
     const mainRef=useRef()
+    const categoriesRef=useRef()
+    const headlineRef=useRef()
     useGSAP(()=>{
+        gsap.from(categoriesRef.current.children, {
+            y: 40,
+            opacity: 0,
+            stagger: 0.08,
+            ease: "none",
+            scrollTrigger: {
+                trigger: categoriesRef.current,
+                start: "top 85%",
+                end: "top 45%",
+                scrub: 1,
+            },
+        });
 
-    },{})
+        gsap.from(".headline-line", {
+            yPercent: 110,
+            stagger: 0.15,
+            ease: "none",
+            scrollTrigger: {
+                trigger: headlineRef.current,
+                start: "top 80%",
+                end: "top 40%",
+                scrub: 1,
+            },
+        });
+
+    },{scope:mainRef})
   return (
     <section
     ref={mainRef}
       dir="rtl"
-      className="info relative mx-auto flex h-svh w-3/4 flex-col overflow-hidden items-center  justify-center px-6 text-[#111] md:px-20"
+      className="info relative mx-auto flex h-svh w-3/4 flex-col gap-40 overflow-hidden items-center pt-20  px-6 text-[#111] md:px-20"
     >
-      {/* selected works pill */}
-      <div className="absolute right-6 top-6 md:right-10 md:top-8">
-        <button className="flex items-center gap-1.5 rounded-full border border-black/60 px-4 py-1.5 text-[10px] tracking-widest transition-colors hover:bg-black hover:text-white">
-          کارهای منتخب
-          <FiArrowUpLeft className="text-sm" />
-        </button>
-      </div>
+  
 
       {/* categories row */}
-      <div className="grid grid-cols-2 gap-4 pt-24 md:grid-cols-4 md:pt-16">
+      <div
+        ref={categoriesRef}
+        className="grid grid-cols-2 gap-4 pt-24 md:grid-cols-4 md:pt-16"
+      >
         {categories.map((cat) => (
           <p
             key={cat.num}
@@ -47,40 +70,46 @@ export default function SecondSection() {
 
       {/* headline */}
       <div className="flex flex-1 flex-col justify-center">
-        <h2 className="space-y-1 text-4xl font-bold leading-none md:text-6xl lg:text-7xl">
-          <span className="flex items-center justify-between gap-2">
-            <span>®</span>
-            <span>سلنسیو</span>
-            <span>یک</span>
-            <span>استودیو</span>
-            <span>طراحی</span>
-            <span>متمرکز</span>
-            <span>بر</span>
-          </span>
-          <span className="flex items-center justify-between gap-2">
-            <span>زبان‌های</span>
-            <span>بصری</span>
-            <span>دیجیتال</span>
-            <span className="whitespace-nowrap text-center text-[8px] font-medium leading-[1.2] tracking-wide md:text-[10px]">
-              منحصربه‌فرد
-              <br />
-              نوآورانه و
-              <br />
-              ماندگار
+        <h2 ref={headlineRef} className="space-y-1 text-4xl font-bold leading-none md:text-6xl lg:text-7xl">
+          <span className="block overflow-hidden pb-[0.15em] -mb-[0.15em]">
+            <span className="headline-line flex items-center justify-between gap-2">
+              <span>®</span>
+              <span>سلنسیو</span>
+              <span>یک</span>
+              <span>استودیو</span>
+              <span>طراحی</span>
+              <span>متمرکز</span>
+              <span>بر</span>
             </span>
-            <span>برای</span>
-            <span>برندهای</span>
           </span>
-          <span className="flex items-center justify-between gap-2">
-            <span>جسور</span>
-            <span>و</span>
-            <span>خارج</span>
-            <span>از</span>
-            <span className="inline-flex items-center gap-2">
-              <FaFire className="text-[0.85em]" />
-              <FaExclamationTriangle className="text-[0.75em]" />
+          <span className="block overflow-hidden pb-[0.15em] -mb-[0.15em]">
+            <span className="headline-line flex items-center justify-between gap-2">
+              <span>زبان‌های</span>
+              <span>بصری</span>
+              <span>دیجیتال</span>
+              <span className="whitespace-nowrap text-center text-[8px] font-medium leading-[1.2] tracking-wide md:text-[10px]">
+                منحصربه‌فرد
+                <br />
+                نوآورانه و
+                <br />
+                ماندگار
+              </span>
+              <span>برای</span>
+              <span>برندهای</span>
             </span>
-            <span>هنجار</span>
+          </span>
+          <span className="block overflow-hidden pb-[0.15em] -mb-[0.15em]">
+            <span className="headline-line flex items-center justify-between gap-2">
+              <span>جسور</span>
+              <span>و</span>
+              <span>خارج</span>
+              <span>از</span>
+              <span className="inline-flex items-center gap-2">
+                <FaFire className="text-[0.85em]" />
+                <FaExclamationTriangle className="text-[0.75em]" />
+              </span>
+              <span>هنجار</span>
+            </span>
           </span>
         </h2>
 
