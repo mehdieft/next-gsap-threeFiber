@@ -85,7 +85,7 @@ export default function Selencio() {
             scrollTrigger: {
                 trigger: mainRef.current,
                 start: "top top",
-                end: "bottom bottom",
+                endTrigger:scannerRef.current,
                 scrub: true,
                 markers: false,
             },
@@ -115,10 +115,11 @@ export default function Selencio() {
             scrollTrigger: {
                 trigger: scannerRef.current,
                 start: 'top top',
-                end: "+=800",
+               
+                endTrigger:'.text2',
                 pin: true,
                 pinSpacing: true,
-                scrub: 1,
+                scrub: true,
                 markers: false,
                 onEnter: () => setdirectionColor(true),
                 onLeave: () => {
@@ -345,16 +346,14 @@ export default function Selencio() {
                     </div>
 
                 </section>
-                <section ref={outroRef} dir="rtl" className="outro flex min-h-[60svh] flex-col items-center justify-center px-6 py-24 text-center">
-                    <p className="silencio-meta mb-6 text-xs uppercase">سلنسیو @ دیجیتال</p>
-                    <h2 className="silencio-outro-title max-w-3xl text-4xl font-bold md:text-7xl">
-                        ایده‌ی بعدی شما،
-                        <br />
-                        تجربه‌ی بعدی ماست.
-                    </h2>
-                    <p className="silencio-body mt-8 max-w-md text-sm text-black/70 md:text-base">
-                        برای ساختن یک هویت دیجیتال متمایز آماده‌اید؟
-                    </p>
+                <section
+                    ref={outroRef}
+                    dir="rtl"
+                    className="outro relative flex min-h-[100svh] w-full flex-col justify-between overflow-hidden  px-5 py-6 text-black sm:px-8 sm:py-8 md:px-12 md:py-10"
+                >
+                    <h1 className="texe1 "> this is txt one </h1>
+                    <h1 className="text2 h-40">text2</h1>
+                 
                 </section>
             </main>
         </>
