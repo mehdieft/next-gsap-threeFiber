@@ -22,6 +22,58 @@ body {
 html {
   overflow-x: hidden;
 }
+
+.silencio-layout {
+  --silencio-ink: #111111;
+  --silencio-muted: rgba(17, 17, 17, 0.64);
+  color: var(--silencio-ink);
+  font-kerning: normal;
+  font-feature-settings: "kern", "liga", "calt";
+  text-rendering: optimizeLegibility;
+}
+
+.silencio-layout .silencio-display {
+  max-width: 9ch;
+  text-wrap: balance;
+  font-weight: 700;
+  line-height: 0.92;
+}
+
+.silencio-layout .silencio-subtitle {
+  text-wrap: balance;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.silencio-layout .silencio-body {
+  color: var(--silencio-muted);
+  font-weight: 400;
+  line-height: 1.9;
+  text-wrap: balance;
+}
+
+.silencio-layout .silencio-meta {
+  color: var(--silencio-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+.silencio-layout .silencio-scanner {
+  font-variant-numeric: tabular-nums;
+}
+
+.silencio-layout .silencio-scanner p,
+.silencio-layout .silencio-scanner span {
+  line-height: 1.55;
+}
+
+.silencio-layout .silencio-outro-title {
+  max-width: 14ch;
+  text-wrap: balance;
+  line-height: 1.15;
+}
 /* applying differenet styles for my ecommerce  */
 @layer base {
   .ecommerce {

@@ -1,14 +1,14 @@
 "use client";
 import Image from "next/image";
 import { Canvas } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
-import { Float } from "@react-three/drei";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { Environment, Float } from "@react-three/drei";
 import { Basket } from "./basket";
 import { Bolsa } from "./bolsa";
 import { Zumo } from "./zumo";
 import { Chocolatia } from "./chocolatia";
 import { Can } from './can';
-import { Environment } from "@react-three/drei";
+import { LoadingScreen } from './LoadingScreen';
 import SecondSection from './secondSection';
 import ThirdSection from "./thirdSection";
 
@@ -39,6 +39,7 @@ export default function Selencio() {
     const scannerInfoRef = useRef();
     const scannerNumberOneRef = useRef();
     const scannerNumberTwoRef = useRef();
+    const outroRef = useRef();
     const [basketObject, setBasketObject] = useLoadedObject();
     const [zumoObject, setZumoObject] = useLoadedObject();
     const [chocolatiaObject, setChocolatiaObject] = useLoadedObject();
@@ -85,7 +86,7 @@ export default function Selencio() {
                 trigger: mainRef.current,
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 6,
+                scrub: true,
                 markers: false,
             },
         });
@@ -96,7 +97,7 @@ export default function Selencio() {
                 x: `+=${Math.PI * 4}`,
                 z: 0,
                 ease: "power1.inOut",
-                duration: 6,
+                duration: 5,
             }, 0);
         }
 
@@ -115,17 +116,18 @@ export default function Selencio() {
                 trigger: scannerRef.current,
                 start: 'top top',
                 end: "+=800",
-
                 pin: true,
                 pinSpacing: true,
                 scrub: 1,
                 markers: false,
                 onEnter: () => setdirectionColor(true),
-                onLeave: () => setdirectionColor(false),
+                onLeave: () => {
+                    setdirectionColor(false)
+                },
                 onEnterBack: () => setdirectionColor(true),
                 onLeaveBack: () => setdirectionColor(false),
             },
-          
+
         })
 
         tl.from('.scan-reveal', {
@@ -158,10 +160,9 @@ export default function Selencio() {
             ease: "power2.in",
         });
         tl.to(scannerInfoRef.current, {
-            width: isMobile ? "42vw" : "12vw",
-            minWidth: isMobile ? "150px" : "0px",
-            height: isMobile ? "34vh" : "38vh",
-            x: isMobile ? "20vw" : "28vw",
+            scale: 0.18,
+            x: "28vw",
+            transformOrigin: "center center",
             duration: 1.2,
             ease: "power3.inOut",
         });
@@ -173,6 +174,8 @@ export default function Selencio() {
             opacity: 1,
             duration: 0.35,
         }, "<0.1");
+
+
     }, {
         scope: mainRef,
         dependencies: [
@@ -186,31 +189,32 @@ export default function Selencio() {
     return (
         <>
             {process.env.NODE_ENV === "development" && <Leva collapsed={false} />}
+            <LoadingScreen />
             <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-white">
                 <Canvas camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1, zoom: isMobile ? 0.5 : 1.4, }} >
-                    <ambientLight intensity={2.5} />
-                    <directionalLight position={[5, 5, 5]} intensity={8} />
-                    <directionalLight position={[-5, 5, 5]} intensity={8} />
-                    <Environment intensity={100.05} preset="city" />
-                    {directionColor && <pointLight color="red" position={[0.5, -0.4, 1]} intensity={30.4} />}
-                    <Basket ref={setBasketObject} {...basketTransform} />
+                    <Suspense fallback={null}>
+                        <ambientLight intensity={2.5} />
+                        <directionalLight position={[5, 5, 5]} intensity={8} />
+                        <directionalLight position={[-5, 5, 5]} intensity={8} />
+                        <Environment intensity={100.05} preset="city" />
+                        {directionColor && <pointLight color="red" position={[0.5, -0.4, 1]} intensity={30.4} />}
+                        <Basket ref={setBasketObject} {...basketTransform} />
 
-
-                    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-                        <Zumo ref={setZumoObject} {...zumoTransform} />
-                    </Float>
-                    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-                        <Chocolatia ref={setChocolatiaObject} {...chocolatiaTransform} />
-                    </Float>
-                    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-                        <Bolsa ref={setBolsaObject} {...bolsaTransform} />
-                    </Float>
-                    <Float enabled={false} speed={2} rotationIntensity={0.6} floatIntensity={1.5}>
-                        <group>
-
-                            <Can ref={setCanObject} {...canTransform} />
-                        </group>
-                    </Float>
+                        <Float speed={2} rotationIntensity={1} floatIntensity={1}>
+                            <Zumo ref={setZumoObject} {...zumoTransform} />
+                        </Float>
+                        <Float speed={2} rotationIntensity={1} floatIntensity={1}>
+                            <Chocolatia ref={setChocolatiaObject} {...chocolatiaTransform} />
+                        </Float>
+                        <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+                            <Bolsa ref={setBolsaObject} {...bolsaTransform} />
+                        </Float>
+                        <Float enabled={false} speed={2} rotationIntensity={0.6} floatIntensity={1.5}>
+                            <group>
+                                <Can ref={setCanObject} {...canTransform} />
+                            </group>
+                        </Float>
+                    </Suspense>
                 </Canvas>
             </div>
             <main ref={mainRef} className="relative z-10">
@@ -226,19 +230,19 @@ export default function Selencio() {
                         />
                     </div>
                     <div className="absolute top-10 left-0 w-full flex justify-center">
-                        <p className="text-sm uppercase tracking-wider">
+                        <p className="silencio-meta text-sm uppercase">
                             سلنسیو @ دیجیتال
                         </p>
                     </div>
 
                     <div className="flex flex-col items-center">
-                        <h1 className="text-7xl md:text-9xl font-bold leading-[0.85]  tracking-tight">
+                        <h1 className="silencio-display text-7xl md:text-9xl">
                             محصولات
                             <br />
                             دیجیتال
                         </h1>
 
-                        <div className="mt-8 flex items-center justify-center gap-3 text-3xl md:text-5xl font-medium">
+                        <div className="silencio-subtitle mt-8 flex items-center justify-center gap-3 text-3xl md:text-5xl">
                             <span>برندسازی</span>
 
                             <Image
@@ -252,7 +256,7 @@ export default function Selencio() {
                             <span>و طراحی مدرن</span>
                         </div>
 
-                        <p className="mt-10 max-w-sm text-base md:text-lg leading-relaxed">
+                        <p className="silencio-body mt-10 max-w-sm text-base md:text-lg">
                             ما فقط محصول طراحی نمی‌کنیم،
                             <br />
                             ما تجربه خلق می‌کنیم.
@@ -266,25 +270,25 @@ export default function Selencio() {
                 <SecondSection />
                 <ThirdSection />
 
-                <section ref={scannerRef} className="scanner h-svh w-svw p-10 flex justify-center items-center">
+                <section ref={scannerRef} className="scanner relative h-svh w-svw overflow-hidden p-10 flex justify-center items-center">
                     <div
                         dir="ltr"
                         ref={scannerInfoRef}
-                        className="scan-info relative mx-auto flex h-[70vh] w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3"
+                        className="silencio-scanner scan-info relative mx-auto flex h-[70vh] w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3"
                     >
                         {/* top row: number + vertical text */}
-                        <div className="scan-reveal flex items-start justify-between">
+                        <div className="flex items-start justify-between">
                             <div className="relative h-10 w-16">
                                 <h2 ref={scannerNumberOneRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
                                 <h2 ref={scannerNumberTwoRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight opacity-0">#۰۲</h2>
                             </div>
-                            <p className="text-[8px] tracking-[0.2em] [writing-mode:vertical-rl]">
+                            <p className="scan-reveal silencio-meta text-[8px] [writing-mode:vertical-rl]">
                                 هویت کسب‌وکار خود را تازه کنید
                             </p>
                         </div>
 
                         {/* left vertical tagline */}
-                        <p className="scan-reveal absolute left-2 top-1/2 -translate-y-1/2 rotate-180 text-[8px] tracking-[0.2em] [writing-mode:vertical-rl]">
+                        <p className="scan-reveal silencio-meta absolute left-2 top-1/2 -translate-y-1/2 rotate-180 text-[8px] [writing-mode:vertical-rl]">
                             تفکر جسورانه به‌عنوان پایه
                         </p>
 
@@ -339,16 +343,16 @@ export default function Selencio() {
                             </div>
                         </div>
                     </div>
-                  
+
                 </section>
-                <section dir="rtl" className="outro flex min-h-[60svh] flex-col items-center justify-center px-6 py-24 text-center">
-                    <p className="mb-6 text-xs uppercase tracking-[0.3em] text-black/60">سلنسیو @ دیجیتال</p>
-                    <h2 className="max-w-3xl text-4xl font-bold leading-tight md:text-7xl">
+                <section ref={outroRef} dir="rtl" className="outro flex min-h-[60svh] flex-col items-center justify-center px-6 py-24 text-center">
+                    <p className="silencio-meta mb-6 text-xs uppercase">سلنسیو @ دیجیتال</p>
+                    <h2 className="silencio-outro-title max-w-3xl text-4xl font-bold md:text-7xl">
                         ایده‌ی بعدی شما،
                         <br />
                         تجربه‌ی بعدی ماست.
                     </h2>
-                    <p className="mt-8 max-w-md text-sm leading-relaxed text-black/70 md:text-base">
+                    <p className="silencio-body mt-8 max-w-md text-sm text-black/70 md:text-base">
                         برای ساختن یک هویت دیجیتال متمایز آماده‌اید؟
                     </p>
                 </section>

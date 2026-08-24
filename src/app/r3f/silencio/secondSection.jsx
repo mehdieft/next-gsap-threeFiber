@@ -28,6 +28,7 @@ export default function SecondSection() {
                 start: "top 85%",
                 end: "top 45%",
                 scrub: 1,
+                once:true
             },
         });
 
@@ -40,6 +41,7 @@ export default function SecondSection() {
                 start: "top 80%",
                 end: "top 40%",
                 scrub: 1,
+                once:true
             },
         });
 

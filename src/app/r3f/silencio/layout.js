@@ -47,7 +47,7 @@ export default function Layout({ children }) {
     };
   }, []);
   return (
-    <div dir="rtl" className={samim.className}>
+    <div dir="rtl" className={`${samim.className} silencio-layout`}>
       <ReactLenis
         ref={lenisRef}
         root
