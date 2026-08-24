@@ -276,8 +276,8 @@ export default function Selencio() {
 
                         {/* bottom info columns */}
                         <div className="scan-reveal flex items-start justify-between gap-3">
-                            <div className="w-[38%] text-[8px] leading-[1.3]">
-                                <p className="font-bold">برای</p>
+                            <div className="w-[38%] text-[10px] leading-[1.3]">
+                                <p className="font-bold ">برای</p>
                                 {[
                                     ["اینوفرمیسم", "۸۵٪"],
                                     ["نوآوری", "۹۱٪"],
