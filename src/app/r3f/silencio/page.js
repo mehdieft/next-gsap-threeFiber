@@ -1,23 +1,22 @@
 "use client";
 import Image from "next/image";
 import { Canvas } from "@react-three/fiber";
-import { Pepsi } from "./pepsi";
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Float } from "@react-three/drei";
 import { Basket } from "./basket";
 import { Bolsa } from "./bolsa";
 import { Zumo } from "./zumo";
 import { Chocolatia } from "./chocolatia";
 import { Can } from './can';
-import { OrbitControls, Environment } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import SecondSection from './secondSection';
 import ThirdSection from "./thirdSection";
 
 import gsap from "gsap";
-import scrollTrigger from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Leva, useControls } from "leva";
-gsap.registerPlugin(scrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
 function useModelControls(name, defaults) {
     return useControls(name, {
@@ -34,15 +33,25 @@ function useLoadedObject() {
 
 export default function Selencio() {
     const [directionColor, setdirectionColor] = useState(false);
-    const mainRef = useRef()
+    const [isMobile, setIsMobile] = useState(false);
+    const mainRef = useRef();
+    const scannerRef = useRef();
+    const scannerInfoRef = useRef();
+    const scannerNumberOneRef = useRef();
+    const scannerNumberTwoRef = useRef();
     const [basketObject, setBasketObject] = useLoadedObject();
     const [zumoObject, setZumoObject] = useLoadedObject();
     const [chocolatiaObject, setChocolatiaObject] = useLoadedObject();
     const [bolsaObject, setBolsaObject] = useLoadedObject();
     const [canObject, setCanObject] = useLoadedObject();
-    const isMobile =
-        typeof window !== "undefined" &&
-        window.matchMedia("(max-width: 768px)").matches;
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 768px)");
+        const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+
+        updateIsMobile();
+        mediaQuery.addEventListener("change", updateIsMobile);
+        return () => mediaQuery.removeEventListener("change", updateIsMobile);
+    }, []);
     const basketTransform = useModelControls("Basket", {
         position: [0, -5, 0],
         rotation: [0, Math.PI, 0],
@@ -77,23 +86,19 @@ export default function Selencio() {
                 start: "top top",
                 end: "bottom bottom",
                 scrub: 6,
-                markers: true,
-                onUpdate: (self) => {
-
-                },
-
-
+                markers: false,
             },
         });
         timeline.to('.animate-fade', { opacity: 0 })
 
-        timeline.to(canObject.rotation, {
-            x: `+=${Math.PI * 4}`,
-            z: 0,
-            ease: "power1.inOut",
-            duration: 6,
-        }, 0);
-        // timeline.to(canObject.rotation,{x:0})
+        if (canObject) {
+            timeline.to(canObject.rotation, {
+                x: `+=${Math.PI * 4}`,
+                z: 0,
+                ease: "power1.inOut",
+                duration: 6,
+            }, 0);
+        }
 
         [chocolatiaObject, bolsaObject, zumoObject]
             .filter(Boolean)
@@ -107,19 +112,18 @@ export default function Selencio() {
 
         const tl = gsap.timeline({
             scrollTrigger: {
-                trigger: '.scanner',
+                trigger: scannerRef.current,
                 start: 'top top',
                 end: "+=800",
 
                 pin: true,
-                pinspacing: true,
+                pinSpacing: true,
                 scrub: 1,
-                markers: true,
-            }, onStart: () => {
-                setdirectionColor(true)
-            },
-            onLeave: () => {
-                setdirectionColor(false)
+                markers: false,
+                onEnter: () => setdirectionColor(true),
+                onLeave: () => setdirectionColor(false),
+                onEnterBack: () => setdirectionColor(true),
+                onLeaveBack: () => setdirectionColor(false),
             },
           
         })
@@ -135,14 +139,40 @@ export default function Selencio() {
             tl.to(canObject.rotation, {
                 y: `+=${Math.PI * 4}`,
                 ease: "none",
-            }, 0);
-            //   tl.to(canObject.scale, {
-            //       x: 0,
-            //       y: 0,
-            //       z: 0,
-            //       ease: "power2.in",
-            //   }, 0);
+                duration: 4,
+            });
+            tl.to(canObject.scale, {
+                x: 0,
+                y: 0,
+                z: 0,
+                ease: "power2.in",
+                duration: 0.8,
+            });
         }
+
+        tl.to('.scan-reveal', {
+            opacity: 0,
+            y: -24,
+            stagger: 0.05,
+            duration: 0.6,
+            ease: "power2.in",
+        });
+        tl.to(scannerInfoRef.current, {
+            width: isMobile ? "42vw" : "12vw",
+            minWidth: isMobile ? "150px" : "0px",
+            height: isMobile ? "34vh" : "38vh",
+            x: isMobile ? "20vw" : "28vw",
+            duration: 1.2,
+            ease: "power3.inOut",
+        });
+        tl.to(scannerNumberOneRef.current, {
+            opacity: 0,
+            duration: 0.25,
+        }, "<0.65");
+        tl.to(scannerNumberTwoRef.current, {
+            opacity: 1,
+            duration: 0.35,
+        }, "<0.1");
     }, {
         scope: mainRef,
         dependencies: [
@@ -155,19 +185,14 @@ export default function Selencio() {
     });
     return (
         <>
-            <Leva collapsed={false} />
+            {process.env.NODE_ENV === "development" && <Leva collapsed={false} />}
             <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-white">
                 <Canvas camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1, zoom: isMobile ? 0.5 : 1.4, }} >
-                    {/* <Environment preset="sunset" /> */}
-                    {/* <OrbitControls /> */}
                     <ambientLight intensity={2.5} />
                     <directionalLight position={[5, 5, 5]} intensity={8} />
                     <directionalLight position={[-5, 5, 5]} intensity={8} />
                     <Environment intensity={100.05} preset="city" />
                     {directionColor && <pointLight color="red" position={[0.5, -0.4, 1]} intensity={30.4} />}
-                    {/* <directionalLight  color="red" position={[0,-0.5,0]} /> */}
-
-
                     <Basket ref={setBasketObject} {...basketTransform} />
 
 
@@ -241,14 +266,18 @@ export default function Selencio() {
                 <SecondSection />
                 <ThirdSection />
 
-                <section className="scanner h-svh w-svw p-10 flex justify-center items-center">
+                <section ref={scannerRef} className="scanner h-svh w-svw p-10 flex justify-center items-center">
                     <div
                         dir="ltr"
+                        ref={scannerInfoRef}
                         className="scan-info relative mx-auto flex h-[70vh] w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3"
                     >
                         {/* top row: number + vertical text */}
                         <div className="scan-reveal flex items-start justify-between">
-                            <h2 className="text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
+                            <div className="relative h-10 w-16">
+                                <h2 ref={scannerNumberOneRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
+                                <h2 ref={scannerNumberTwoRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight opacity-0">#۰۲</h2>
+                            </div>
                             <p className="text-[8px] tracking-[0.2em] [writing-mode:vertical-rl]">
                                 هویت کسب‌وکار خود را تازه کنید
                             </p>
@@ -312,8 +341,16 @@ export default function Selencio() {
                     </div>
                   
                 </section>
-                <section className="outro">
-                    <h1>lorem ksfjdlk fsdkljsdiwe fwioeorfdskkjhsdbnf sjj</h1>
+                <section dir="rtl" className="outro flex min-h-[60svh] flex-col items-center justify-center px-6 py-24 text-center">
+                    <p className="mb-6 text-xs uppercase tracking-[0.3em] text-black/60">سلنسیو @ دیجیتال</p>
+                    <h2 className="max-w-3xl text-4xl font-bold leading-tight md:text-7xl">
+                        ایده‌ی بعدی شما،
+                        <br />
+                        تجربه‌ی بعدی ماست.
+                    </h2>
+                    <p className="mt-8 max-w-md text-sm leading-relaxed text-black/70 md:text-base">
+                        برای ساختن یک هویت دیجیتال متمایز آماده‌اید؟
+                    </p>
                 </section>
             </main>
         </>
