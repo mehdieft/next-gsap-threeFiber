@@ -74,18 +74,21 @@ export default function Selencio() {
         scale: 0.01,
     });
     const canTransform = useModelControls("Can", {
-        position: [0, 0, 0],
+        position: [0, 0.3, 0],
         rotation: [0, 0, 1],
         scale: 0.01,
     });
     useGSAP(() => {
+    
+         
+        
         if (!mainRef.current || !zumoObject) return;
 
         const timeline = gsap.timeline({
             scrollTrigger: {
                 trigger: mainRef.current,
                 start: "top top",
-                endTrigger:scannerRef.current,
+                endTrigger: scannerRef.current,
                 scrub: true,
                 markers: false,
             },
@@ -115,8 +118,8 @@ export default function Selencio() {
             scrollTrigger: {
                 trigger: scannerRef.current,
                 start: 'top top',
-               
-                endTrigger:'.text2',
+
+                endTrigger: '.text2',
                 pin: true,
                 pinSpacing: true,
                 scrub: true,
@@ -152,6 +155,16 @@ export default function Selencio() {
                 duration: 0.8,
             });
         }
+    //     tl.to(purchased, {
+    //     width: targetWidth,
+    //     duration: 1,
+    //     ease: "power2.inOut",
+    // });
+
+    // tl.to(purchasedText, {
+    //     opacity: 1,
+    //     duration: 0.2,
+    // });
 
         tl.to('.scan-reveal', {
             opacity: 0,
@@ -161,7 +174,10 @@ export default function Selencio() {
             ease: "power2.in",
         });
         tl.to(scannerInfoRef.current, {
-            scale: 0.18,
+            width: '96px',
+            minWidth: '0px',
+            height: '96px',
+            overflow: 'hidden',
             x: "28vw",
             transformOrigin: "center center",
             duration: 1.2,
@@ -192,7 +208,7 @@ export default function Selencio() {
             {process.env.NODE_ENV === "development" && <Leva collapsed={false} />}
             <LoadingScreen />
             <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-white">
-                <Canvas camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1, zoom: isMobile ? 0.5 : 1.4, }} >
+                <Canvas camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1, zoom: 1.4, }} >
                     <Suspense fallback={null}>
                         <ambientLight intensity={2.5} />
                         <directionalLight position={[5, 5, 5]} intensity={8} />
@@ -221,10 +237,10 @@ export default function Selencio() {
             <main ref={mainRef} className="relative z-10">
                 <section className="relative hero w-svw h-svh flex flex-col items-center justify-center text-center px-6">
 
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2">
+                    <div className="hidden md:absolute left-0 top-1/2 rotate-90 -translate-y-1/2">
                         <Image
                             src="/images/selencio/barcode.svg"
-                            className="h-auto w-32 rotate-90"
+                            className="h-auto w-32 "
                             alt="barcode"
                             width={400}
                             height={150}
@@ -271,11 +287,11 @@ export default function Selencio() {
                 <SecondSection />
                 <ThirdSection />
 
-                <section ref={scannerRef} className="scanner relative h-svh w-svw overflow-hidden p-10 flex justify-center items-center">
+                <section ref={scannerRef} className="scanner relative h-[80vh] w-svw overflow-hidden p-10 flex justify-center items-center">
                     <div
                         dir="ltr"
                         ref={scannerInfoRef}
-                        className="silencio-scanner scan-info relative mx-auto flex h-[70vh] w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3"
+                        className="silencio-scanner scan-info relative mx-auto flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3"
                     >
                         {/* top row: number + vertical text */}
                         <div className="flex items-start justify-between">
@@ -297,7 +313,7 @@ export default function Selencio() {
                         <div className="flex-1" />
 
                         {/* barcode + scan oval */}
-                        <div className="scan-reveal mb-2 flex items-end gap-2">
+                        <div className="scan-reveal mb-2 flex items-center gap-2">
                             <Image
                                 src="/images/selencio/barcode.svg"
                                 alt="barcode"
@@ -305,8 +321,11 @@ export default function Selencio() {
                                 height={40}
                                 className="h-8 w-36 object-fill"
                             />
-                            <span className="h-5 w-9 rounded-[50%] border border-black/60" />
-                        </div>
+                            <span className="purched inline-flex overflow-hidden whitespace-nowrap p-1 rounded-2xl border text-sm border-black/60 uppercase text-red-600 font-bold">
+                                <span className="purched-text opacity-0">
+                                    خریده شد
+                                </span>
+                            </span>                        </div>
 
                         {/* bottom info columns */}
                         <div className="scan-reveal flex items-start justify-between gap-3">
@@ -329,7 +348,6 @@ export default function Selencio() {
                                 ))}
                             </div>
 
-                            <p className="text-[9px] font-bold">۳۳۰ ملی‌لیتر</p>
 
                             <div className="w-[34%] space-y-1 text-[8px] leading-[1.4]">
                                 <p>
@@ -353,7 +371,7 @@ export default function Selencio() {
                 >
                     <h1 className="texe1 "> this is txt one </h1>
                     <h1 className="text2 h-40">text2</h1>
-                 
+
                 </section>
             </main>
         </>
