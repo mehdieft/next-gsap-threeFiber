@@ -12,7 +12,7 @@ export default function ThirdSection() {
           دیجیتال <br /> برندینگ
         </h1>
       </div>
-      <h1 className="text-3xl md:text-9xl text-gray-800 leading-[1.45] font-light text-center">
+      <h1 className="text-3xl md:text-9xl text-gray-950 leading-[1.45] font-light text-center">
         هر ایده‌ی خوب
         <br />
         <span className="inline-flex items-center gap-3">

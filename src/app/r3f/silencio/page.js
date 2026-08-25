@@ -7,9 +7,9 @@ import { Basket } from "./basket";
 import { Bolsa } from "./bolsa";
 import { Zumo } from "./zumo";
 import { Chocolatia } from "./chocolatia";
-import { Can } from './can';
-import { LoadingScreen } from './LoadingScreen';
-import SecondSection from './secondSection';
+import { Can } from "./can";
+import { LoadingScreen } from "./LoadingScreen";
+import SecondSection from "./secondSection";
 import ThirdSection from "./thirdSection";
 
 import gsap from "gsap";
@@ -78,143 +78,197 @@ export default function Selencio() {
         rotation: [0, 0, 1],
         scale: 0.01,
     });
-    useGSAP(() => {
-    
-         
-        
-        if (!mainRef.current || !zumoObject) return;
-
-        const timeline = gsap.timeline({
-            scrollTrigger: {
-                trigger: mainRef.current,
-                start: "top top",
-                endTrigger: scannerRef.current,
-                scrub: true,
-                markers: false,
-            },
-        });
-        timeline.to('.animate-fade', { opacity: 0 })
-
-        if (canObject) {
-            timeline.to(canObject.rotation, {
-                x: `+=${Math.PI * 4}`,
-                z: 0,
-                ease: "power1.inOut",
-                duration: 5,
-            }, 0);
-        }
-
-        [chocolatiaObject, bolsaObject, zumoObject]
-            .filter(Boolean)
-            .forEach((object) => {
-                timeline.to(object.position, {
-                    y: "+=8",
-                    ease: "power3.inOut",
-                    duration: 5,
-                }, 0);
+    useGSAP(
+        () => {
+            if (!mainRef.current || !zumoObject) return;
+            gsap.set(scannerNumberTwoRef.current, {
+                xPercent: -120,
             });
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: scannerRef.current,
-                start: 'top top',
-
-                endTrigger: '.text2',
-                pin: true,
-                pinSpacing: true,
-                scrub: true,
-                markers: false,
-                onEnter: () => setdirectionColor(true),
-                onLeave: () => {
-                    setdirectionColor(false)
+            const timeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: mainRef.current,
+                    start: "top top",
+                    endTrigger: scannerRef.current,
+                    scrub: true,
+                    markers: false,
                 },
-                onEnterBack: () => setdirectionColor(true),
-                onLeaveBack: () => setdirectionColor(false),
-            },
-
-        })
-
-        tl.from('.scan-reveal', {
-            y: 40,
-            opacity: 0,
-            stagger: 0.1,
-            ease: "power2.out",
-        });
-
-        if (canObject) {
-            tl.to(canObject.rotation, {
-                y: `+=${Math.PI * 4}`,
-                ease: "none",
-                duration: 4,
             });
-            tl.to(canObject.scale, {
-                x: 0,
-                y: 0,
-                z: 0,
+            timeline.to(".animate-fade", { opacity: 0 });
+
+            if (canObject) {
+                timeline.to(
+                    canObject.rotation,
+                    {
+                        x: `+=${Math.PI * 4}`,
+                        z: 0,
+                        ease: "power1.inOut",
+                        duration: 5,
+                    },
+                    0,
+                );
+            }
+
+            [chocolatiaObject, bolsaObject, zumoObject]
+                .filter(Boolean)
+                .forEach((object) => {
+                    timeline.to(
+                        object.position,
+                        {
+                            y: "+=8",
+                            ease: "power3.inOut",
+                            duration: 5,
+                        },
+                        0,
+                    );
+                });
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: scannerRef.current,
+                    start: "top top",
+
+                    endTrigger: ".text2",
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: true,
+                    markers: false,
+                    onEnter: () => setdirectionColor(true),
+                    onLeave: () => {
+                        setdirectionColor(false);
+                    },
+                    onEnterBack: () => setdirectionColor(true),
+                    onLeaveBack: () => setdirectionColor(false),
+                },
+            });
+
+            tl.from(".scan-reveal", {
+                y: 40,
+                opacity: 0,
+                stagger: 0.1,
+                ease: "power2.out",
+            });
+
+            if (canObject) {
+                tl.to(canObject.rotation, {
+                    y: `+=${Math.PI * 4}`,
+                    ease: "none",
+                    duration: 4,
+                });
+                tl.to(canObject.scale, {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                    ease: "power2.in",
+                    duration: 0.8,
+                });
+            }
+            //     tl.to(purchased, {
+            //     width: targetWidth,
+            //     duration: 1,
+            //     ease: "power2.inOut",
+            // });
+
+            // tl.to(purchasedText, {
+            //     opacity: 1,
+            //     duration: 0.2,
+            // });
+
+            tl.to(".scan-reveal", {
+                opacity: 0,
+                y: -24,
+                stagger: 0.05,
+                duration: 0.6,
                 ease: "power2.in",
-                duration: 0.8,
             });
-        }
-    //     tl.to(purchased, {
-    //     width: targetWidth,
-    //     duration: 1,
-    //     ease: "power2.inOut",
-    // });
+            tl.to(scannerInfoRef.current, {
+                width: "96px",
+                minWidth: "0px",
+                height: "96px",
+                overflow: "hidden",
 
-    // tl.to(purchasedText, {
-    //     opacity: 1,
-    //     duration: 0.2,
-    // });
+                transformOrigin: "center center",
+                duration: 1.2,
+                ease: "power3.inOut",
+            });
+            //add position change
+            tl.to(scannerInfoRef.current, {
+                x: '20vw',
+                duration: 1.2,
+                ease: 'power3.in'
+            });
+            //   tl.to(
+            //     scannerNumberOneRef.current,
+            //     {
+            //       opacity: 0,
+            //       duration: 0.25,
+            //     },
+            //     "<0.65",
+            //   );
+            //   tl.to(
+            //     scannerNumberTwoRef.current,
+            //     {
+            //       opacity: 1,
+            //       duration: 0.35,
+            //     },
+            //     "<0.1",
+            //   );
+            tl.to(
+                scannerNumberOneRef.current,
+                {
+                    xPercent: 120,
+                    duration: 1,
+                    ease: "power2.inOut",
+                }
+            );
 
-        tl.to('.scan-reveal', {
-            opacity: 0,
-            y: -24,
-            stagger: 0.05,
-            duration: 0.6,
-            ease: "power2.in",
-        });
-        tl.to(scannerInfoRef.current, {
-            width: '96px',
-            minWidth: '0px',
-            height: '96px',
-            overflow: 'hidden',
-            x: "28vw",
-            transformOrigin: "center center",
-            duration: 1.2,
-            ease: "power3.inOut",
-        });
-        tl.to(scannerNumberOneRef.current, {
-            opacity: 0,
-            duration: 0.25,
-        }, "<0.65");
-        tl.to(scannerNumberTwoRef.current, {
-            opacity: 1,
-            duration: 0.35,
-        }, "<0.1");
-
-
-    }, {
-        scope: mainRef,
-        dependencies: [
-            basketObject,
-            zumoObject,
-            chocolatiaObject,
-            bolsaObject,
-            canObject,
-        ],
-    });
+            tl.to(
+                scannerNumberTwoRef.current,
+                {
+                    xPercent: -3,
+                    duration: 1,
+                    ease: "power2.inOut",
+                },
+                "<"
+            );
+        },
+        {
+            scope: mainRef,
+            dependencies: [
+                basketObject,
+                zumoObject,
+                chocolatiaObject,
+                bolsaObject,
+                canObject,
+            ],
+        },
+    );
     return (
         <>
             {process.env.NODE_ENV === "development" && <Leva collapsed={false} />}
             <LoadingScreen />
             <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-white">
-                <Canvas camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1, zoom: 1.4, }} >
+                <Canvas
+                    camera={{
+                        position: [0, 0, 5],
+                        fov: 40,
+                        far: 20,
+                        near: 0.1,
+                        zoom: 1.4,
+                    }}
+                >
                     <Suspense fallback={null}>
                         <ambientLight intensity={2.5} />
                         <directionalLight position={[5, 5, 5]} intensity={8} />
                         <directionalLight position={[-5, 5, 5]} intensity={8} />
                         <Environment intensity={100.05} preset="city" />
-                        {directionColor && <pointLight color="red" position={[0.5, -0.4, 1]} intensity={30.4} />}
+                        {directionColor && (
+                            <pointLight
+                                color="red"
+                                position={[0.5, -0.4, 1]}
+                                intensity={30.4}
+                            />
+                        )}
                         <Basket ref={setBasketObject} {...basketTransform} />
 
                         <Float speed={2} rotationIntensity={1} floatIntensity={1}>
@@ -226,7 +280,12 @@ export default function Selencio() {
                         <Float speed={2} rotationIntensity={1} floatIntensity={2}>
                             <Bolsa ref={setBolsaObject} {...bolsaTransform} />
                         </Float>
-                        <Float enabled={false} speed={2} rotationIntensity={0.6} floatIntensity={1.5}>
+                        <Float
+                            enabled={false}
+                            speed={2}
+                            rotationIntensity={0.6}
+                            floatIntensity={1.5}
+                        >
                             <group>
                                 <Can ref={setCanObject} {...canTransform} />
                             </group>
@@ -236,7 +295,6 @@ export default function Selencio() {
             </div>
             <main ref={mainRef} className="relative z-10">
                 <section className="relative hero w-svw h-svh flex flex-col items-center justify-center text-center px-6">
-
                     <div className="hidden md:absolute left-0 top-1/2 rotate-90 -translate-y-1/2">
                         <Image
                             src="/images/selencio/barcode.svg"
@@ -247,9 +305,7 @@ export default function Selencio() {
                         />
                     </div>
                     <div className="absolute top-10 left-0 w-full flex justify-center">
-                        <p className="silencio-meta text-sm uppercase">
-                            سلنسیو @ دیجیتال
-                        </p>
+                        <p className="silencio-meta text-sm uppercase">سلنسیو @ دیجیتال</p>
                     </div>
 
                     <div className="flex flex-col items-center">
@@ -287,17 +343,31 @@ export default function Selencio() {
                 <SecondSection />
                 <ThirdSection />
 
-                <section ref={scannerRef} className="scanner relative h-[80vh] w-svw overflow-hidden p-10 flex justify-center items-center">
+                <section
+                    ref={scannerRef}
+                    className="scanner relative h-[80vh] w-svw overflow-hidden p-10 flex justify-center items-center"
+                >
                     <div
                         dir="ltr"
                         ref={scannerInfoRef}
                         className="silencio-scanner scan-info relative mx-auto flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3"
                     >
                         {/* top row: number + vertical text */}
-                        <div className="flex items-start justify-between">
-                            <div className="relative h-10 w-16">
-                                <h2 ref={scannerNumberOneRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
-                                <h2 ref={scannerNumberTwoRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight opacity-0">#۰۲</h2>
+                        <div className="flex  items-start justify-between">
+                            <div className="relative number-container h-10 w-16 overflow-hidden">
+                                <h2
+                                    ref={scannerNumberOneRef}
+                                    className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight"
+                                >
+                                    #۰۱
+                                </h2>
+
+                                <h2
+                                    ref={scannerNumberTwoRef}
+                                    className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight"
+                                >
+                                    #۰۲
+                                </h2>
                             </div>
                             <p className="scan-reveal silencio-meta text-[8px] [writing-mode:vertical-rl]">
                                 هویت کسب‌وکار خود را تازه کنید
@@ -321,11 +391,10 @@ export default function Selencio() {
                                 height={40}
                                 className="h-8 w-36 object-fill"
                             />
-                            <span className="purched inline-flex overflow-hidden whitespace-nowrap p-1 rounded-2xl border text-sm border-black/60 uppercase text-red-600 font-bold">
-                                <span className="purched-text opacity-0">
-                                    خریده شد
-                                </span>
-                            </span>                        </div>
+                            <span className="purched inline-flex overflow-hidden whitespace-nowrap py-1 px-3 rounded-xl border text-sm border-black/60 uppercase text-red-600 font-bold">
+                                <span className="purched-text  text-[16px]">خریده شد</span>
+                            </span>{" "}
+                        </div>
 
                         {/* bottom info columns */}
                         <div className="scan-reveal flex items-start justify-between gap-3">
@@ -348,30 +417,25 @@ export default function Selencio() {
                                 ))}
                             </div>
 
-
-                            <div className="w-[34%] space-y-1 text-[8px] leading-[1.4]">
+                            <div className="w-[34%] space-y-1 text-[10px] leading-[1.4]">
                                 <p>
                                     <span className="font-bold">مواد تشکیل‌دهنده: </span>
-                                    مفهوم، نام‌گذاری، روایت داستان، هویت کلامی،
-                                    جایگاه‌سازی، هدف برند
+                                    مفهوم، نام‌گذاری، روایت داستان، هویت کلامی، جایگاه‌سازی، هدف
+                                    برند
                                 </p>
-                                <p>* مفاهیم تاریخ انقضا ندارند.</p>
-                                <p className="font-bold">
-                                    محصولات دیجیتال برای برندهای معاصر
-                                </p>
+                                <p className="py-3 font-bold">* مفاهیم تاریخ انقضا ندارند.</p>
+                                <p className="font-bold">محصولات دیجیتال برای برندهای معاصر</p>
                             </div>
                         </div>
                     </div>
-
                 </section>
                 <section
                     ref={outroRef}
                     dir="rtl"
-                    className="outro relative flex min-h-[100svh] w-full flex-col justify-between overflow-hidden  px-5 py-6 text-black sm:px-8 sm:py-8 md:px-12 md:py-10"
+                    className="outro bg-red-400 relative flex min-h-[100svh] w-full flex-col justify-between overflow-hidden  px-5 py-6 text-black sm:px-8 sm:py-8 md:px-12 md:py-10"
                 >
                     <h1 className="texe1 "> this is txt one </h1>
                     <h1 className="text2 h-40">text2</h1>
-
                 </section>
             </main>
         </>
