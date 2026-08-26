@@ -81,6 +81,7 @@ export default function Selencio() {
     });
     useGSAP(
         () => {
+            const mm = gsap.matchMedia();
             if (!mainRef.current || !zumoObject) return;
             gsap.set(scannerNumberTwoRef.current, {
                 xPercent: -120,
@@ -234,18 +235,51 @@ export default function Selencio() {
                 "<"
             );
             //second object start 
-            const chips = gsap.timeline({
-                scrollTrigger: {
-                    trigger: outroRef.current,
-                    start: 'top bottom',
-                    end: '+=800',
-                    scrub: true,
-                    invalidateOnRefresh: true,
-                    markers: true,
-                    // scrub:true,
-                }
-            })
-            chips.to(zumoObject.position, { y: 0, duration: 1.2 })
+            mm.add("(min-width: 769px)", () => {
+                // DESKTOP
+                const chips = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: outroRef.current,
+                        start: "top bottom",
+                        end: "+=800",
+                        scrub: true,
+                        invalidateOnRefresh: true,
+                        markers: true,
+                    },
+                });
+
+                chips.to(zumoObject.position, {
+                    y: 0,
+                    duration: 1.2,
+                    ease: "none",
+                });
+            });
+            mm.add("(max-width: 768px)", () => {
+                // MOBILE
+                const chips = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: outroRef.current,
+                        start: "top 90%",
+                        end: "+=400",
+                        scrub: true,
+                        invalidateOnRefresh: true,
+                        markers: true,
+                    },
+                });
+
+                chips.to(zumoObject.position, {
+                    y: -0.5,
+                    x:0,
+                    duration: 1,
+                    ease: "none",
+                });
+                chips.to(zumoObject.rotation,{
+                    y:Math.PI*2.5,
+                    z:Math.PI/4,
+                    duration:2.3,
+                    ease:'power3.in'
+                })
+            });
         },
 
         {
@@ -478,7 +512,7 @@ export default function Selencio() {
                     </div>
 
                     {/* MIDDLE ROW: ICONS & TEXT */}
-                    <div className="w-1/2 mx-auto flex items-center justify-between my-8 md:my-10">
+                    <div className="w-full md:w-1/2 mx-auto flex items-center justify-between my-8 md:my-10">
                         {/* Icon boxes */}
                         <div className="flex items-center gap-2">
                             <div className="border border-black rounded-lg p-2 flex items-center justify-center w-10 h-10">
