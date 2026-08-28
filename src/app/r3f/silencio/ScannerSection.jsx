@@ -2,14 +2,18 @@
 
 import Image from "next/image";
 
-export default function ScannerSection({ scannerRef, scannerInfoRef, scannerNumberOneRef, scannerNumberTwoRef }) {
+export default function ScannerSection({ scannerRef, scannerId }) {
+    const infoId = `${scannerId}-info`;
+    const numberOneId = `${scannerId}-number-one`;
+    const numberTwoId = `${scannerId}-number-two`;
+
     return (
-        <section ref={scannerRef} className="scanner relative h-[80vh] w-svw overflow-hidden p-10 flex justify-end items-center">
-            <div dir="ltr" ref={scannerInfoRef} className="silencio-scanner scan-info relative mx-auto flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3">
+        <section id={scannerId} ref={scannerRef} className="scanner relative h-[80vh] w-svw overflow-hidden p-10 flex justify-end items-center">
+            <div dir="ltr" id={infoId} className="silencio-scanner scan-info relative mx-auto flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3">
                 <div className="flex items-start justify-between">
                     <div className="relative number-container h-10 w-16 overflow-hidden">
-                        <h2 ref={scannerNumberOneRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
-                        <h2 ref={scannerNumberTwoRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۲</h2>
+                        <h2 id={numberOneId} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
+                        <h2 id={numberTwoId} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۲</h2>
                     </div>
                     <p className="scan-reveal silencio-meta text-[8px] [writing-mode:vertical-rl]">هویت کسب‌وکار خود را تازه کنید</p>
                 </div>

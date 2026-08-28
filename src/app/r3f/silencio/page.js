@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { LoadingScreen } from "./LoadingScreen";
 import SecondSection from "./secondSection";
@@ -20,9 +21,6 @@ export default function Selencio() {
     const [stopScroll, setScrollStart] = useState(false)
     const mainRef = useRef();
     const scannerRef = useRef();
-    const scannerInfoRef = useRef();
-    const scannerNumberOneRef = useRef();
-    const scannerNumberTwoRef = useRef();
     const outroRef = useRef();
     const [objects, setObjects] = useState({});
     const { basketObject, zumoObject, chocolatiaObject, bolsaObject, canObject } = objects;
@@ -38,7 +36,7 @@ export default function Selencio() {
         () => {
             const mm = gsap.matchMedia();
             if (!mainRef.current || !zumoObject) return;
-            gsap.set(scannerNumberTwoRef.current, {
+            gsap.set("#scanner-primary-number-two", {
                 xPercent: -120,
             });
 
@@ -139,7 +137,7 @@ export default function Selencio() {
                 duration: 0.6,
                 ease: "power2.in",
             });
-            tl.to(scannerInfoRef.current, {
+            tl.to("#scanner-primary-info", {
                 width: "96px",
                 minWidth: "0px",
                 height: "96px",
@@ -150,29 +148,13 @@ export default function Selencio() {
                 ease: "power3.inOut",
             });
             //add position change
-            tl.to(scannerInfoRef.current, {
+            tl.to("#scanner-primary-info", {
                 x: '20vw',
                 duration: 1.2,
                 ease: 'power3.in'
             });
-            //   tl.to(
-            //     scannerNumberOneRef.current,
-            //     {
-            //       opacity: 0,
-            //       duration: 0.25,
-            //     },
-            //     "<0.65",
-            //   );
-            //   tl.to(
-            //     scannerNumberTwoRef.current,
-            //     {
-            //       opacity: 1,
-            //       duration: 0.35,
-            //     },
-            //     "<0.1",
-            //   );
             tl.to(
-                scannerNumberOneRef.current,
+                "#scanner-primary-number-one",
                 {
                     xPercent: 120,
                     duration: 1,
@@ -181,7 +163,7 @@ export default function Selencio() {
             );
 
             tl.to(
-                scannerNumberTwoRef.current,
+                "#scanner-primary-number-two",
                 {
                     xPercent: -3,
                     duration: 1,
@@ -197,7 +179,7 @@ export default function Selencio() {
                         trigger: outroRef.current,
                         start: "top bottom",
                         end: "top top",
-                        endTrigger:'.sandis-container',
+                        endTrigger: '.sandis-container',
                         scrub: true,
                         invalidateOnRefresh: true,
                         markers: true,
@@ -209,12 +191,28 @@ export default function Selencio() {
                     duration: 1.2,
                     ease: "none",
                 });
-                chips.to(zumoObject.rotation,{
-                    z:Math.PI*2,
-                    y:Math.PI*2,
-                    duration:4,
-                    ease:'none'
-                },'<0.4')
+                chips.to(zumoObject.rotation, {
+                    z: Math.PI * 2,
+                    y: Math.PI * 2,
+                    duration: 4,
+                    ease: 'none'
+                }, '<0.4')
+                const tl2 = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '.sandis-container',
+                        start: 'top top',
+                        endTrigger: '.kos',
+                        pin: true,
+                        scrub: true,
+                        pinSpacing: true
+
+                    }
+                })
+                tl2.to('.madar', {
+                    x: -100,
+                    duration: 10,
+                    ease: "power2.inOut",
+                })
             });
             mm.add("(max-width: 768px)", () => {
                 // MOBILE
@@ -223,7 +221,7 @@ export default function Selencio() {
                         trigger: outroRef.current,
                         start: "top 90%",
                         end: "top top",
-                        endTrigger:'.sandis-container',
+                        endTrigger: '.sandis-container',
                         scrub: true,
                         invalidateOnRefresh: true,
                         markers: true,
@@ -232,15 +230,15 @@ export default function Selencio() {
 
                 chips.to(zumoObject.position, {
                     y: -0.5,
-                    x:0,
+                    x: 0,
                     duration: 1,
                     ease: "none",
                 });
-                chips.to(zumoObject.rotation,{
-                    y:Math.PI*2.5,
-                    z:Math.PI/4,
-                    duration:2.3,
-                    ease:'power3.in'
+                chips.to(zumoObject.rotation, {
+                    y: Math.PI * 2.5,
+                    z: Math.PI / 4,
+                    duration: 2.3,
+                    ease: 'power3.in'
                 })
             });
         },
@@ -265,11 +263,43 @@ export default function Selencio() {
                 <HeroSection stopScroll={stopScroll} />
                 <SecondSection />
                 <ThirdSection />
-                <ScannerSection scannerRef={scannerRef} scannerInfoRef={scannerInfoRef} scannerNumberOneRef={scannerNumberOneRef} scannerNumberTwoRef={scannerNumberTwoRef} />
+                <ScannerSection scannerId="scanner-primary" scannerRef={scannerRef} />
                 <OutroSection outroRef={outroRef} />
-                <div className="sandis-container relative w-full h-svh " >
+                <div className="sandis-container relative w-full h-svh">
+                    <div className="absolute madar right-20 top-1/2  -translate-y-1/2 flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3">
+                        <div dir="ltr" className="silencio-scanner scan-info relative mx-auto flex h-full w-full min-w-0 flex-col justify-between">
+                            <div className="flex items-start justify-between">
+                                <div className="relative number-container h-10 w-16 overflow-hidden">
+                                    <h2 id="scanner-number-one" className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
+                                    <h2 id="scanner-number-two" className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۲</h2>
+                                </div>
+                                <p className="scan-reveal silencio-meta text-[8px] [writing-mode:vertical-rl]">هویت کسب‌وکار خود را تازه کنید</p>
+                            </div>
+                            <p className="scan-reveal silencio-meta absolute left-2 top-1/2 -translate-y-1/2 rotate-180 text-[8px] [writing-mode:vertical-rl]">تفکر جسورانه به‌عنوان پایه</p>
+                            <div className="flex-1" />
+                            <div className="scan-reveal mb-2 flex items-center gap-2">
+                                <Image src="/images/selencio/barcode.svg" alt="barcode" width={160} height={40} className="h-8 w-36 object-fill" />
+                                <span className="purched inline-flex overflow-hidden whitespace-nowrap py-2 px-2 rounded-xl border text-sm border-black/60 uppercase text-red-600 font-bold" />
+                            </div>
+                            <div className="scan-reveal flex items-start justify-between gap-3">
+                                <div className="w-[38%] text-[10px] leading-[1.3]">
+                                    <p className="font-bold">برای</p>
+                                    {[
+                                        ["اینوفرمیسم", "۸۵٪"], ["نوآوری", "۹۱٪"], ["سفارشی‌سازی", "۸۳٪"], ["تفکر", "۹۲٪"],
+                                        ["تمایز", "۷۱٪"], ["دقت", "۹۷٪"], ["طراحی برای صفحه", "۹۶٪"], ["پروژه‌های خسته‌کننده", "۰٪"],
+                                    ].map(([label, value]) => <p key={label} className="flex justify-between font-medium"><span>{label}</span><span>{value}</span></p>)}
+                                </div>
+                                <div className="w-[34%] space-y-1 text-[10px] leading-[1.4]">
+                                    <p><span className="font-bold">مواد تشکیل‌دهنده: </span>مفهوم، نام‌گذاری، روایت داستان، هویت کلامی، جایگاه‌سازی، هدف برند</p>
+                                    <p className="py-3 font-bold">* مفاهیم تاریخ انقضا ندارند.</p>
+                                    <p className="font-bold">محصولات دیجیتال برای برندهای معاصر</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
+                <div className="kos">kos</div>
             </main>
         </>
     );
