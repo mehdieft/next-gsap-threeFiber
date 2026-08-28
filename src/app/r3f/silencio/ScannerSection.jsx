@@ -2,14 +2,23 @@
 
 import Image from "next/image";
 
-export default function ScannerSection({ scannerRef, scannerId }) {
+export default function ScannerSection({ scannerRef, scannerId, position }) {
     const infoId = `${scannerId}-info`;
     const numberOneId = `${scannerId}-number-one`;
     const numberTwoId = `${scannerId}-number-two`;
+    const positionClass = {
+        left: "left-10",
+        center: "left-1/2 -translate-x-1/2",
+        right: "right-10",
+    }[position] ?? "left-1/2 -translate-x-1/2";
 
     return (
-        <section id={scannerId} ref={scannerRef} className="scanner relative h-[80vh] w-svw overflow-hidden p-10 flex justify-end items-center">
-            <div dir="ltr" id={infoId} className="silencio-scanner scan-info relative mx-auto flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3">
+        <section
+            id={scannerId}
+            ref={scannerRef}
+            className="scanner relative h-[80vh] w-svw overflow-hidden p-10"
+        >
+            <div dir="ltr" id={infoId} className={`silencio-scanner scan-info absolute top-1/2 translate-y-1/2 flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}>
                 <div className="flex items-start justify-between">
                     <div className="relative number-container h-10 w-16 overflow-hidden">
                         <h2 id={numberOneId} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
