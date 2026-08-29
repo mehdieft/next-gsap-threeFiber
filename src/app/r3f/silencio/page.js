@@ -161,7 +161,7 @@ export default function Selencio() {
                 <OutroSection outroRef={outroRef} />
                 <div className="sandis-container relative "/
                 >
-                <ScannerSection scannerId="scanner-secondary" position="right" modelRef={zumoObject} />
+                <ScannerSection scannerId="scanner-secondary" count={2} position="right" modelRef={zumoObject} />
 
                 
                 <div className="h-svh w-svw bg-red-400">kos</div>

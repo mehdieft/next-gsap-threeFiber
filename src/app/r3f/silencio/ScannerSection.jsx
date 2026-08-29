@@ -8,24 +8,36 @@ import { useRef } from "react";
 import useSelencio from "../../store/useSelencio";
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ScannerSection({ modelRef, scannerId, position }) {
+export default function ScannerSection({
+  modelRef,
+  scannerId,
+  position,
+  count = 1,
+}) {
   const { turnOnTheLight, turnOffTheLight } = useSelencio();
 
+  const sound = new Audio("/sound/checkout.mp3");
   const containerRef = useRef();
   const scannerRef = useRef();
   const endRef = useRef();
   const infoRef = useRef();
   const numberOneRef = useRef();
   const numberTwoRef = useRef();
+  const purchasedRef = useRef();
+  const purchasedTextRef = useRef();
+  const hasPlayedPurchaseAnimationRef = useRef(false);
   const positionClass =
     {
       left: "left-1/2 -translate-x-1/2 md:left-10 md:translate-x-0",
       center: "left-1/2 -translate-x-1/2",
-      right: "left-1/2 -translate-x-1/2 md:left-auto md:right-10 md:translate-x-0",
+      right:
+        "left-1/2 -translate-x-1/2 md:left-auto md:right-10 md:translate-x-0",
     }[position] ?? "left-1/2 -translate-x-1/2";
+
   useGSAP(
     () => {
       if (!containerRef.current || !scannerRef.current) return;
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: scannerRef.current,
@@ -44,6 +56,42 @@ export default function ScannerSection({ modelRef, scannerId, position }) {
 
       const select = gsap.utils.selector(containerRef);
 
+      // اندازه‌ی طبیعی span (قبل از هرگونه دستکاری) را می‌خوانیم
+      const purchasedWidth =
+        purchasedRef.current?.getBoundingClientRect().width;
+      const purchasedHeight =
+        purchasedRef.current?.getBoundingClientRect().height;
+
+      // حالت اولیه: یک دایره‌ی کامل و بدون متن
+      gsap.set(purchasedRef.current, {
+        width: purchasedHeight,
+        paddingLeft: 0,
+        paddingRight: 0,
+        borderColor: "rgba(0, 0, 0, 0.6)",
+        borderRadius: "9999px",
+      });
+      gsap.set(purchasedTextRef.current, { autoAlpha: 0 });
+
+      const purchaseTimeline = gsap
+        .timeline({ paused: true })
+        .to(purchasedRef.current, {
+          width: purchasedWidth,
+          paddingLeft: "0.5rem",
+          paddingRight: "0.5rem",
+          borderRadius: "0.75rem",
+          duration: 7,
+          ease: "power2.inOut",
+        })
+        .call(() => {
+          sound.currentTime = 0;
+          sound.play();
+        })
+        .to(purchasedTextRef.current, {
+          autoAlpha: 1,
+          duration: 1,
+          ease: "power1.out",
+        });
+
       tl.from(select(".scan-reveal"), {
         y: 40,
         opacity: 0,
@@ -57,6 +105,18 @@ export default function ScannerSection({ modelRef, scannerId, position }) {
           ease: "none",
           duration: 8,
         });
+
+        tl.call(
+          () => {
+            if (hasPlayedPurchaseAnimationRef.current) return;
+
+            hasPlayedPurchaseAnimationRef.current = true;
+            purchaseTimeline.play(0);
+          },
+          [],
+          "<",
+        );
+
         tl.to(modelRef.scale, {
           x: 0,
           y: 0,
@@ -65,16 +125,6 @@ export default function ScannerSection({ modelRef, scannerId, position }) {
           duration: 1.8,
         });
       }
-      //     tl.to(purchased, {
-      //     width: targetWidth,
-      //     duration: 1,
-      //     ease: "power2.inOut",
-      // });
-
-      // tl.to(purchasedText, {
-      //     opacity: 1,
-      //     duration: 0.2,
-      // });
 
       tl.to(select(".scan-reveal"), {
         opacity: 0,
@@ -88,12 +138,11 @@ export default function ScannerSection({ modelRef, scannerId, position }) {
         minWidth: "0px",
         height: "96px",
         overflow: "hidden",
-
         transformOrigin: "center center",
         duration: 1.2,
         ease: "power3.inOut",
       });
-      //add position change
+      // add position change
       tl.to(infoRef.current, {
         x:
           {
@@ -101,14 +150,18 @@ export default function ScannerSection({ modelRef, scannerId, position }) {
             center: "20vw",
             right: "-20vw",
           }[position] ?? "0vw",
-        duration: 1.2,
+        duration: 3.2,
         ease: "power3.in",
       });
-      tl.to(numberOneRef.current, {
-        xPercent: 120,
-        duration: 1,
-        ease: "power2.inOut",
-      });
+      tl.to(
+        numberOneRef.current,
+        {
+          xPercent: 120,
+          duration: 3.2,
+          ease: "power2.inOut",
+        },
+        "<",
+      );
 
       tl.to(
         numberTwoRef.current,
@@ -141,13 +194,13 @@ export default function ScannerSection({ modelRef, scannerId, position }) {
                 ref={numberOneRef}
                 className="w-full  text-3xl font-bold leading-none tracking-tight"
               >
-                #۰۱
+                #۰{count}
               </h2>
               <h2
                 ref={numberTwoRef}
                 className="absolute -left-full top-0 text-3xl font-bold leading-none tracking-tight"
               >
-                #۰۲
+                #۰{count + 1}
               </h2>
             </div>
             <p className="scan-reveal silencio-meta text-[8px] [writing-mode:vertical-rl]">
@@ -166,7 +219,12 @@ export default function ScannerSection({ modelRef, scannerId, position }) {
               height={40}
               className="h-8 w-36 object-fill"
             />
-            <span className="purched inline-flex overflow-hidden whitespace-nowrap py-2 px-2 rounded-xl border text-sm border-black/60 uppercase text-red-600 font-bold" />
+            <span
+              ref={purchasedRef}
+              className="purched inline-flex overflow-hidden whitespace-nowrap rounded-xl border border-black/60 py-2 px-2 text-sm font-bold uppercase text-red-600"
+            >
+              <span ref={purchasedTextRef}>خریده شد</span>
+            </span>
           </div>
           <div className="scan-reveal flex items-start justify-between gap-3">
             <div className="w-[38%] text-[10px] leading-[1.3]">
