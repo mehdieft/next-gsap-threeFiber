@@ -131,11 +131,11 @@ export default function ScannerSection({ modelRef, scannerId, position }) {
             ref={scannerRef}
             className="scanner relative   h-svh w-svw overflow-hidden p-10"
         >
-            <div ref={infoRef} dir="ltr" className={`silencio-scanner scan-info absolute top-1/2 -translate-y-1/2 flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}>
+            <div ref={infoRef} dir="ltr" className={`silencio-scanner scan-info absolute top-1/2 -translate-y-1/2 flex h-[70vh] w-[90vw] md:w-[30vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}>
                 <div className="flex items-start justify-between">
                     <div className="relative number-container h-10 w-16 overflow-hidden">
                         <h2 ref={numberOneRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
-                        <h2 ref={numberTwoRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۲</h2>
+                        <h2 ref={numberTwoRef} className="absolute -left-full top-0 text-4xl font-bold leading-none tracking-tight">#۰۲</h2>
                     </div>
                     <p className="scan-reveal silencio-meta text-[8px] [writing-mode:vertical-rl]">هویت کسب‌وکار خود را تازه کنید</p>
                 </div>

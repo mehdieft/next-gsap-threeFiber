@@ -140,8 +140,8 @@ export default function CanvasScene({ directionColor, onObjectsChange }) {
           <Float
             enabled={true}
             speed={2}
-            rotationIntensity={0.6}
-            floatIntensity={1.5}
+            rotationIntensity={1.2}
+            floatIntensity={0.5}
           >
             <group>
               <Can ref={setCanObject} {...canTransform} />
