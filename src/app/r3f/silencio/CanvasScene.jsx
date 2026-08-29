@@ -2,6 +2,7 @@
 
 import { Canvas,useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useState } from "react";
+import useSelencio from "../../store/useSelencio";
 import { Environment, Float } from "@react-three/drei";
 import { Basket } from "./basket";
 import { Bolsa } from "./bolsa";
@@ -57,7 +58,8 @@ function useLoadedObject() {
   return [object, setObject];
 }
 
-export default function CanvasScene({ directionColor, onObjectsChange }) {
+export default function CanvasScene({ onObjectsChange }) {
+  const { redLight } = useSelencio();
 
   const [basketObject, setBasketObject] = useLoadedObject();
   const [zumoObject, setZumoObject] = useLoadedObject();
@@ -120,7 +122,7 @@ export default function CanvasScene({ directionColor, onObjectsChange }) {
           <directionalLight position={[5, 5, 5]} intensity={8} />
           <directionalLight position={[-5, 5, 5]} intensity={8} />
           {/* <Environment intensity={100.05} preset="city" /> */}
-          {directionColor && (
+          {redLight && (
             <pointLight
               color="red"
               position={[0.5, -0.4, 1]}
