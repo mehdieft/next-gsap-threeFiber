@@ -1,28 +1,141 @@
 "use client";
 
 import Image from "next/image";
+import gsap from 'gsap';
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
+gsap.registerPlugin(ScrollTrigger)
 
-export default function ScannerSection({ scannerRef, scannerId, position }) {
-    const infoId = `${scannerId}-info`;
-    const numberOneId = `${scannerId}-number-one`;
-    const numberTwoId = `${scannerId}-number-two`;
+export default function ScannerSection({ modelRef, scannerId, position }) {
+  
+    const containerRef=useRef()
+    const scannerRef=useRef()
+    const endRef = useRef()
+    const infoRef = useRef()
+    const numberOneRef = useRef()
+    const numberTwoRef = useRef()
     const positionClass = {
         left: "left-10",
         center: "left-1/2 -translate-x-1/2",
-        right: "right-10",
+        right: "right-10 top-1/2",
     }[position] ?? "left-1/2 -translate-x-1/2";
+            useGSAP(()=>{
+                if (!containerRef.current || !scannerRef.current)
+            return
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: scannerRef.current,
+                    start: "top top",
+                    endTrigger: endRef.current,
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: true,
+                    markers: false,
+                    // onEnter: () => setdirectionColor(true),
+                    // onLeave: () => {
+                    //     setdirectionColor(false);
+                    // },
+                    // onEnterBack: () => setdirectionColor(true),
+                    // onLeaveBack: () => setdirectionColor(false),
+                },
+            });
+
+            const select = gsap.utils.selector(containerRef)
+
+            tl.from(select(".scan-reveal"), {
+                y: 40,
+                opacity: 0,
+                stagger: 0.1,
+                ease: "power2.out",
+            });
+
+            if (modelRef) {
+                tl.to(modelRef.rotation, {
+                    y: `+=${Math.PI * 4}`,
+                    ease: "none",
+                    duration: 4,
+                });
+                tl.to(modelRef.scale, {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                    ease: "power2.in",
+                    duration: 0.8,
+                });
+            }
+            //     tl.to(purchased, {
+            //     width: targetWidth,
+            //     duration: 1,
+            //     ease: "power2.inOut",
+            // });
+
+            // tl.to(purchasedText, {
+            //     opacity: 1,
+            //     duration: 0.2,
+            // });
+
+
+            tl.to(select(".scan-reveal"), {
+                opacity: 0,
+                y: -24,
+                stagger: 0.05,
+                duration: 1.6,
+                ease: "power2.in",
+            });
+            tl.to(infoRef.current, {
+                width: "96px",
+                minWidth: "0px",
+                height: "96px",
+                overflow: "hidden",
+
+                transformOrigin: "center center",
+                duration: 1.2,
+                ease: "power3.inOut",
+            });
+            //add position change
+            tl.to(infoRef.current, {
+                x: {
+                    left: "20vw",
+                    center: "20vw",
+                    right: "-20vw",
+                }[position] ?? "0vw",
+                duration: 1.2,
+                ease: 'power3.in'
+            });
+            tl.to(
+                numberOneRef.current,
+                {
+                    xPercent: 120,
+                    duration: 1,
+                    ease: "power2.inOut",
+                }
+            );
+
+            tl.to(
+                numberTwoRef.current,
+                {
+                    xPercent: -3,
+                    duration: 1,
+                    ease: "power2.inOut",
+                },
+                "<"
+            );
+
+    }, { scope: containerRef, dependencies: [modelRef], revertOnUpdate: true })
 
     return (
+        <div ref={containerRef}>
         <section
             id={scannerId}
             ref={scannerRef}
-            className="scanner relative h-[80vh] w-svw overflow-hidden p-10"
+            className="scanner relative   h-svh w-svw overflow-hidden p-10"
         >
-            <div dir="ltr" id={infoId} className={`silencio-scanner scan-info absolute top-1/2 translate-y-1/2 flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}>
+            <div ref={infoRef} dir="ltr" className={`silencio-scanner scan-info absolute top-1/2 -translate-y-1/2 flex h-[70vh] w-[90vw] md:w-[20vw] min-w-[320px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}>
                 <div className="flex items-start justify-between">
                     <div className="relative number-container h-10 w-16 overflow-hidden">
-                        <h2 id={numberOneId} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
-                        <h2 id={numberTwoId} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۲</h2>
+                        <h2 ref={numberOneRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۱</h2>
+                        <h2 ref={numberTwoRef} className="absolute left-0 top-0 text-4xl font-bold leading-none tracking-tight">#۰۲</h2>
                     </div>
                     <p className="scan-reveal silencio-meta text-[8px] [writing-mode:vertical-rl]">هویت کسب‌وکار خود را تازه کنید</p>
                 </div>
@@ -48,5 +161,7 @@ export default function ScannerSection({ scannerRef, scannerId, position }) {
                 </div>
             </div>
         </section>
+        <div ref={endRef} className="end-animation"></div>
+        </div>
     );
 }

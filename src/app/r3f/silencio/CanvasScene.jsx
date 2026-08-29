@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas,useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useState } from "react";
 import { Environment, Float } from "@react-three/drei";
 import { Basket } from "./basket";
@@ -9,8 +9,42 @@ import { Zumo } from "./zumo";
 import { Chocolatia } from "./chocolatia";
 import { Can } from "./can";
 import { useControls } from "leva";
+function ResponsiveCamera() {
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    const aspect = size.width / size.height;
+    console.log("this is aspect:", aspect);
+
+    if (aspect < 0.7) {
+      // Mobile portrait
+      // eslint-disable-next-line react-hooks/immutability
+      camera.fov = 52;
+      camera.position.set(0, 0, 5);
+    } else if (aspect < 1) {
+      // Tablet portrait
+      camera.fov = 47;
+      camera.position.set(0, 0, 6);
+    } else if (aspect > 1.7) {
+      // Very wide desktop
+      
+      camera.fov = 20;
+      camera.position.set(0, 0, 5);
+    } else {
+      // Normal desktop/tablet landscape
+      camera.fov = 30;
+      camera.position.set(0, 0, 5);
+    }
+
+    camera.updateProjectionMatrix();
+  }, [camera, size]);
+
+  return null;
+}
 
 function useModelControls(name, defaults) {
+
+  
   return useControls(name, {
     position: { value: defaults.position, step: 0.1 },
     rotation: { value: defaults.rotation, step: 0.1 },
@@ -24,11 +58,13 @@ function useLoadedObject() {
 }
 
 export default function CanvasScene({ directionColor, onObjectsChange }) {
+
   const [basketObject, setBasketObject] = useLoadedObject();
   const [zumoObject, setZumoObject] = useLoadedObject();
   const [chocolatiaObject, setChocolatiaObject] = useLoadedObject();
   const [bolsaObject, setBolsaObject] = useLoadedObject();
   const [canObject, setCanObject] = useLoadedObject();
+
 
   useEffect(() => {
     onObjectsChange({
@@ -76,13 +112,14 @@ export default function CanvasScene({ directionColor, onObjectsChange }) {
   return (
     <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-white">
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 40, far: 20, near: 0.1, zoom: 1.4 }}
+        camera={{ position: [0, 0, 5], fov: 40 }}
       >
+        <ResponsiveCamera />
         <Suspense fallback={null}>
           <ambientLight intensity={2.5} />
           <directionalLight position={[5, 5, 5]} intensity={8} />
           <directionalLight position={[-5, 5, 5]} intensity={8} />
-          <Environment intensity={100.05} preset="city" />
+          {/* <Environment intensity={100.05} preset="city" /> */}
           {directionColor && (
             <pointLight
               color="red"
