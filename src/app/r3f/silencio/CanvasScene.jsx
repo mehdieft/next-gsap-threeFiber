@@ -121,14 +121,28 @@ export default function CanvasScene({ onObjectsChange }) {
           <ambientLight intensity={2.5} />
           <directionalLight position={[5, 5, 5]} intensity={8} />
           <directionalLight position={[-5, 5, 5]} intensity={8} />
-          {/* <Environment intensity={100.05} preset="city" /> */}
-          {redLight && (
-            <pointLight
-              color="red"
-              position={[0.5, -0.4, 1]}
-              intensity={30.4}
-            />
-          )}
+          <Environment  environmentIntensity={0.7}  files="/images/selencio/white.jpg" />
+       {redLight && (
+  <>
+    <spotLight
+      color="#ff0000"
+      position={[0.5, -0.4, 1]}
+      intensity={100}
+      angle={0.5}
+      penumbra={0.3}
+      distance={10}
+      target-position={[0, 0, 0]}
+    />
+    
+    {/* Additional point light for ambient glow */}
+    <pointLight
+      color="#ff0000"
+      position={[0.5, -0.4, 1]}
+      intensity={50}
+      distance={5}
+    />
+  </>
+)}
           <Basket ref={setBasketObject} {...basketTransform} />
           <Float speed={2} rotationIntensity={1} floatIntensity={1}>
             <Zumo ref={setZumoObject} {...zumoTransform} />

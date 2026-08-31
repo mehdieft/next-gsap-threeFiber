@@ -52,7 +52,7 @@ export default function Layout({ children }) {
         ref={lenisRef}
         root
         options={{
-          duration: 1.2,
+          duration: 2.8,
           smoothWheel: true,
         }}
       >

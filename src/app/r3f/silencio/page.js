@@ -43,7 +43,7 @@ export default function Selencio() {
                 scrollTrigger: {
                     trigger: mainRef.current,
                     start: "top top",
-                    endTrigger:'.spacer',
+                    endTrigger: '.spacer',
                     scrub: true,
                     markers: false,
                     onToggle: () => { setScrollStart(true) }
@@ -95,7 +95,7 @@ export default function Selencio() {
                 });
 
                 chips.to(zumoObject.position, {
-                    y: 0,
+                    y: 0.15,
                     duration: 1.2,
                     ease: "none",
                 });
@@ -105,7 +105,28 @@ export default function Selencio() {
                     duration: 4,
                     ease: 'none'
                 }, '<0.4')
-            
+
+            const choclate=gsap.timeline({scrollTrigger:{
+                trigger:'.kos',
+                start:'top 99%',
+                end: 'top top',
+                scrub: true,
+                
+                markers: true,
+
+            }})
+            choclate.to(chocolatiaObject.position, {
+                y: 0.15,
+                duration: 1.2,
+                ease: "none",
+            });
+            choclate.to(chocolatiaObject.rotation, {
+                z: Math.PI *3.5,
+                y: Math.PI * 2,
+                duration: 4,
+                ease: 'none'
+            }, '<0.4')
+
             });
             mm.add("(max-width: 768px)", () => {
                 // MOBILE
@@ -122,7 +143,7 @@ export default function Selencio() {
                 });
 
                 chips.to(zumoObject.position, {
-                    y: -0.5,
+                    y: 0.5,
                     x: 0,
                     duration: 1,
                     ease: "none",
@@ -159,12 +180,14 @@ export default function Selencio() {
                 <div className="spacer"></div>
                 <ScannerSection scannerId="scanner-primary" position="center" modelRef={canObject} />
                 <OutroSection outroRef={outroRef} />
-                <div className="sandis-container relative "/
+                <div className="sandis-container relative " /
                 >
                 <ScannerSection scannerId="scanner-secondary" count={2} position="right" modelRef={zumoObject} />
 
-                
-                <div className="h-svh w-svw bg-red-400">kos</div>
+
+                <div className="h-svh w-svw  kos">kos</div>
+                <ScannerSection scannerId="scanner-secondary" count={3} position="left" modelRef={chocolatiaObject} />
+
             </main>
         </>
     );

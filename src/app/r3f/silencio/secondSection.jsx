@@ -62,7 +62,7 @@ export default function SecondSection() {
         {categories.map((cat) => (
           <p
             key={cat.num}
-            className="text-center text-[10px] uppercase tracking-widest md:text-[11px]"
+            className="text-center text-[10px] uppercase tracking-widest md:text-[15px]"
           >
             {cat.title}
             <span className="mr-1 text-black/60">{cat.num}</span>
@@ -72,9 +72,9 @@ export default function SecondSection() {
 
       {/* headline */}
       <div className="flex flex-1 flex-col justify-center">
-        <h2 ref={headlineRef} className="space-y-0 md:space-y-1 text-xl md:text-4xl font-bold leading-none md:text-6xl lg:text-7xl">
+        <h2 ref={headlineRef} className="space-y-0 leading-[150px] md:space-y-1 text-xl md:text-4xl font-bold  md:text-6xl lg:text-7xl">
           <span className="block overflow-hidden pb-[0.15em] -mb-[0.15em]">
-            <span className="headline-line flex items-center justify-between gap-2">
+            <span className="headline-line text-shadow-lg/15 flex items-center justify-between  gap-2">
               <span>®</span>
               <span>سلنسیو</span>
               <span>یک</span>
@@ -85,7 +85,7 @@ export default function SecondSection() {
             </span>
           </span>
           <span className="block overflow-hidden pb-[0.15em] -mb-[0.15em]">
-            <span className="headline-line flex items-center justify-between gap-2">
+            <span className="headline-line text-shadow-lg/15 flex items-center justify-between gap-2">
               <span>زبان‌های</span>
               <span>بصری</span>
               <span>دیجیتال</span>
@@ -101,7 +101,7 @@ export default function SecondSection() {
             </span>
           </span>
           <span className="block overflow-hidden pb-[0.15em] -mb-[0.15em]">
-            <span className="headline-line flex items-center justify-between gap-2">
+            <span className="headline-line text-shadow-lg/15 flex items-center justify-between gap-2">
               <span>جسور</span>
               <span>و</span>
               <span>خارج</span>
@@ -117,13 +117,13 @@ export default function SecondSection() {
 
         {/* paragraphs */}
         <div className="mt-14 flex flex-wrap items-start justify-center  md:justify-between gap-8 md:mt-20">
-          <p className="max-w-[16rem] text-justify text-[14px] leading-relaxed md:text-[11px]">
+          <p className="max-w-[20rem] text-justify text-[14px] md:text-[20px] leading-relaxed ">
             ما یک استودیو طراحی متخصص در زبان‌های بصری تعاملی برای سازمان‌هایی
             هستیم که می‌خواهند مرزها را جابه‌جا کنند. ما برندهایی منعطف و چابک
             می‌سازیم که توانایی انطباق با بستر معاصر را دارند؛ بستری که در آن
             سرعت مصرف، محتوای پُرتأثیر را برای مرتبط ماندن ضروری می‌کند.
           </p>
-          <p className="max-w-[16rem] text-justify text-[14px] leading-relaxed md:text-[11px]">
+          <p className="max-w-[20rem] text-justify text-[14px] leading-relaxed md:text-[20px]">
             ما محصولات دیجیتالی می‌سازیم که در آن‌ها تعامل با کاربر و حرکت از
             اهمیت فراوانی برخوردار است و همین به ما اجازه می‌دهد احساسات و
             تجربه‌هایی منحصربه‌فرد خلق کنیم.

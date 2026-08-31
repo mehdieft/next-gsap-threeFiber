@@ -68,7 +68,7 @@ export default function ScannerSection({
           endTrigger: endRef.current,
           pin: true,
           pinSpacing: true,
-          scrub: 7,
+          scrub: 4,
           markers: false,
           onEnter: () => turnOnTheLight(),
           onLeave: () => turnOffTheLight(),
@@ -102,7 +102,7 @@ export default function ScannerSection({
           paddingLeft: "0.5rem",
           paddingRight: "0.5rem",
           borderRadius: "0.75rem",
-          duration: 2,
+          duration:1,
           ease: "power2.inOut",
         })
         .call(() => {
@@ -152,7 +152,7 @@ export default function ScannerSection({
         opacity: 0,
         y: -24,
         stagger: 0.05,
-        duration: 1.6,
+        duration: 3.6,
         ease: "power2.in",
       });
       tl.to(infoRef.current, {
@@ -161,7 +161,7 @@ export default function ScannerSection({
         height: "96px",
         overflow: "hidden",
         transformOrigin: "center center",
-        duration: 1.2,
+        duration: 8.2,
         ease: "power3.inOut",
       });
       // add position change
@@ -172,9 +172,9 @@ export default function ScannerSection({
             center: "20vw",
             right: "-20vw",
           }[position] ?? "0vw",
-        duration: 3.2,
+        duration: 8.2,
         ease: "power3.in",
-      });
+      },'<');
       tl.to(
         numberOneRef.current,
         {
@@ -189,7 +189,7 @@ export default function ScannerSection({
         numberTwoRef.current,
         {
           xPercent: 97,
-          duration: 1,
+          duration: 3.2,
           ease: "power2.inOut",
         },
         "<",
