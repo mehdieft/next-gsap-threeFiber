@@ -208,7 +208,7 @@ export default function ScannerSection({
         <div
           ref={infoRef}
           dir="ltr"
-          className={`silencio-scanner scan-info absolute top-1/2 -translate-y-1/2 flex h-[70vh] w-[60vw] md:w-[30vw] min-w-[220px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}
+          className={`silencio-scanner scan-info absolute top-1/2 -translate-y-1/2 flex h-[70vh] w-[60vw] md:w-[35vw] xl:w-[30vw] min-w-[220px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}
         >
           <div className="flex items-start justify-between">
             <div className="relative number-container h-10 w-16 flex overflow-hidden">
@@ -225,24 +225,23 @@ export default function ScannerSection({
                 #۰{count + 1}
               </h2>
             </div>
-            <p className="scan-reveal silencio-meta text-[8px] [writing-mode:vertical-rl]">
+            <p className="scan-reveal silencio-meta text-[4px] md:text-[8px] [writing-mode:vertical-rl]">
               هویت کسب‌وکار خود را تازه کنید
             </p>
           </div>
-          <p className="scan-reveal silencio-meta absolute left-2 top-1/2 -translate-y-1/2 rotate-180 text-[8px] [writing-mode:vertical-rl]">
+          <p className=" hidden md:block scan-reveal silencio-meta absolute left-2 top-1/2 -translate-y-1/2 rotate-180 text-[8px] [writing-mode:vertical-rl]">
             تفکر جسورانه به‌عنوان پایه
           </p>
           <div className="flex-1" />
-          <div className="scan-reveal mb-2 relative flex items-center gap-2">
-            <div className="relative">
-            
-            <Image
-              src="/images/selencio/barcode.svg"
-              alt="barcode"
-              width={160}
-              height={40}
-              className="h-8 w-36 object-fill"
-            />
+          <div className="scan-reveal mb-2 relative flex justify-between items-center gap-2">
+            <div className="relative h-10 w-24 md:w-40 ">
+              <Image
+                src="/images/selencio/barcode.svg"
+                alt="barcode"
+                width={160}
+                height={40}
+                className="h-full w-full object-fill contrast-150"
+              />
             </div>
             <span
               ref={purchasedRef}
@@ -251,7 +250,7 @@ export default function ScannerSection({
               <span ref={purchasedTextRef}>خریده شد</span>
             </span>
           </div>
-          <div className="scan-reveal flex items-start justify-between gap-3">
+          <div className="scan-reveal flex items-end justify-between gap-3">
             <div className="w-[38%] text-[10px] leading-[1.3]">
               <p className="font-bold">برای</p>
               {[
@@ -270,12 +269,12 @@ export default function ScannerSection({
                 </p>
               ))}
             </div>
-            <div className="w-[34%] space-y-1 text-[10px] leading-[1.4]">
+            <div className="w-[34%] space-y-0 md:space-y-1 text-right text-[10px] leading-[1.4]">
               <p>
                 <span className="font-bold">مواد تشکیل‌دهنده: </span>مفهوم،
                 نام‌گذاری، روایت داستان، هویت کلامی، جایگاه‌سازی، هدف برند
               </p>
-              <p className="py-3 font-bold">* مفاهیم تاریخ انقضا ندارند.</p>
+              <p className="py-1  md:py-3 font-bold">* مفاهیم تاریخ انقضا ندارند.</p>
               <p className="font-bold">محصولات دیجیتال برای برندهای معاصر</p>
             </div>
           </div>

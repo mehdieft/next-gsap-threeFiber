@@ -170,7 +170,7 @@ export default function Selencio() {
     );
     return (
         <>
-            {process.env.NODE_ENV === "development" && <Leva collapsed={false} />}
+            {process.env.NODE_ENV === "development" && <Leva  collapsed={true} />}
             <LoadingScreen />
             <CanvasScene directionColor={directionColor} onObjectsChange={setObjects} />
             <main ref={mainRef} className="relative z-10">
