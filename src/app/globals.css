@@ -54,10 +54,10 @@ html {
 
 .silencio-layout .silencio-meta {
   color: var(--silencio-muted);
-  font-size: 0.7rem;
+  font-size: 0.4rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  line-height: 1.6;
+  line-height: 1.0;
 }
 
 .silencio-layout .silencio-scanner {
