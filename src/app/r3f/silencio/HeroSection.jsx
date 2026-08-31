@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function HeroSection({ stopScroll }) {
     return (
         <section className="relative hero w-svw h-svh flex flex-col items-center justify-center text-center px-6">
-            <div className=" none md:absolute left-0 top-1/2 rotate-90 -translate-y-1/2">
+            <div className=" hidden md:block md:absolute left-0 top-1/2 rotate-90 -translate-y-1/2">
                 <Image src="/images/selencio/barcode.svg" className="h-auto w-32 " alt="barcode" width={400} height={150} />
             </div>
             <div className="absolute top-10 left-0 w-full flex justify-center"><p className="silencio-meta text-sm uppercase">سلنسیو @ دیجیتال</p></div>

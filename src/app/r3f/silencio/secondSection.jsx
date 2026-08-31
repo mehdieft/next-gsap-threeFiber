@@ -72,7 +72,7 @@ export default function SecondSection() {
 
       {/* headline */}
       <div className="flex flex-1 flex-col justify-center">
-        <h2 ref={headlineRef} className="space-y-0 leading-[150px] md:space-y-1 text-xl md:text-4xl font-bold  md:text-6xl lg:text-7xl">
+        <h2 ref={headlineRef} className="space-y-0 leading-[40px] md:leading-[150px] md:space-y-1 text-xl md:text-4xl font-bold  md:text-6xl lg:text-7xl">
           <span className="block overflow-hidden pb-[0.15em] -mb-[0.15em]">
             <span className="headline-line text-shadow-lg/15 flex items-center justify-between  gap-2">
               <span>®</span>
