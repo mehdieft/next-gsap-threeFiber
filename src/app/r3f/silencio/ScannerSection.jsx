@@ -4,7 +4,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
 import useSelencio from "../../store/useSelencio";
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +16,7 @@ export default function ScannerSection({
 }) {
   const { turnOnTheLight, turnOffTheLight } = useSelencio();
 
-  const sound = new Audio("/sound/checkout.mp3");
+  const soundRef = useRef();
   const containerRef = useRef();
   const scannerRef = useRef();
   const endRef = useRef();
@@ -34,6 +34,29 @@ export default function ScannerSection({
         "left-1/2 -translate-x-1/2 md:left-auto md:right-10 md:translate-x-0",
     }[position] ?? "left-1/2 -translate-x-1/2";
 
+     useEffect(() => {
+    if (typeof window !== 'undefined') {
+      soundRef.current = new Audio("/sound/checkout.mp3");
+      soundRef.current.preload = 'auto';
+      
+      // Cleanup
+      return () => {
+        if (soundRef.current) {
+          soundRef.current.pause();
+          soundRef.current = null;
+        }
+      };
+    }
+  }, []);
+    const playSound = () => {
+    if (soundRef.current) {
+      soundRef.current.currentTime = 0;
+      soundRef.current.play().catch(error => {
+        console.log('Audio play failed:', error);
+      });
+    }
+  };
+
   useGSAP(
     () => {
       if (!containerRef.current || !scannerRef.current) return;
@@ -45,7 +68,7 @@ export default function ScannerSection({
           endTrigger: endRef.current,
           pin: true,
           pinSpacing: true,
-          scrub: true,
+          scrub: 7,
           markers: false,
           onEnter: () => turnOnTheLight(),
           onLeave: () => turnOffTheLight(),
@@ -79,12 +102,11 @@ export default function ScannerSection({
           paddingLeft: "0.5rem",
           paddingRight: "0.5rem",
           borderRadius: "0.75rem",
-          duration: 7,
+          duration: 2,
           ease: "power2.inOut",
         })
         .call(() => {
-          sound.currentTime = 0;
-          sound.play();
+          playSound();
         })
         .to(purchasedTextRef.current, {
           autoAlpha: 1,
@@ -211,7 +233,9 @@ export default function ScannerSection({
             تفکر جسورانه به‌عنوان پایه
           </p>
           <div className="flex-1" />
-          <div className="scan-reveal mb-2 flex items-center gap-2">
+          <div className="scan-reveal mb-2 relative flex items-center gap-2">
+            <div className="relative">
+            
             <Image
               src="/images/selencio/barcode.svg"
               alt="barcode"
@@ -219,6 +243,7 @@ export default function ScannerSection({
               height={40}
               className="h-8 w-36 object-fill"
             />
+            </div>
             <span
               ref={purchasedRef}
               className="purched inline-flex overflow-hidden whitespace-nowrap rounded-xl border border-black/60 py-2 px-2 text-sm font-bold uppercase text-red-600"
