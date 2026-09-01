@@ -222,7 +222,7 @@ export default function ScannerSection({
         <div
           ref={infoRef}
           dir="ltr"
-          className={`silencio-scanner scan-info absolute top-1/2 -translate-y-1/2 flex h-[70vh] w-[70vw] md:w-[35vw] xl:w-[30vw] min-w-[220px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}
+          className={`silencio-scanner scan-info absolute top-1/2 -translate-y-1/2 flex h-[70vh] w-[70vw] md:w-[35vw] xl:w-[30vw] min-w-[260px] flex-col justify-between rounded-xl border border-black/60 p-3 ${positionClass}`}
         >
           <div className="flex items-start justify-between">
             <div className="relative number-container h-10 w-16 flex overflow-hidden">
