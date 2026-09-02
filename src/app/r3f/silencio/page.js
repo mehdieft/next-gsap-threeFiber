@@ -8,6 +8,7 @@ import CanvasScene from "./CanvasScene";
 import HeroSection from "./HeroSection";
 import ScannerSection from "./ScannerSection";
 import OutroSection from "./OutroSection";
+import KosSection from "./KosSection";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -185,7 +186,9 @@ export default function Selencio() {
                 <ScannerSection scannerId="scanner-secondary" count={2} position="right" modelRef={zumoObject} />
 
 
-                <div className="h-svh w-svw  kos">kos</div>
+                <div className="kos">
+                    <KosSection />
+                </div>
                 <ScannerSection scannerId="scanner-secondary" count={3} position="left" modelRef={chocolatiaObject} />
 
             </main>

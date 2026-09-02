@@ -74,6 +74,12 @@ html {
   text-wrap: balance;
   line-height: 1.15;
 }
+
+.kos {
+  position: relative;
+  z-index: 3;
+  min-height: 100svh;
+}
 /* applying differenet styles for my ecommerce  */
 @layer base {
   .ecommerce {

@@ -112,7 +112,7 @@ export default function CanvasScene({ onObjectsChange }) {
   });
 
   return (
-    <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-white">
+    <div className="model fixed z-0 pointer-events-none w-screen h-svh bg-[linear-gradient(0deg,rgb(219,218,217),rgb(255,255,255))]">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 40 }}
       >
