@@ -39,29 +39,8 @@ export default function ScannerSection({
   const soundRef = useRef(null);
   const hasPlayedPurchaseSoundRef = useRef(false);
 
-  const playPurchaseSound = () => {
-    // Already played → do nothing
-    if (hasPlayedPurchaseSoundRef.current) return;
-
-    hasPlayedPurchaseSoundRef.current = true;
-
-    const audio = new Audio("/sound/checkout.mp3");
-
-    audio.volume = 1;
-    soundRef.current = audio;
-
-    audio.play().catch(() => {
-      // Browser blocked playback.
-      // We intentionally don't retry, so it can never play twice.
-    });
-  };
-
   // ---------------------------------------------------------------------------
-  // Purchase badge animation ("خریده شد")
-  //
-  // This runs OUTSIDE the scrubbed timeline on purpose. It's triggered by a
-  // tl.call() (which can fire on scroll forward AND backward, like the sound
-  // call), but guarded so it only ever plays once and is never reversed.
+  // Purchase animation
   // ---------------------------------------------------------------------------
 
   const hasPlayedPurchaseAnimRef = useRef(false);
@@ -89,12 +68,54 @@ export default function ScannerSection({
       const select = gsap.utils.selector(containerRef);
 
       // -----------------------------------------------------------------------
-      // Measure purchase badge
+      // Purchase element
       // -----------------------------------------------------------------------
 
       const purchasedElement = purchasedRef.current;
 
       if (!purchasedElement) return;
+
+      // -----------------------------------------------------------------------
+      // Audio
+      // -----------------------------------------------------------------------
+
+      const audio = new Audio("/sound/checkout.mp3");
+
+      audio.preload = "auto";
+      audio.volume = 1;
+
+      soundRef.current = audio;
+
+      // Start loading immediately
+      audio.load();
+
+      // -----------------------------------------------------------------------
+      // Unlock audio on first user interaction
+      //
+      // Browsers may block programmatic audio until the user interacts
+      // with the page once.
+      // -----------------------------------------------------------------------
+
+      const unlockAudio = () => {
+        audio
+          .play()
+          .then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+          })
+          .catch(() => {
+            // It's okay if this fails.
+            // The actual purchase sound will try again later.
+          });
+      };
+
+      window.addEventListener("pointerdown", unlockAudio, {
+        once: true,
+      });
+
+      // -----------------------------------------------------------------------
+      // Measure purchase badge
+      // -----------------------------------------------------------------------
 
       const purchasedWidth =
         purchasedElement.getBoundingClientRect().width;
@@ -128,11 +149,7 @@ export default function ScannerSection({
       });
 
       // -----------------------------------------------------------------------
-      // Initial number swap state
-      //
-      // Both numbers occupy the exact same box (absolute inset-0 w-full) and
-      // are positioned purely with xPercent, so entry/exit always measure
-      // against the same width. #02 starts one full width to the left.
+      // Initial number state
       // -----------------------------------------------------------------------
 
       gsap.set(numberOneRef.current, {
@@ -144,15 +161,57 @@ export default function ScannerSection({
       });
 
       // -----------------------------------------------------------------------
-      // Purchase animation (badge circle → pill, text fade in)
-      //
-      // Independent, non-scrubbed tween. Runs once, never reverses.
+      // Play purchase sound
+      // -----------------------------------------------------------------------
+
+      const playPurchaseSound = () => {
+        // Already played
+        if (hasPlayedPurchaseSoundRef.current) {
+          return;
+        }
+
+        const sound = soundRef.current;
+
+        if (!sound) {
+          console.warn("Purchase sound does not exist.");
+          return;
+        }
+
+        // Mark as played before attempting playback.
+        hasPlayedPurchaseSoundRef.current = true;
+
+        sound.currentTime = 0;
+        sound.volume = 1;
+
+        sound
+          .play()
+          .then(() => {
+            console.log("Purchase sound playing");
+          })
+          .catch((error) => {
+            console.warn(
+              "Purchase sound was blocked:",
+              error
+            );
+
+            // Allow another attempt if browser blocked it.
+            hasPlayedPurchaseSoundRef.current = false;
+          });
+      };
+
+      // -----------------------------------------------------------------------
+      // Purchase badge animation
       // -----------------------------------------------------------------------
 
       const playPurchaseAnimation = () => {
-        if (hasPlayedPurchaseAnimRef.current) return;
+        // Already animated
+        if (hasPlayedPurchaseAnimRef.current) {
+          return;
+        }
+
         hasPlayedPurchaseAnimRef.current = true;
 
+        // Circle -> pill
         gsap.to(purchasedElement, {
           width: purchasedWidth,
           paddingLeft: "0.5rem",
@@ -162,6 +221,7 @@ export default function ScannerSection({
           ease: "power2.inOut",
         });
 
+        // Text appears
         gsap.to(purchasedTextRef.current, {
           autoAlpha: 1,
           duration: 0.6,
@@ -170,14 +230,12 @@ export default function ScannerSection({
         });
       };
 
-      const playPurchaseEvent = () => {
-        playPurchaseSound();
-        playPurchaseAnimation();
-      };
-
       // -----------------------------------------------------------------------
       // Main timeline
       // -----------------------------------------------------------------------
+
+      let previousTime = 0;
+      let purchaseTime = null;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -194,6 +252,41 @@ export default function ScannerSection({
           scrub: 4,
 
           markers: false,
+
+          // -------------------------------------------------------------------
+          // ScrollTrigger update
+          //
+          // Instead of tl.call(), we watch the timeline position and detect
+          // when it crosses the purchase label.
+          // -------------------------------------------------------------------
+
+          onUpdate: () => {
+            if (purchaseTime === null) {
+              return;
+            }
+
+            const currentTime = tl.time();
+
+            // Timeline is moving forward and has crossed purchase point
+            if (
+              !hasPlayedPurchaseSoundRef.current &&
+              previousTime < purchaseTime &&
+              currentTime >= purchaseTime
+            ) {
+              // IMPORTANT:
+              // Sound first
+              playPurchaseSound();
+
+              // Then visual animation
+              playPurchaseAnimation();
+            }
+
+            previousTime = currentTime;
+          },
+
+          // -------------------------------------------------------------------
+          // Light
+          // -------------------------------------------------------------------
 
           onEnter: () => {
             turnOnTheLight();
@@ -236,22 +329,32 @@ export default function ScannerSection({
         });
 
         // ---------------------------------------------------------------------
-        // 3. PURCHASE EVENT (sound + badge animation)
+        // PURCHASE MOMENT
+        // ---------------------------------------------------------------------
         //
-        // This call can be triggered by the scrubbed timeline many times
-        // (forward and backward), but playPurchaseEvent() guards both the
-        // sound and the visual so each only ever plays once, and the visual
-        // is never reversed on scroll-back.
+        // We use a label instead of tl.call().
+        //
+        // This gives us an exact timeline position that ScrollTrigger can
+        // detect even though the timeline is scrubbed.
         // ---------------------------------------------------------------------
 
-        tl.call(playPurchaseEvent);
+        tl.addLabel("purchase");
 
-        // Spacer to preserve original scroll pacing/pin distance now that
-        // the badge tweens run outside the scrubbed timeline.
-        tl.to({}, { duration: 1.6 });
+        purchaseTime = tl.labels.purchase;
 
         // ---------------------------------------------------------------------
-        // 4. Hide / remove 3D model
+        // Spacer
+        // ---------------------------------------------------------------------
+
+        tl.to(
+          {},
+          {
+            duration: 1.6,
+          }
+        );
+
+        // ---------------------------------------------------------------------
+        // 3. Hide / remove 3D model
         // ---------------------------------------------------------------------
 
         tl.to(modelRef.scale, {
@@ -264,7 +367,7 @@ export default function ScannerSection({
       }
 
       // -----------------------------------------------------------------------
-      // 5. Fade scanner content out
+      // 4. Fade scanner content out
       // -----------------------------------------------------------------------
 
       tl.to(select(".scan-reveal"), {
@@ -276,7 +379,7 @@ export default function ScannerSection({
       });
 
       // -----------------------------------------------------------------------
-      // 6. Shrink information card
+      // 5. Shrink information card
       // -----------------------------------------------------------------------
 
       tl.to(infoRef.current, {
@@ -290,7 +393,7 @@ export default function ScannerSection({
       });
 
       // -----------------------------------------------------------------------
-      // 7. Move information card
+      // 6. Move information card
       // -----------------------------------------------------------------------
 
       const positionX =
@@ -311,10 +414,7 @@ export default function ScannerSection({
       );
 
       // -----------------------------------------------------------------------
-      // 8. Move number #01 out / #02 in
-      //
-      // Both driven purely by xPercent against the same-size box, so #02
-      // lands fully in view instead of stopping short.
+      // 7. Number swap
       // -----------------------------------------------------------------------
 
       tl.to(
@@ -342,6 +442,16 @@ export default function ScannerSection({
       // -----------------------------------------------------------------------
 
       return () => {
+        window.removeEventListener(
+          "pointerdown",
+          unlockAudio
+        );
+
+        audio.pause();
+        audio.currentTime = 0;
+
+        soundRef.current = null;
+
         tl.scrollTrigger?.kill();
         tl.kill();
       };

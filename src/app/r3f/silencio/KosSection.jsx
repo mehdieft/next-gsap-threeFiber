@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/static-components */
 "use client";
 
 import Image from "next/image";
@@ -233,7 +234,6 @@ export default function KosSection() {
           text-black/30
         "
       >
-        KOS
       </div>
     </section>
   );

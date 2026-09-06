@@ -107,26 +107,28 @@ export default function Selencio() {
                     ease: 'none'
                 }, '<0.4')
 
-            const choclate=gsap.timeline({scrollTrigger:{
-                trigger:'.kos',
-                start:'top 99%',
-                end: 'top top',
-                scrub: true,
-                
-                markers: true,
+                const choclate = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '.kos',
+                        start: 'top 99%',
+                        end: 'top top',
+                        scrub: true,
 
-            }})
-            choclate.to(chocolatiaObject.position, {
-                y: 0.15,
-                duration: 1.2,
-                ease: "none",
-            });
-            choclate.to(chocolatiaObject.rotation, {
-                z: Math.PI *3.5,
-                y: Math.PI * 2,
-                duration: 4,
-                ease: 'none'
-            }, '<0.4')
+                        markers: true,
+
+                    }
+                })
+                choclate.to(chocolatiaObject.position, {
+                    y: 0.15,
+                    duration: 1.2,
+                    ease: "none",
+                });
+                choclate.to(chocolatiaObject.rotation, {
+                    z: Math.PI * 3.5,
+                    y: Math.PI * 2,
+                    duration: 4,
+                    ease: 'none'
+                }, '<0.4')
 
             });
             mm.add("(max-width: 768px)", () => {
@@ -155,6 +157,29 @@ export default function Selencio() {
                     duration: 2.3,
                     ease: 'power3.in'
                 })
+                //we should add a choclate bar came here
+
+                const choclate = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '.kos',
+                        start: 'top 90%',
+                        end: 'top top',
+                        scrub: true,
+                        markers: true,
+                    }
+                })
+                  choclate.to(chocolatiaObject.position, {
+                    y: 0.5,
+                    x: 0,
+                    duration: 1,
+                    ease: "none",
+                });
+                choclate.to(chocolatiaObject.rotation, {
+                    y: Math.PI * 2.5,
+                    z: Math.PI / 4,
+                    duration: 8.3,
+                    ease: 'power3.in'
+                })
             });
         },
 
@@ -171,7 +196,7 @@ export default function Selencio() {
     );
     return (
         <>
-            {process.env.NODE_ENV === "development" && <Leva  collapsed={true} />}
+            {process.env.NODE_ENV === "development" && <Leva collapsed={true} />}
             <LoadingScreen />
             <CanvasScene directionColor={directionColor} onObjectsChange={setObjects} />
             <main ref={mainRef} className="relative z-10">
@@ -186,7 +211,7 @@ export default function Selencio() {
                 <ScannerSection scannerId="scanner-secondary" count={2} position="right" modelRef={zumoObject} />
 
 
-                <div className="kos">
+                <div className="kos bg-red-400 opacity-10">
                     <KosSection />
                 </div>
                 <ScannerSection scannerId="scanner-secondary" count={3} position="left" modelRef={chocolatiaObject} />

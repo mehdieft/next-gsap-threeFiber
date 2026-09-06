@@ -2,7 +2,6 @@
 import localFont from "next/font/local";
 import ReactLenis from "lenis/react";
 
-
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -56,6 +55,7 @@ export default function Layout({ children }) {
           smoothWheel: true,
         }}
       >
+        
         {children}
        
       </ReactLenis>
