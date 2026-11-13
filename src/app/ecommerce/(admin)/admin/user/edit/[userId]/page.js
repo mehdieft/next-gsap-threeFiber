@@ -1,6 +1,6 @@
 import {prisma} from '@/app/lib/prisma';
 import EditUser from '../EditUser';
-import Toast from '@/app/components/eccomerce/toast';
+import Toast from '@/app/components/eccomerce/Toast';
 export default async function getUserForEdit({params,searchParams}){
     const p=await params
     console.log("this is p",p)

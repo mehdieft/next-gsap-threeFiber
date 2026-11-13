@@ -1,6 +1,6 @@
 import { createCategoryAction } from '@/app/ecommerce/actions/categoryActions';
 import Label from '@/app/components/eccomerce/Label/Label';
-import Toast from '@/app/components/eccomerce/toast';
+import Toast from '@/app/components/eccomerce/Toast';
 
 export default async function CreateCategoryPage({ searchParams }) {
 	const { error } = await searchParams;

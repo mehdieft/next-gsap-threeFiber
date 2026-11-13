@@ -1,14 +1,15 @@
 import AdminNavbar from "../../components/eccomerce/navbar";
 import AdminSidebar from "../../components/eccomerce/AdminSidebar/AdminSidebar";
 import { redirect } from "next/navigation";
-import { getCookie } from "@/app/lib/cookies";
-import { verifyJWT } from "@/app/lib/utils";
+import { headers } from "next/headers";
+import { auth } from "@/app/lib/auth";
 
 export default async function EcommerceLayout({children}){
-    const token = await getCookie("jwt_token");
-    const user = token ? await verifyJWT(token) : false;
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
 
-    if (!user) {
+    if (!session) {
       redirect("/ecommerce/Login");
     }
 

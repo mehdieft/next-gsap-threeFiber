@@ -1,4 +1,4 @@
-import Toast from "@/app/components/eccomerce/toast.jsx";
+import Toast from "../../components/eccomerce/Toast";
 import {prisma } from '../../lib/prisma';
 import SignupPage from "./signup.jsx";
 

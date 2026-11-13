@@ -3,7 +3,7 @@
 
 import { createJWT, verifyJWT } from '@/app/lib/utils.js';
 import LoginPage from './login.jsx';
-import Toast from '@/app/components/eccomerce/toast.jsx';
+import Toast from '@/app/components/eccomerce/Toast.jsx';
 
 export default async function Login({ searchParams }) {
    const params = await searchParams;

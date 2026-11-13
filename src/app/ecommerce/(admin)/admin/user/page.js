@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
-import Toast from "@/app/components/eccomerce/toast";
+import Toast from "@/app/components/eccomerce/Toast";
 import SearchComponent from "./seacrh";
 import UserTable from "./UserTable";
 

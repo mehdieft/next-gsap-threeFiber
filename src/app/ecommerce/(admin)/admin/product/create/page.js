@@ -1,6 +1,6 @@
 import { createProductAction } from '@/app/ecommerce/actions/productActions';
 import Label from '@/app/components/eccomerce/Label/Label';
-import Toast from '@/app/components/eccomerce/toast';
+import Toast from '@/app/components/eccomerce/Toast';
 
 export default async function CreateProductPage({ searchParams }) {
   const error = (await searchParams).error;

@@ -1,5 +1,5 @@
 import { prisma } from '@/app/lib/prisma';
-import Toast from '@/app/components/eccomerce/toast';
+import Toast from '@/app/components/eccomerce/Toast';
 import EditProduct from '../EditProduct';
 
 export default async function EditProductPage({ params, searchParams }) {

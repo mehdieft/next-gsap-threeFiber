@@ -1,5 +1,9 @@
 "use client"
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   LuArrowLeft,
   LuEye,
@@ -8,31 +12,44 @@ import {
   LuShoppingBag,
   LuSparkles,
 } from "react-icons/lu";
-import { loginUser } from "../actions/authActions";
-import Toast from "@/app/components/eccomerce/toast.jsx";
+import { authClient } from "../../lib/auth-client";
+import Toast from "@/app/components/eccomerce/Toast.jsx";
+
+const loginSchema = z.object({
+  email: z.email("ایمیل معتبر وارد کنید."),
+  password: z.string().min(8, "رمز عبور باید حداقل ۸ کاراکتر باشد."),
+  rememberMe: z.boolean(),
+});
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [validationMessage, setValidationMessage] = useState("");
+  const router = useRouter();
+  const [authError, setAuthError] = useState("");
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "", rememberMe: true },
+  });
 
-  function validateLogin(event) {
-    const formData = new FormData(event.currentTarget);
-    const username = String(formData.get("username") || "").trim();
-    const password = String(formData.get("password") || "");
+  async function onSubmit(values) {
+    setAuthError("");
+    try {
+      const { error } = await authClient.signIn.email({
+        email: values.email.trim(),
+        password: values.password,
+        rememberMe: values.rememberMe,
+        callbackURL: "/ecommerce/admin",
+      });
 
-    if (username.length < 3) {
-      event.preventDefault();
-      setValidationMessage("نام کاربری باید حداقل ۳ کاراکتر باشد.");
-      return;
+      if (error) {
+        setAuthError(error.message || "ورود انجام نشد. اطلاعات حساب را بررسی کنید.");
+        return;
+      }
+
+      router.push("/ecommerce/admin");
+      router.refresh();
+    } catch {
+      setAuthError("ارتباط با سرویس ورود برقرار نشد. دوباره تلاش کنید.");
     }
-
-    if (password.length < 6) {
-      event.preventDefault();
-      setValidationMessage("رمز عبور باید حداقل ۶ کاراکتر باشد.");
-      return;
-    }
-
-    setValidationMessage("");
   }
 
   return (
@@ -41,7 +58,7 @@ export default function LoginPage() {
       dir="rtl"
       className="ecommerce min-h-screen bg-[#f7f5f0] p-4 text-[#1d2939] sm:p-6 lg:p-8"
     >
-      {validationMessage && <Toast message={validationMessage} type="error" />}
+      {authError && <Toast message={authError} type="error" />}
       <div className="mx-auto grid min-h-[calc(100vh-2rem)] max-w-6xl overflow-hidden border border-[#dedbd2] bg-white shadow-[0_24px_80px_rgba(35,44,31,0.12)] lg:min-h-[calc(100vh-4rem)] lg:grid-cols-[1.05fr_0.95fr]">
         <section className="relative hidden overflow-hidden bg-[#25463a] p-12 text-[#fbfaf6] lg:flex lg:flex-col">
           <div className="absolute -right-20 top-20 h-72 w-72 rounded-full border border-[#d4a24c]/35" />
@@ -98,23 +115,26 @@ export default function LoginPage() {
               برای ادامه، اطلاعات حساب خود را وارد کنید.
             </p>
 
-            <form action={loginUser} noValidate onSubmit={validateLogin} className="mt-9 space-y-5">
+            <form noValidate onSubmit={handleSubmit(onSubmit)} className="mt-9 space-y-5">
               <div>
                 <label
-                  htmlFor="username"
+                  htmlFor="email"
                   className="mb-2 block text-sm font-semibold text-[#344054]"
                 >
-                 نام کاربری
+                 ایمیل
                 </label>
                 <input
-                  id="username"
-                  name="username"
-                  type="text"
-                    autoComplete="username"
+                  id="email"
+                  type="email"
+                  autoComplete="email"
                   placeholder="example@email.com"
                   dir="ltr"
+                  {...register("email")}
                   className="h-12 w-full border border-[#d0d5dd] bg-white px-4 text-left text-sm text-[#1d2939] outline-none transition placeholder:text-[#98a2b3] focus:border-[#25463a] focus:ring-3 focus:ring-[#25463a]/15"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "login-email-error" : undefined}
                 />
+                {errors.email && <p id="login-email-error" className="mt-1 text-sm text-red-700">{errors.email.message}</p>}
               </div>
 
               <div>
@@ -140,7 +160,10 @@ export default function LoginPage() {
                     autoComplete="current-password"
                     placeholder="رمز عبور خود را وارد کنید"
                     dir="ltr"
+                    {...register("password")}
                     className="h-12 w-full border border-[#d0d5dd] bg-white py-0 pl-12 pr-4 text-left text-sm text-[#1d2939] outline-none transition placeholder:text-right placeholder:text-[#98a2b3] focus:border-[#25463a] focus:ring-3 focus:ring-[#25463a]/15"
+                    aria-invalid={!!errors.password}
+                    aria-describedby={errors.password ? "login-password-error" : undefined}
                   />
                   <button
                     type="button"
@@ -157,12 +180,13 @@ export default function LoginPage() {
                     )}
                   </button>
                 </div>
+                {errors.password && <p id="login-password-error" className="mt-1 text-sm text-red-700">{errors.password.message}</p>}
               </div>
 
               <label className="flex w-fit cursor-pointer items-center gap-2.5 text-sm text-[#475467]">
                 <input
                   type="checkbox"
-                  name="remember"
+                  {...register("rememberMe")}
                   className="size-4 accent-[#25463a]"
                 />
                 مرا وارد حساب نگه دارید
@@ -170,9 +194,10 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                className="flex h-12 w-full items-center justify-center gap-2 bg-[#25463a] px-5 text-sm font-semibold text-white transition hover:bg-[#1c362c] focus:outline-none focus:ring-3 focus:ring-[#25463a]/25"
+                disabled={isSubmitting}
+                className="flex h-12 w-full items-center justify-center gap-2 bg-[#25463a] px-5 text-sm font-semibold text-white transition hover:bg-[#1c362c] focus:outline-none focus:ring-3 focus:ring-[#25463a]/25 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                ورود به حساب
+                {isSubmitting ? "در حال ورود..." : "ورود به حساب"}
                 <LuArrowLeft size={18} aria-hidden="true" />
               </button>
             </form>

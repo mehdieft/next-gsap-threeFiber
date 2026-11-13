@@ -1,7 +1,7 @@
 import { prisma } from '@/app/lib/prisma';
 import { updateCategoryAction } from '@/app/ecommerce/actions/categoryActions';
 import Label from '@/app/components/eccomerce/Label/Label';
-import Toast from '@/app/components/eccomerce/toast';
+import Toast from '@/app/components/eccomerce/Toast';
 
 export default async function EditCategoryPage({ params, searchParams }) {
   const { categoryId } = await params;
